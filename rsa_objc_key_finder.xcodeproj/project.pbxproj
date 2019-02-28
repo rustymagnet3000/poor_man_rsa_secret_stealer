@@ -248,7 +248,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2N3CU4HVH8;
+				DEVELOPMENT_TEAM = U8MSEX235L;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -257,7 +257,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2N3CU4HVH8;
+				DEVELOPMENT_TEAM = U8MSEX235L;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

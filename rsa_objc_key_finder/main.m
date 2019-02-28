@@ -1,27 +1,28 @@
 #import "find_factors.h"
 
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
 
-        dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        [[NSNotificationCenter defaultCenter] addObserverForName:@"Factorization" object:nil queue:nil usingBlock:^(NSNotification *note)
+        {
+            NSLog(@"The action I was waiting for is complete!!!");
+        }];
         
-        dispatch_async(dispatchQueue, ^{
-            printf("Factorize code\n");
-            YDFindFactors *factors = [[YDFindFactors alloc] init];
-           
-            for(int i = 1; i <= 10; i++) {
-                usleep(1000000);
-                printf("Ready to factorize: %d", i);
-            }
-        });
-
-        dispatch_async(dispatchQueue, ^{
-            for(int i = 1; i <= 10; i++) {
-                usleep(1000000);
-            }
-            printf("Kill the app, due to watchdog here\n");
-        });
-        printf("Main thread not blocked by background operations\n");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Factorization" object:nil userInfo:nil];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver: @"Factorization"];
     }
     return 0;
 }
+
+//        NSDate *startTime = [NSDate date];
+//
+//        YDFindFactors *find_factor = [[YDFindFactors alloc] init];
+//        printf("[+]Factorize %d\n", find_factor.n);
+//
+//        printf("[+]Main thread, put a wait until thread finished\n");
+//        for(int i = 1; i <= 10; i++) {
+//                usleep(1000000);
+//            }
+//        printf("[+]time to finish: %f\n", -[startTime timeIntervalSinceNow]);
