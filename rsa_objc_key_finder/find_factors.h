@@ -7,10 +7,11 @@
     UInt p;
     UInt q;
 }
+
+-(BOOL)divideNoRemainder;
 -(BOOL) factorize;
 @property int n;
-@property int p;
-@property int q;
+
 @end
 
 #endif /* Header_h */
