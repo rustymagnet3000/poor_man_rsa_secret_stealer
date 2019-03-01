@@ -10,7 +10,7 @@
 
 -(BOOL)divideNoRemainder;
 -(BOOL) factorize;
-@property int n;
+@property(readonly) int n;
 
 @end
 
