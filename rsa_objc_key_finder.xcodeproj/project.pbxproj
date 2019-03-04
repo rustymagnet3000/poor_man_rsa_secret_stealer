@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAC4B3222D3211002DBAAC /* YDnotifications.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
-		30FA0593221FCACA00230559 /* find_factors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* find_factors.m */; };
+		30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDfind_factors.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,10 +25,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0FEAC4B3222D3211002DBAAC /* YDnotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDnotifications.m; sourceTree = "<group>"; };
+		0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDnotifications.h; sourceTree = "<group>"; };
 		30FA0588221FC9DA00230559 /* rsa_objc_key_finder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rsa_objc_key_finder; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FA058B221FC9DA00230559 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		30FA0592221FCACA00230559 /* find_factors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = find_factors.m; sourceTree = "<group>"; };
-		30FA0594221FCAD800230559 /* find_factors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = find_factors.h; sourceTree = "<group>"; };
+		30FA0592221FCACA00230559 /* YDfind_factors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDfind_factors.m; sourceTree = "<group>"; };
+		30FA0594221FCAD800230559 /* YDfind_factors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDfind_factors.h; sourceTree = "<group>"; };
 		30FA05952225D19100230559 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,8 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				30FA058B221FC9DA00230559 /* main.m */,
-				30FA0592221FCACA00230559 /* find_factors.m */,
-				30FA0594221FCAD800230559 /* find_factors.h */,
+				0FEAC4B3222D3211002DBAAC /* YDnotifications.m */,
+				0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */,
+				30FA0592221FCACA00230559 /* YDfind_factors.m */,
+				30FA0594221FCAD800230559 /* YDfind_factors.h */,
 			);
 			path = rsa_objc_key_finder;
 			sourceTree = "<group>";
@@ -125,8 +130,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */,
 				30FA058C221FC9DA00230559 /* main.m in Sources */,
-				30FA0593221FCACA00230559 /* find_factors.m in Sources */,
+				30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
