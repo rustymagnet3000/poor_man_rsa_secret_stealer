@@ -1,5 +1,6 @@
 # RSA Key Finder
 
+
 ##### Challenge
 `https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7`
 
@@ -12,11 +13,10 @@ N:      1034776851837418228051242693253376923
 Cipher:    582984697800119976959378162843817868
 We are using  60 bit primes
 ```
-code to get factors:
 Factors
 ```
 -------
-1,034,776,851,837,418,228,051,242,693,253,376,923 = 1,086,027,579,223,696,553 x 952,809,000,096,560,291
+1034776851837418228051242693253376923 = 1086027579223696553 x 952809000096560291
 ```
 ##### Goal
 After receiving a positive, large integer (N) the program attempts to:
@@ -42,7 +42,14 @@ Primes : [45095080578985454453, 36413321723440003717] = 164206167726704846900762
 
 ```
 ##### References
+
+https://stackoverflow.com/questions/4424374/determining-if-a-number-is-prime
+
 https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/gmpTutorial.html
+
+https://gnu.huihoo.org/gmp-3.1.1/html_chapter/gmp_4.html
+
+https://rosettacode.org/wiki/Miller%E2%80%93Rabin_primality_test
 
 https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7
 

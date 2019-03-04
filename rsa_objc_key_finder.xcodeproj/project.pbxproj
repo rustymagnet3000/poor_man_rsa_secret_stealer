@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0FDBDE33222D6D4D00EC528C /* YDrun_loop.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */; };
+		0FDBDE37222D7FBD00EC528C /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FDBDE36222D7FBD00EC528C /* libgmp.a */; };
 		0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAC4B3222D3211002DBAAC /* YDnotifications.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
 		30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDfind_factors.m */; };
@@ -28,6 +29,8 @@
 /* Begin PBXFileReference section */
 		0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDrun_loop.m; sourceTree = "<group>"; };
 		0FDBDE34222D6DC300EC528C /* YDrun_loop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDrun_loop.h; sourceTree = "<group>"; };
+		0FDBDE35222D7F0D00EC528C /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
+		0FDBDE36222D7FBD00EC528C /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
 		0FEAC4B3222D3211002DBAAC /* YDnotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDnotifications.m; sourceTree = "<group>"; };
 		0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDnotifications.h; sourceTree = "<group>"; };
 		30FA0588221FC9DA00230559 /* rsa_objc_key_finder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rsa_objc_key_finder; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FDBDE37222D7FBD00EC528C /* libgmp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +56,8 @@
 			isa = PBXGroup;
 			children = (
 				30FA05952225D19100230559 /* README.md */,
+				0FDBDE36222D7FBD00EC528C /* libgmp.a */,
+				0FDBDE35222D7F0D00EC528C /* gmp.h */,
 				30FA058A221FC9DA00230559 /* rsa_objc_key_finder */,
 				30FA0589221FC9DA00230559 /* Products */,
 			);
@@ -261,6 +267,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -270,6 +280,10 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
