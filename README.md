@@ -64,11 +64,18 @@ http://sep.stanford.edu/sep/claudio/Research/Prst_ExpRefl/ShtPSPI/intel/mkl/10.0
 
 https://machinecognitis.github.io/Math.Gmp.Native/html/52ce0428-7c09-f2b9-f517-d3d02521f365.htm
 
+##### References Command Line Art
+https://www.gnu.org/software/ncurses/
+
+https://rhardih.io/2010/04/using-ncurses-in-c-for-text-user-interfaces-featuring-xcode/
+
 ##### References
 
 https://rosettacode.org/wiki/Miller%E2%80%93Rabin_primality_test
 
 https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7
+
+https://en.wikipedia.org/wiki/Pollard%27s_p_%E2%88%92_1_algorithm
 
 https://www.objc.io/issues/2-concurrency/concurrency-apis-and-pitfalls/
 
