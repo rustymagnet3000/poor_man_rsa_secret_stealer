@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F518C1D22366329004EDA57 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F518C1C22366329004EDA57 /* libprogressbar.a */; };
+		0FD3E9982237B208002CFD67 /* YDstart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDstart.m */; };
 		0FDBDE33222D6D4D00EC528C /* YDrun_loop.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */; };
 		0FDBDE37222D7FBD00EC528C /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FDBDE36222D7FBD00EC528C /* libgmp.a */; };
 		0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAC4B3222D3211002DBAAC /* YDnotifications.m */; };
@@ -32,6 +33,8 @@
 		0F518C2722366E7C004EDA57 /* statusbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = statusbar.h; sourceTree = "<group>"; };
 		0F518C2822366E7C004EDA57 /* progressbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = progressbar.h; sourceTree = "<group>"; };
 		0F518C2922366E94004EDA57 /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
+		0FD3E9972237B208002CFD67 /* YDstart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDstart.m; sourceTree = "<group>"; };
+		0FD3E9992237B24A002CFD67 /* YDstart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDstart.h; sourceTree = "<group>"; };
 		0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDrun_loop.m; sourceTree = "<group>"; };
 		0FDBDE34222D6DC300EC528C /* YDrun_loop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDrun_loop.h; sourceTree = "<group>"; };
 		0FDBDE36222D7FBD00EC528C /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
@@ -57,13 +60,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0F518C2322366DDF004EDA57 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		0F518C2422366DE8004EDA57 /* third_party_static_libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -87,10 +83,9 @@
 			isa = PBXGroup;
 			children = (
 				30FA05952225D19100230559 /* README.md */,
+				30FA058A221FC9DA00230559 /* rsa_objc_key_finder */,
 				0F518C2622366E3B004EDA57 /* third_party_includes */,
 				0F518C2422366DE8004EDA57 /* third_party_static_libraries */,
-				0F518C2322366DDF004EDA57 /* New Group */,
-				30FA058A221FC9DA00230559 /* rsa_objc_key_finder */,
 				30FA0589221FC9DA00230559 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				30FA058B221FC9DA00230559 /* main.m */,
+				0FD3E9972237B208002CFD67 /* YDstart.m */,
+				0FD3E9992237B24A002CFD67 /* YDstart.h */,
 				0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */,
 				0FDBDE34222D6DC300EC528C /* YDrun_loop.h */,
 				0FEAC4B3222D3211002DBAAC /* YDnotifications.m */,
@@ -176,6 +173,7 @@
 				0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */,
 				30FA058C221FC9DA00230559 /* main.m in Sources */,
 				0FDBDE33222D6D4D00EC528C /* YDrun_loop.m in Sources */,
+				0FD3E9982237B208002CFD67 /* YDstart.m in Sources */,
 				30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
