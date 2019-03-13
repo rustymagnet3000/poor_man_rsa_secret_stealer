@@ -1,12 +1,15 @@
 #import <Foundation/Foundation.h>
 
 @interface YDFindFactors : NSObject{
-    int n;
-    int p;
-    int q;
+    unsigned long long n;
+    unsigned long long p;
+    unsigned long long q;
 }
-@property int n;
-@property int p;
-@property int q;
+
+- (instancetype)initWithN: (unsigned long long)N;
+
+@property unsigned long long n;
+@property unsigned long long p;
+@property unsigned long long q;
 
 @end
