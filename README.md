@@ -1,34 +1,70 @@
-# RSA Key Finder
+# Find an RSA Private Key
 ## Challenge
 `https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7`
 
-Here is an example:
+Here was an example from the article:
 ```
 Encryption parameters
-e:      65537
-N:      1034776851837418228051242693253376923
-        123456789012345678901
-Cipher:    582984697800119976959378162843817868
-We are using  60 bit primes
+e:              65537
+N:              1034776851837418228051242693253376923
+Cipher:         582984697800119976959378162843817868
+We are using    60 bit primes
 ```
-Factors
+Now the game was to calculate the factors of N and then derive the Private Key (that could decrypt the ciphertext)
 ```
--------
+------------------------------------------------------------------------------------
 1034776851837418228051242693253376923 = 1086027579223696553 x 952809000096560291
+------------------------------------------------------------------------------------
 ```
 ## Goal
-Take N and establish P and Q, on calculate a background thread.
+Take N and attempt to find P and Q on a background thread.
 
 ## Design steps
 ##### False start
-After receiving a positive, large integer (N) the program attempted to:
+After receiving a positive, large integer (N) the program attempted to follow the same code path as thousand other StackOverflow readers:
 ```
 -> verify that N was not even
--> Create an array of all odd numbers, less than N
--> remove 1 and from the array
+-> Create an array of all odd numbers
+-> remove 1, 2 from possible primes
 -> Ensure only prime numbers were left
+
+WORKED:     long long n = 3 * 1000003;          7 digit prime
+WORKED:     long long n = 101 * 1000033;        7 digit prime
+DIED:       long long n = 3 * 5915587277;       10 digit prime
+OVERFLOW:   long long n = 7919 * 1000033;       `long long` can't cope
 ```
-As I was dealing in large, decimal literals (Base 10) I could not use any native C number types.  I used the `gmp` library.  
+##### Problem 1 - size of N
+Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  In reality, my final code had to deal with _billion billion_ values (which is called a _quintillion_).  Another way to say it:
+
+```
+C Type unsigned long  (max 4,294,967,295):
+11111111111111111111111111111111  (32 bits)
+
+C Type unsigned long long (max 18,446,744,073,709,551,615)
+1111111111111111111111111111111111111111111111111111111111111111 (64 bits)
+
+A 65 bit prime (29497513910652490397):
+11001100101011100001110001001111000000001100101011101001010011101 (65 bits)
+```
+##### Problem 1 - a large N
+Remember `P * Q = N`.  I could probably get away with `unsigned long long` for P and Q ( 60-65 bits each) but how would I even define N as variable when it was so much bigger than the either of those values ?  
+
+```
+N = P * Q
+812434587229347807826931000341281416581 = 29497513910652490397 * 27542476619900900873
+N = 130 bits
+```
+Step forward the **gmp** library.  I also considered `openSSL's` inbuilt number functionality but I didn't want to unpick the `openssl` security or networking code.  I expected that decision to bite later as I would probably need a key generation and decrypt function to test my code.
+
+##### Problem 2 - Hard Math problems
+On small values, like most code on StackOverflow, my code worked.  But when I grew the size of N, my CPU was running at 99% for many minutes without finding an answer.  I think the code would have finished but I wasn't even trying to stress the code at that point.  I needed a more efficient algorithm that avoid my first pattern of `Brute Force`.
+
+##### Problem 2 - other solutions?
+So I didn't send my machine into warp speed and melt its processor, there were better ways to achieve a result without the `brute force` method I naively started with.
+
+It was this article that really changed my approach.
+**https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html**
+You could use the `Birthday Paradox` to give you an efficient, *probabilistic* method to achieve the same.  **probabilistic**, huh?  The code could fail as it was starting to leverage random numbers.  But it could work the next time you ran the code.  I thought this was such a groovy concept.
 ##### Factors of N
 There were multiple ways to achieve this.  My code was primitive so I changed it to the `Pollard Rho Algorithm`.
 

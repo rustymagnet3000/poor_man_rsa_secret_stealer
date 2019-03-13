@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>c_playground.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>rsa_objc_key_finder.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0F220E8422381A28001C82A3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>30FA0587221FC9DA00230559</key>
 		<dict>
 			<key>primary</key>
