@@ -7,16 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F518C1D22366329004EDA57 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F518C1C22366329004EDA57 /* libprogressbar.a */; };
+		0F220E8822381A28001C82A3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0F220E8722381A28001C82A3 /* main.c */; };
+		0F220E9722381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
+		0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
+		0F220E9922381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
+		0F220E9A22381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
 		0FD3E9982237B208002CFD67 /* YDstart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDstart.m */; };
 		0FDBDE33222D6D4D00EC528C /* YDrun_loop.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */; };
-		0FDBDE37222D7FBD00EC528C /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FDBDE36222D7FBD00EC528C /* libgmp.a */; };
 		0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAC4B3222D3211002DBAAC /* YDnotifications.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
 		30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDfind_factors.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0F220E8322381A28001C82A3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		30FA0586221FC9DA00230559 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -29,7 +41,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0F518C1C22366329004EDA57 /* libprogressbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libprogressbar.a; sourceTree = "<group>"; };
+		0F220E8522381A28001C82A3 /* YDc_playground */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = YDc_playground; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F220E8722381A28001C82A3 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		0F220E9522381E60001C82A3 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
+		0F220E9622381E60001C82A3 /* libprogressbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libprogressbar.a; sourceTree = "<group>"; };
 		0F518C2722366E7C004EDA57 /* statusbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = statusbar.h; sourceTree = "<group>"; };
 		0F518C2822366E7C004EDA57 /* progressbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = progressbar.h; sourceTree = "<group>"; };
 		0F518C2922366E94004EDA57 /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
@@ -37,7 +52,6 @@
 		0FD3E9992237B24A002CFD67 /* YDstart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDstart.h; sourceTree = "<group>"; };
 		0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDrun_loop.m; sourceTree = "<group>"; };
 		0FDBDE34222D6DC300EC528C /* YDrun_loop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDrun_loop.h; sourceTree = "<group>"; };
-		0FDBDE36222D7FBD00EC528C /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
 		0FEAC4B3222D3211002DBAAC /* YDnotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDnotifications.m; sourceTree = "<group>"; };
 		0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDnotifications.h; sourceTree = "<group>"; };
 		30FA0588221FC9DA00230559 /* rsa_objc_key_finder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rsa_objc_key_finder; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,45 +62,64 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0F220E8222381A28001C82A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F220E9A22381E60001C82A3 /* libprogressbar.a in Frameworks */,
+				0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		30FA0585221FC9DA00230559 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F518C1D22366329004EDA57 /* libprogressbar.a in Frameworks */,
-				0FDBDE37222D7FBD00EC528C /* libgmp.a in Frameworks */,
+				0F220E9922381E60001C82A3 /* libprogressbar.a in Frameworks */,
+				0F220E9722381E60001C82A3 /* libgmp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0F518C2422366DE8004EDA57 /* third_party_static_libraries */ = {
+		0F220E8622381A28001C82A3 /* c_playground */ = {
 			isa = PBXGroup;
 			children = (
-				0F518C1C22366329004EDA57 /* libprogressbar.a */,
-				0FDBDE36222D7FBD00EC528C /* libgmp.a */,
+				0F220E8722381A28001C82A3 /* main.c */,
 			);
-			name = third_party_static_libraries;
+			path = c_playground;
 			sourceTree = "<group>";
 		};
-		0F518C2622366E3B004EDA57 /* third_party_includes */ = {
+		0F220E9022381C4D001C82A3 /* includes */ = {
 			isa = PBXGroup;
 			children = (
 				0F518C2922366E94004EDA57 /* gmp.h */,
 				0F518C2822366E7C004EDA57 /* progressbar.h */,
 				0F518C2722366E7C004EDA57 /* statusbar.h */,
 			);
-			name = third_party_includes;
+			path = includes;
+			sourceTree = "<group>";
+		};
+		0F220E9422381E60001C82A3 /* libraries */ = {
+			isa = PBXGroup;
+			children = (
+				0F220E9522381E60001C82A3 /* libgmp.a */,
+				0F220E9622381E60001C82A3 /* libprogressbar.a */,
+			);
+			path = libraries;
 			sourceTree = "<group>";
 		};
 		30FA057F221FC9DA00230559 = {
 			isa = PBXGroup;
 			children = (
-				30FA05952225D19100230559 /* README.md */,
+				30FA058B221FC9DA00230559 /* main.m */,
 				30FA058A221FC9DA00230559 /* rsa_objc_key_finder */,
-				0F518C2622366E3B004EDA57 /* third_party_includes */,
-				0F518C2422366DE8004EDA57 /* third_party_static_libraries */,
+				0F220E8622381A28001C82A3 /* c_playground */,
+				0F220E9422381E60001C82A3 /* libraries */,
+				0F220E9022381C4D001C82A3 /* includes */,
 				30FA0589221FC9DA00230559 /* Products */,
+				30FA05952225D19100230559 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				30FA0588221FC9DA00230559 /* rsa_objc_key_finder */,
+				0F220E8522381A28001C82A3 /* YDc_playground */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,7 +135,6 @@
 		30FA058A221FC9DA00230559 /* rsa_objc_key_finder */ = {
 			isa = PBXGroup;
 			children = (
-				30FA058B221FC9DA00230559 /* main.m */,
 				0FD3E9972237B208002CFD67 /* YDstart.m */,
 				0FD3E9992237B24A002CFD67 /* YDstart.h */,
 				0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */,
@@ -117,6 +150,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0F220E8422381A28001C82A3 /* YDc_playground */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0F220E8B22381A28001C82A3 /* Build configuration list for PBXNativeTarget "YDc_playground" */;
+			buildPhases = (
+				0F220E8122381A28001C82A3 /* Sources */,
+				0F220E8222381A28001C82A3 /* Frameworks */,
+				0F220E8322381A28001C82A3 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YDc_playground;
+			productName = YDc_playground;
+			productReference = 0F220E8522381A28001C82A3 /* YDc_playground */;
+			productType = "com.apple.product-type.tool";
+		};
 		30FA0587221FC9DA00230559 /* rsa_objc_key_finder */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 30FA058F221FC9DA00230559 /* Build configuration list for PBXNativeTarget "rsa_objc_key_finder" */;
@@ -143,6 +193,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = rusty_magneto;
 				TargetAttributes = {
+					0F220E8422381A28001C82A3 = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					30FA0587221FC9DA00230559 = {
 						CreatedOnToolsVersion = 10.1;
 					};
@@ -161,11 +214,20 @@
 			projectRoot = "";
 			targets = (
 				30FA0587221FC9DA00230559 /* rsa_objc_key_finder */,
+				0F220E8422381A28001C82A3 /* YDc_playground */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0F220E8122381A28001C82A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F220E8822381A28001C82A3 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		30FA0584221FC9DA00230559 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,6 +243,38 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0F220E8922381A28001C82A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U8MSEX235L;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/**",
+					"$(PROJECT_DIR)/libraries",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				OTHER_LDFLAGS = "-lncurses";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0F220E8A22381A28001C82A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U8MSEX235L;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/**",
+					"$(PROJECT_DIR)/libraries",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				OTHER_LDFLAGS = "-lncurses";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		30FA058D221FC9DA00230559 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -295,11 +389,13 @@
 		30FA0590221FC9DA00230559 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/libraries",
 				);
 				OTHER_LDFLAGS = "-lncurses";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -309,11 +405,13 @@
 		30FA0591221FC9DA00230559 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/libraries",
 				);
 				OTHER_LDFLAGS = "-lncurses";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -323,6 +421,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0F220E8B22381A28001C82A3 /* Build configuration list for PBXNativeTarget "YDc_playground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F220E8922381A28001C82A3 /* Debug */,
+				0F220E8A22381A28001C82A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		30FA0583221FC9DA00230559 /* Build configuration list for PBXProject "rsa_objc_key_finder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
