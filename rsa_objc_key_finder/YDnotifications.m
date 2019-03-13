@@ -14,7 +14,8 @@
     if ([notification.name isEqualToString:@"FactorSearchComplete"])
     {
         printf("[+]factors found. Code completed\n");
-        NSLog(@"[+] N, P, Q: %@", notification.object);
+        NSLog(@"[+]N, P, Q: %@", notification.object);
+        exit(0);
     }
 }
 

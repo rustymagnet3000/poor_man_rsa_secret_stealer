@@ -13,7 +13,6 @@
 		0F220E9922381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
 		0F220E9A22381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
 		0FD3E9982237B208002CFD67 /* YDstart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDstart.m */; };
-		0FDBDE33222D6D4D00EC528C /* YDrun_loop.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */; };
 		0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAC4B3222D3211002DBAAC /* YDnotifications.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
 		30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDfind_factors.m */; };
@@ -50,8 +49,6 @@
 		0F518C2922366E94004EDA57 /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
 		0FD3E9972237B208002CFD67 /* YDstart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDstart.m; sourceTree = "<group>"; };
 		0FD3E9992237B24A002CFD67 /* YDstart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDstart.h; sourceTree = "<group>"; };
-		0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDrun_loop.m; sourceTree = "<group>"; };
-		0FDBDE34222D6DC300EC528C /* YDrun_loop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDrun_loop.h; sourceTree = "<group>"; };
 		0FEAC4B3222D3211002DBAAC /* YDnotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDnotifications.m; sourceTree = "<group>"; };
 		0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDnotifications.h; sourceTree = "<group>"; };
 		30FA0588221FC9DA00230559 /* rsa_objc_key_finder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rsa_objc_key_finder; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,8 +134,6 @@
 			children = (
 				0FD3E9972237B208002CFD67 /* YDstart.m */,
 				0FD3E9992237B24A002CFD67 /* YDstart.h */,
-				0FDBDE32222D6D4D00EC528C /* YDrun_loop.m */,
-				0FDBDE34222D6DC300EC528C /* YDrun_loop.h */,
 				0FEAC4B3222D3211002DBAAC /* YDnotifications.m */,
 				0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */,
 				30FA0592221FCACA00230559 /* YDfind_factors.m */,
@@ -234,7 +229,6 @@
 			files = (
 				0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */,
 				30FA058C221FC9DA00230559 /* main.m in Sources */,
-				0FDBDE33222D6D4D00EC528C /* YDrun_loop.m in Sources */,
 				0FD3E9982237B208002CFD67 /* YDstart.m in Sources */,
 				30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */,
 			);

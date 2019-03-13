@@ -1,5 +1,4 @@
-#import "YDfind_factors.h"
-#import "YDrun_loop.h"
+#import <Foundation/Foundation.h>
 #import "YDstart.h"
 #import "gmp.h"
 #import "progressbar.h"
@@ -9,9 +8,15 @@ int main(int argc, const char *argv[]) {
     
     @autoreleasepool {
 
-        YDStart *start = [[YDStart alloc] initWithRawN:argc rawN:argv[1]];
-
+        /******************* Naive Trial Division Algorithm *******************/
         
+        YDStart *start = [[YDStart alloc] initWithRawN:argc rawN:argv[1]];
+        
+        [start setNotification];
+        int n_as_int = atoi(argv[1]);
+        __unused YDFindFactors *findfacors = [[YDFindFactors alloc] initWithN:n_as_int];
+        [start startRunLoop];
+
     }
     return 0;
 }
