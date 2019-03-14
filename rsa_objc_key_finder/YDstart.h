@@ -6,16 +6,13 @@
 #import "YDfind_factors.h"
 
 @interface YDStart : NSObject
-{
-    NSDate *startTime;
-}
 
-@property NSDate *startTime;
+@property (class, nonatomic, strong, readonly) NSDate *startTime;
 
 - (instancetype) initWithRawN:(int)argCount rawN: (const char *)n;
 - (void)startRunLoop;
 - (void)setNotification;
-- (void)cleanExit;
++ (void)cleanExit;
 
 @end
 

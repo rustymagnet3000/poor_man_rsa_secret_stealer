@@ -8,8 +8,8 @@
 
 - (instancetype)initWithN: (unsigned long long)N;
 
-@property unsigned long long n;
-@property unsigned long long p;
-@property unsigned long long q;
+@property (readonly) unsigned long long n;
+@property (readonly) unsigned long long p;
+@property (readonly) unsigned long long q;
 
 @end

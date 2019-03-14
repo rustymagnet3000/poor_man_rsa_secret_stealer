@@ -1,5 +1,11 @@
 #import "YDfind_factors.h"
 
+#ifdef DEBUG
+#define NSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NSLog(...) {}
+#endif
+
 @implementation YDFindFactors : NSObject
 
 @synthesize p;
@@ -17,7 +23,7 @@
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         
         dispatch_async(dispatchQueue, ^{
-            printf("[+]Async find factors started\n");
+            printf("[+]Searching for factors of: %llu\n",self.n);
             [self factorize];
         });
         return self;
