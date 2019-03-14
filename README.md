@@ -20,22 +20,33 @@ Now the game was to calculate the factors of N and then derive the Private Key (
 Take N and attempt to find P and Q on a background thread.
 
 ## Design steps
-#### False start
-After receiving a positive, large integer (N) the program attempted to follow the same code path as thousand other StackOverflow readers:
-```
--> verify that N was not even
--> Create an array of all odd numbers
--> remove 1, 2 from possible primes
--> Ensure only prime numbers were left
+#### False start 1
+After receiving a positive, large integer (N) the program attempted to follow the same code path as thousand other StackOverflow readers.  This code was called `the Naive Trial Division Algorithm` by academics.
 
-Status      Type: unsigned long long    Primes
-WORKED:     3000009                     3 * 1000003
-WORKED:     101003333                   101 * 1000033
-N TOO BIG:  7919261327                  7919 * 1000033
-N TOO BIG:  17746761831                 3 * 5915587277
+- verify that N was not even
+- create an array of all odd numbers
+- remove 1, 2 from possible primes
+- ensure only prime numbers were left
 
-N TOO BIG = the atoi() call to convert an inputted string to the unsigned long long failed.
-```
+Status| unsigned long long | Primes
+--|---|--
+🐝| 3000009  |  3 * 1000003
+🐝| 101003333 |  101 * 1000033
+🐍| 7919261327 |  7919 * 1000033
+🐍| 17746761831 |  3 * 5915587277                              
+
+#### False start 2
+Why was I getting a crazy value when I tried to use `7919261327` (almost 8 billion) into an `Unsigned Long Long`?  My code failed.  But I used a Type that could safely store up to `18,446,744,073,709,551,615` (18 billion billion).  That is 20 decimal digits.
+
+The C API I used `atoi()` only returned a `C int` type.   Groan.  In Computer Science speak that is called `unsafe casting`. Fear not, I had just picked the wrong API.  Step forward native C API called `strtol()`.
+
+Status| unsigned long long | Primes | Time taken
+--|---|--|--
+🐝| 7919261327  |  7919 * 1000033  | 10 seconds
+🐍| 17746761831 |  3 * 5915587277  | Failed to find 10 digit prime
+🐍 | 24212989121030676023 |  5915587277 * 4093082899  | Too big for C Type
+🐍 | 2015994091679141905085000807307 |  3 * 671998030559713968361666935769   | Too big for C Type
+
 #### Problem 1 - size of N
 Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  In reality, my final code had to deal with _billion billion_ values (which is called a _quintillion_).  Another way to say it:
 
@@ -43,7 +54,7 @@ Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned
 C Type unsigned long  (max 4,294,967,295):
 11111111111111111111111111111111  (32 bits)
 
-C Type unsigned long long (max 18,446,744,073,709,551,615)
+C Type unsigned long long (max 18446744073709551615)
 1111111111111111111111111111111111111111111111111111111111111111 (64 bits)
 
 A 65 bit prime (29497513910652490397):
@@ -105,6 +116,10 @@ https://gmplib.org/manual/Binary-GCD.html#Binary-GCD
 http://sep.stanford.edu/sep/claudio/Research/Prst_ExpRefl/ShtPSPI/intel/mkl/10.0.3.020/examples/gmp/source/mpz_probab_prime_p_example.c
 
 https://machinecognitis.github.io/Math.Gmp.Native/html/52ce0428-7c09-f2b9-f517-d3d02521f365.htm
+
+#### C References
+
+https://www.systutorials.com/docs/linux/man/3-strtol/
 
 #### References
 

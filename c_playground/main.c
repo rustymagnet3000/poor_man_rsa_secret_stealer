@@ -2,14 +2,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <errno.h>
 
 int main(int argc, const char * argv[]) {
     
     /******************* Naive Trial Division Algorithm *******************/
-    
     unsigned long long n;
+    char *endptr;
+    const char *str;
+    
+    str = argv[1];
+    errno = 0;    /* To distinguish success/failure after call */
+    n = strtoull(argv[1], &endptr, 10);
 
-    n = atoi(argv[1]);
+    if ((errno == ERANGE && (n == LONG_MAX || n == LONG_MIN))
+        || (errno != 0 && n == 0)) {
+        perror("strtol");
+        exit(EXIT_FAILURE);
+    }
+    
+    if (endptr == str) {
+        fprintf(stderr, "No digits were found\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    /* If we got here, strtol() successfully parsed a number */
     printf("String value = %s, Int value = %llu\n", argv[1], n);
     
     int floor_limit = 3;
