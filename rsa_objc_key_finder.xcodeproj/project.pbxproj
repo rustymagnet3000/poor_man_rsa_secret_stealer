@@ -55,7 +55,6 @@
 		30FA058B221FC9DA00230559 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		30FA0592221FCACA00230559 /* YDfind_factors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDfind_factors.m; sourceTree = "<group>"; };
 		30FA0594221FCAD800230559 /* YDfind_factors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDfind_factors.h; sourceTree = "<group>"; };
-		30FA05952225D19100230559 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +115,6 @@
 				0F220E9422381E60001C82A3 /* libraries */,
 				0F220E9022381C4D001C82A3 /* includes */,
 				30FA0589221FC9DA00230559 /* Products */,
-				30FA05952225D19100230559 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
