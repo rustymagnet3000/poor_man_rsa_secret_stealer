@@ -34,11 +34,11 @@ static NSDate *_startTime;
     NSRunLoop *theRL = [NSRunLoop currentRunLoop];
         
     NSCalendar *currentCalendar = [NSCalendar currentCalendar];
-    NSDate *startPlusFiveSeconds = [currentCalendar dateByAddingUnit:NSCalendarUnitSecond
-                                                               value:5
+    NSDate *startPlusTwentySeconds = [currentCalendar dateByAddingUnit:NSCalendarUnitSecond
+                                                               value:20
                                                               toDate:_startTime
                                                              options:NSCalendarMatchNextTime];
-    [theRL runUntilDate:startPlusFiveSeconds];
+    [theRL runUntilDate:startPlusTwentySeconds];
 }
 
 - (void) setNotification {

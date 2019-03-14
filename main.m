@@ -14,9 +14,8 @@ int main(int argc, const char *argv[]) {
             [start setNotification];
             
             // Add failure check at atoi()
-            int n_as_int = atoi(argv[1]);
-            
-            __unused YDFindFactors *findfacors = [[YDFindFactors alloc] initWithN:n_as_int];
+            unsigned long long n = strtoull(argv[1], NULL, 10);
+            __unused YDFindFactors *findfacors = [[YDFindFactors alloc] initWithN:n];
             
             [start startRunLoop];
         }
