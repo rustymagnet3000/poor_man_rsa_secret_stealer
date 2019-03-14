@@ -28,12 +28,13 @@ After receiving a positive, large integer (N) the program attempted to follow th
 -> remove 1, 2 from possible primes
 -> Ensure only prime numbers were left
 
-🐝 n = 3 * 1000003;                1, 7 digit prime
-🐝 n = 101 * 1000033;              3, 7 digit prime
-🐝 n = 7919 * 1000033;             4, 7 digit prime
-🐝 99932297657 = 99929 * 1000033;  circa 5 seconds to complete
-🐍 n = 3 * 5915587277;       10 digit prime
+Status      Type: unsigned long long    Primes
+WORKED:     3000009                     3 * 1000003
+WORKED:     101003333                   101 * 1000033
+N TOO BIG:  7919261327                  7919 * 1000033
+N TOO BIG:  17746761831                 3 * 5915587277
 
+N TOO BIG = the atoi() call to convert an inputted string to the unsigned long long failed.
 ```
 #### Problem 1 - size of N
 Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  In reality, my final code had to deal with _billion billion_ values (which is called a _quintillion_).  Another way to say it:
@@ -58,14 +59,14 @@ N = 130 bits
 Step forward the **gmp** library.  I also considered `openSSL's` inbuilt number functionality but I didn't want to unpick the `openssl` security or networking code.  I expected that decision to bite later as I would probably need a key generation and decrypt function to test my code.
 
 #### Problem 2 - Hard Math problems
-On small values, like most code on StackOverflow, my code worked.  But when I grew the size of N, my CPU was running at 99% for many minutes without finding an answer.  I think the code would have finished but I wasn't even trying to stress the code at that point.  I needed a more efficient algorithm that avoid my first pattern of `Brute Force`.
+On small values, like most code on StackOverflow, my code worked.  Depressingly, my code was less reliable than the `Naive Trial Division Algorithm` on here: https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html.
+
+But when I grew the size of N, my CPU was running at 99% for many minutes without finding an answer.  I think the code would have finished but I wasn't even trying to stress the code at that point.  I needed a more efficient algorithm that avoid my first pattern of `Brute Force`.
 
 #### Other solutions?
-So I didn't send my machine into warp speed and melt its processor, there were better ways to achieve a result without the `brute force` method I naively started with.
-
-It was this article that really changed my approach.
+So I didn't send my machine into warp speed and melt the CPU, I found better methods to achieve what I wanted. This article really changed my approach.
 **https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html**
-You could use the `Birthday Paradox` to give you an efficient, *probabilistic* method to achieve the same.  **probabilistic**, huh?  The code could fail as it was starting to leverage random numbers.  But it could work the next time you ran the code.  I thought this was such a groovy concept.
+You could use the `Birthday Paradox` to give you an efficient, *probabilistic* method to achieve the same.  **probabilistic**, huh?  The code could fail.  But it could work the next time you ran the code.  Fun?
 #### Factors of N
 There were multiple ways to achieve this.  My code was primitive so I changed it to the `Pollard Rho Algorithm`.
 

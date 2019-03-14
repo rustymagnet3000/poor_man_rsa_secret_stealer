@@ -2,47 +2,49 @@
 
 @implementation YDStart : NSObject
 
-@synthesize startTime;
+static NSDate *_startTime;
 
 - (instancetype) initWithRawN: (int)argCount rawN: (const char *)n_as_char{
     self = [super init];
     if (self) {
-        
-        self.startTime = [NSDate date];
+        _startTime = [NSDate date];
         
         if (argCount != 2){
             printf ("Usage: keyfinder [n] \n");
             return nil;
         }
-
     }
     return self;
 }
 
-- (void)cleanExit
++ (NSDate *)startTime {
+    return _startTime;
+}
+
++ (void)cleanExit
 {
-    printf("[+]Finished in: %ld seconds\n\n", lroundf(-[startTime timeIntervalSinceNow]));
+    printf("[+]Finished in: %ld seconds\n\n", lroundf(-[_startTime timeIntervalSinceNow]));
+    
     exit(1);
 }
 
 - (void)startRunLoop
 {
-    printf("[+]Run-loop starting");
+    printf("[+]Start: Run-loop starting\n");
     NSRunLoop *theRL = [NSRunLoop currentRunLoop];
         
     NSCalendar *currentCalendar = [NSCalendar currentCalendar];
     NSDate *startPlusFiveSeconds = [currentCalendar dateByAddingUnit:NSCalendarUnitSecond
                                                                value:5
-                                                              toDate:self.startTime
+                                                              toDate:_startTime
                                                              options:NSCalendarMatchNextTime];
-    NSLog(@"Run Loop on thread: %@", [NSThread currentThread]);
     [theRL runUntilDate:startPlusFiveSeconds];
 }
 
 - (void) setNotification {
     [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorSearchComplete" object:nil queue:nil usingBlock:^(NSNotification *note)
      {
-         printf ("[+]Start: set notification Observer: FactorSearchComplete\n");
+         printf ("[+]Start: observer set\n");
          [YDNotifications receiveNotification:note];
      }];
 }
