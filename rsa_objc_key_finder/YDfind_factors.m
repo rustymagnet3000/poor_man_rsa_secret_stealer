@@ -30,7 +30,6 @@
     }
 }
 
-
 - (BOOL)divideNoRemainder
 {
     return FALSE;
@@ -40,21 +39,23 @@
 - (void)factorize
 {
     int floor_limit = 3;
+    unsigned long long i = floor_limit;
     unsigned long long upper_limit = n/2;
     
-    for(int i=floor_limit; i <= upper_limit; i += 2) {
+    OUTERLOOP: for(; i <= upper_limit; i += 2) {
         if (n % i == 0){
-            // check for primes
-            int y=floor_limit;
+            
+            unsigned long long y=floor_limit;
             do {
-                if (i != y && i % y == 0){
-                    printf("[+]Found a non-prime: %d\n",i);
+                if (i != floor_limit && i % y == 0){
+                    i += 2;
+                    goto OUTERLOOP; // Found a non-prime factor
                 }
                 
                 y += 2;
                 
             }while( y < i );
-            printf ("[+]%d is a factor \n", i);
+            printf ("[+]%llu is a prime factor \n", i);
         }
     }
     [self factorize_completed];
