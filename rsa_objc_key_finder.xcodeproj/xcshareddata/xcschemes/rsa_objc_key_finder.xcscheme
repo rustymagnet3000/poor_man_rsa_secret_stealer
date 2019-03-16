@@ -63,16 +63,28 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "3000009"
+            argument = "8069212743871"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "27"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "2015994091679141905085000807307"
+            argument = "505371799"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "10175656859"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "100001880003211"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "17746761831"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "101003333"
