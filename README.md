@@ -2,7 +2,7 @@
 ## Challenge
 `https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7`
 
-Here was an example from the article:
+Below was a challenge from the article:
 ```
 Encryption parameters
 e:              65537
@@ -10,48 +10,104 @@ N:              1034776851837418228051242693253376923
 Cipher:         582984697800119976959378162843817868
 We are using    60 bit primes
 ```
-Now the game was to calculate the factors of N and then derive the Private Key (that could decrypt the ciphertext)
+The first game was to calculate the factors of N.  After that, and more hops, you would derive the Private Key.  With that key you would decrypt the ciphertext into plaintext.  Revealing a secret message! 🕵🏼‍.
+
+## Goal
+My first goal was to take a user entered `N` and attempt to find `P` and `Q` without blowing up my computer.  This was harder than I imagined but hitting each roadblock was actually fun.
+
+This whole exercise was about BIG numbers.  Actually, in this setup, I was using tiny numbers compared to real-world RSA implementations.
 ```
 ------------------------------------------------------------------------------------
 1034776851837418228051242693253376923 = 1086027579223696553 x 952809000096560291
 ------------------------------------------------------------------------------------
 ```
-## Goal
-Take N and attempt to find P and Q on a background thread.
-
 ## Design steps
+#### Attempt 1: the Naive Trial Division Algorithm
+After receiving a positive, large `N`, my app attempted to follow the same code path as a thousand other StackOverflow readers.  This was cynically (and probably fairly) labelled the `the Naive Trial Division Algorithm` by people who understood the Math Theory behind this problem.  I was not one of the blessed.  I was hit every bump on the journey.
+
+#### Assumptions about N
+- Not dealing with a negative
+- No even numbers
+- No prime numbers
+
 #### False start 1
-After receiving a positive, large integer (N) the program attempted to follow the same code path as thousand other StackOverflow readers.  This code was called `the Naive Trial Division Algorithm` by academics.
+My code was super simple.
 
 - verify that N was not even
-- create an array of all odd numbers
+- check every odd number less than < ( N / 2 )
 - remove 1, 2 from possible primes
 - ensure only prime numbers were left
 
-Status| unsigned long long | Primes
+I didn't attempt use existing third party libraries to tell me if a number was prime.  I could just check any odd number I found, divide it and look for a 0 remainder.  Right?
+
+Status| Number (N) | Primes
 --|---|--
 🐝| 3000009  |  3 * 1000003
 🐝| 101003333 |  101 * 1000033
 🐍| 7919261327 |  7919 * 1000033
 🐍| 17746761831 |  3 * 5915587277                              
 
-#### False start 2
-Why was I getting a crazy value when I tried to use `7919261327` (almost 8 billion) into an `Unsigned Long Long`?  My code failed.  But I used a Type that could safely store up to `18,446,744,073,709,551,615` (18 billion billion).  That is 20 decimal digits.
+#### 🐜 Bugs 🐜
+Why was I getting a crazy value shown when I tried to find the factors of `7919261327`?  Almost 8 billion.  I had the common sense to check the limits of C Types (good reference: https://docs.microsoft.com/en-us/cpp/cpp/data-type-ranges?view=vs-2017).
 
-The C API I used `atoi()` only returned a `C int` type.   Groan.  In Computer Science speak that is called `unsafe casting`. Fear not, I had just picked the wrong API.  Step forward native C API called `strtol()`.
+I picked the `Unsigned Long Long`.  Any variable of that type could store up to `18,446,744,073,709,551,615`.  18 billion billion.  20 decimal digits. Big.
 
-Status| unsigned long long | Primes | Time taken
---|---|--|--
-🐝| 7919261327  |  7919 * 1000033  | 10 seconds
-🐍| 17746761831 |  3 * 5915587277  | Failed to find 10 digit prime
-🐍 | 24212989121030676023 |  5915587277 * 4093082899  | Too big for C Type
-🐍 | 2015994091679141905085000807307 |  3 * 671998030559713968361666935769   | Too big for C Type
-
-#### Problem 1 - size of N
-Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  In reality, my final code had to deal with _billion billion_ values (which is called a _quintillion_).  Another way to say it:
+Well, I made several errors with the same root cause.  I had used `int` and `unsigned long long` C Types interchangeably.  For your amusement, my bugs were the following:
 
 ```
-C Type unsigned long  (max 4,294,967,295):
+BUG 1: int val = atoi(str);
+// return type was `int`
+
+BUG 2: for(int i = floor_limit; i <= upper_limit; i += 2)
+// `i` was set to `int` when it was going to increment beyond the max integer
+
+BUG 3: printf ("[+]%d is a factor \n", i);
+// I told `printf` the input was an `int` when I sent it huge `unsigned long long` values
+// this was one of those compiler warnings you just skip over...
+```
+#### Second round of the Naive Trial Division Algorithm
+I religiously purged my code of `int` types.  I tried to speed up my search loop.
+
+Status| Number (N) | Primes | Time taken
+--|---|--|--
+🐝| 505371799 | 16127 * 31337 | 1 second
+🐝| 7919261327 | 7919 * 1000033  | 19 seconds
+🐜| 10175656859 | 100033 * 101723 | 25 seconds. Failed to find all factors
+🐝| 17746761831 | 3 * 5915587277  | 72 seconds
+🐜| 8069212743871 |  2840261 * 2841011 (7) | Found factors but timed out.
+🐜| 100001880003211 | 10000019 * 10000169 (8) | Found factors but timed out.
+
+#### A harder bug 🐜
+I was quite happy with my code.  It was C and Objective-C code working together.  That allowed me to put in things like a `run-loop` and `background threading` to kill my app after 20 minutes.  But why was the performance on larger `N` values so poor?
+
+Why was the following not able to finish ?
+
+Status| Number (N) | Primes | Time taken
+--|---|--|--
+🐝| 8069212743871 |  2840261 * 2841011 (7) | Found factors but timed out.
+
+In 20 minutes, my computer running was at 99% CPU it got to an `N` value of ~220 billion.  Give or take a billion.  This was a long way off the (8 trillion / 2) I asked for it to check.  Let say the crude calculation was:
+
+```
+4 trill / 220 bill == 18.1
+20 minutes * 18.1 = 362 minutes
+362 = 6 hours
+```
+
+#### Third round of the Naive Trial Division Algorithm
+So I set my kill timer to 10 hours, while I slept.
+
+#### Problem 1 - size of N
+Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  In reality, my final code had to deal with _billion billion_ values (which is called a _quintillion_).  
+
+Status| Number (N) | Primes | Time taken
+--|---|--|--
+🐍| 24212989121030676023 | 5915587277 * 4093082899  | Too big for my code
+🐍| 2015994091679141905085000807307 | 3 * 671998030559713968361666935769   | Too big for my code
+
+Another way to say it:
+```
+C Type unsigned long  (max 4294967295):
 11111111111111111111111111111111  (32 bits)
 
 C Type unsigned long long (max 18446744073709551615)
@@ -101,7 +157,6 @@ Primes : [13, 29] = 377
 Primes : [467, 601] = 280667
 Primes : [3461, 3319] = 11487059
 Primes : [45095080578985454453, 36413321723440003717] = 1642061677267048469007620094567254201801
-
 ```
 #### GMP References
 
