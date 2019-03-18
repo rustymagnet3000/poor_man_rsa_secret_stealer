@@ -13,6 +13,8 @@ static NSDate *_startTime;
             printf ("Usage: keyfinder [n] \n");
             return nil;
         }
+        
+
     }
     return self;
 }
