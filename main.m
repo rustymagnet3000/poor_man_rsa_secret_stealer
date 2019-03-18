@@ -14,9 +14,12 @@ int main(int argc, const char *argv[]) {
         
             [start setNotification];
         
+            /* TO DO: move validation to Start object */
             unsigned long long n = strtoull(argv[1], NULL, 10);
+            if (n % 2 == 0)
+                exit(2);
+        
             __unused YDFindFactors *findfacors = [[YDFindFactors alloc] initWithN:n];
-            
             [start startRunLoop];
         
         printf("[+]Run-loop killed\n");

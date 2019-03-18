@@ -25,21 +25,38 @@ This whole exercise was about BIG numbers.  Actually, in this setup, I was using
 #### Attempt 1: the Naive Trial Division Algorithm
 After receiving a positive, large `N`, my app attempted to follow the same code path as a thousand other StackOverflow readers.  This was cynically (and probably fairly) labelled the `the Naive Trial Division Algorithm` by people who understood the Math Theory behind this problem.  I was not one of the blessed.  I was hit every bump on the journey.
 
-#### Assumptions about N
-- Not dealing with a negative
-- No even numbers
-- No prime numbers
+#### The number N
+Assumptions about the `N` number:
+ - [x] Not a negative
+ - [x] Not even [as this implies there was a non-prime input (100 = 5 * 20)]
+ - [x] Not a prime number
 
-#### False start 1
-My code was super simple.
+#### Brainstorm
+My was to write super simple code.
 
 - verify that N was not even
 - check every odd number less than < ( N / 2 )
 - remove 1, 2 from possible primes
-- ensure only prime numbers were left
+- check whether I could divide N / odd number and get a zero remainder
+- checked whether the found odd number was a prime
 
-I didn't attempt use existing third party libraries to tell me if a number was prime.  I could just check any odd number I found, divide it and look for a 0 remainder.  Right?
+In summary:
 
+```
+✅ [3, 11] = 33       // find both prime factors but not 1 or 2
+✅ [3, 13] = 39       // same as previous
+🔸 [3,9] = 27         // discount 9 as a Prime Factor
+🔸 [5, 20] = 100      // stop as N was even
+```
+
+#### Code setup
+I wrote a mix of C and Objective-C code.  xCode was the IDE.  That allowed me to apply existing `Object Orientated` APIs like a `run-loop` and `background threading` to kill my app and keep the U.I. refreshing.  I could have written everything in C but it would take longer and I found my C code would become spaghetti without `Objects` to keep things structured.
+
+Using a few in built Objective-C APIs, I created a kill timer.  It was set to 20 minutes.  This was my fail-safe to `N` values that were too large.
+
+I didn't attempt use existing third party libraries to tell me if a number was prime.
+
+#### Results == Bugs 🐜 🐜 🐜
 Status| Number (N) | Primes
 --|---|--
 🐝| 3000009  |  3 * 1000003
@@ -47,8 +64,7 @@ Status| Number (N) | Primes
 🐍| 7919261327 |  7919 * 1000033
 🐍| 17746761831 |  3 * 5915587277                              
 
-#### 🐜 Bugs 🐜
-Why was I getting a crazy value shown when I tried to find the factors of `7919261327`?  Almost 8 billion.  I had the common sense to check the limits of C Types (good reference: https://docs.microsoft.com/en-us/cpp/cpp/data-type-ranges?view=vs-2017).
+I got a crazy value shown when I tried to find the factors of `7919261327`.  Why?  Almost 8 billion.  I had the common sense to check the limits of C Types (good reference: https://docs.microsoft.com/en-us/cpp/cpp/data-type-ranges?view=vs-2017).
 
 I picked the `Unsigned Long Long`.  Any variable of that type could store up to `18,446,744,073,709,551,615`.  18 billion billion.  20 decimal digits. Big.
 
@@ -65,7 +81,7 @@ BUG 3: printf ("[+]%d is a factor \n", i);
 // I told `printf` the input was an `int` when I sent it huge `unsigned long long` values
 // this was one of those compiler warnings you just skip over...
 ```
-#### Second round of the Naive Trial Division Algorithm
+#### More results ==  harder bugs 🐜
 I religiously purged my code of `int` types.  I tried to speed up my search loop.
 
 Status| Number (N) | Primes | Time taken
@@ -77,28 +93,48 @@ Status| Number (N) | Primes | Time taken
 🐜| 8069212743871 |  2840261 * 2841011 (7) | Found factors but timed out.
 🐜| 100001880003211 | 10000019 * 10000169 (8) | Found factors but timed out.
 
-#### A harder bug 🐜
-I was quite happy with my code.  It was C and Objective-C code working together.  That allowed me to put in things like a `run-loop` and `background threading` to kill my app after 20 minutes.  But why was the performance on larger `N` values so poor?
+Why was `8069212743871` not able to finish ?
 
-Why was the following not able to finish ?
-
-Status| Number (N) | Primes | Time taken
---|---|--|--
-🐝| 8069212743871 |  2840261 * 2841011 (7) | Found factors but timed out.
-
-In 20 minutes, my computer running was at 99% CPU it got to an `N` value of ~220 billion.  Give or take a billion.  This was a long way off the (8 trillion / 2) I asked for it to check.  Let say the crude calculation was:
+In 20 minutes, my computer running was able to check `N` values of up to ~220 billion.  Give or take a billion.  This was a long way off the (8 trillion / 2) I asked for it to check.  Let say the crude calculation was:
 
 ```
+(8 trillion / 2) == upper_limit (4 trill)
 4 trill / 220 bill == 18.1
 20 minutes * 18.1 = 362 minutes
 362 = 6 hours
 ```
 
-#### Third round of the Naive Trial Division Algorithm
-So I set my kill timer to 10 hours, while I slept.
+#### Brute Force is slow
+I set my kill timer to 10 hours, while I slept.  My crude calculation was accurate enough.
+
+Status| Number (N) | Primes | Time taken
+--|---|--|--
+🐝| 8069212743871 |  2840261 * 2841011 (7) | 5 hours.
+
+How long to calculate `100001880003211` which is just over 100 trillion?
+```
+100 trill / 2 == upper_limit
+upper_limit / 4 trill == 12.5
+12.5 * 6 hours == 75 hours.
+```
+Using my crude calculation again, with 2 x Primes of 8-digits, my `N` value would take over **3 days** to exhaust all possible `N` values.
+
+## Summary of the Naive Trial Division Algorithm
+In summary, on small values, like most code on StackOverflow, my code worked.  But when I grew the size of N == 2 primes of 8 or more digits, my CPU would have to run at 99% for many days and weeks!
+
+The `Naive Trial Division Algorithm` had no chance of dealing with a `60 bit primes`.  It took 5 hours to deal with an upper limit of 4 trillions   How would it cope when the upper limit of a longer prime, was a `60 bit prime` or even a `64 bit prime?`  The latter had a an upper limit of 18 quintillion (18 billion billion).
+
+A fun example:
+```
+My computer could do 4 trillion in 5 hours
+18 quintillion \ 4 trillion == 4.5 million
+4.5 million * 5 hours = 2,500 years
+```
+**2,500 years** just to exhaust a single prime.  We need another way!  https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
+
 
 #### Problem 1 - size of N
-Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  In reality, my final code had to deal with _billion billion_ values (which is called a _quintillion_).  
+Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  
 
 Status| Number (N) | Primes | Time taken
 --|---|--|--
@@ -124,11 +160,6 @@ N = P * Q
 N = 130 bits
 ```
 Step forward the **gmp** library.  I also considered `openSSL's` inbuilt number functionality but I didn't want to unpick the `openssl` security or networking code.  I expected that decision to bite later as I would probably need a key generation and decrypt function to test my code.
-
-#### Problem 2 - Hard Math problems
-On small values, like most code on StackOverflow, my code worked.  Depressingly, my code was less reliable than the `Naive Trial Division Algorithm` on here: https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html.
-
-But when I grew the size of N, my CPU was running at 99% for many minutes without finding an answer.  I think the code would have finished but I wasn't even trying to stress the code at that point.  I needed a more efficient algorithm that avoid my first pattern of `Brute Force`.
 
 #### Other solutions?
 So I didn't send my machine into warp speed and melt the CPU, I found better methods to achieve what I wanted. This article really changed my approach.
