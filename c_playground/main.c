@@ -26,6 +26,10 @@ int main(int argc, const char * argv[]) {
         exit(EXIT_FAILURE);
     }
     
+    
+    if (n % 2 == 0)
+        exit(2);
+    
     /* If we got here, strtol() successfully parsed a number */
     printf("[+]String value = %s\n[+]Int value = %llu\n", argv[1], n);
     
