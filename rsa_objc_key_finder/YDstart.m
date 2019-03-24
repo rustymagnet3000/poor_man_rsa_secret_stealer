@@ -14,7 +14,23 @@ static NSDate *_startTime;
             return nil;
         }
         
-
+        char *endptr;
+        unsigned long long n = strtoull(n_as_char, &endptr, 10);
+        
+        if (strlen(endptr) > 0){
+            fprintf(stderr, "Only enter digits\n");
+            exit(EXIT_FAILURE);
+        }
+        
+        if (n >= ULONG_LONG_MAX || n <= 2) {  // also catches null values
+            fprintf(stderr, "Outside the supported number range\n");
+            exit(EXIT_FAILURE);
+        }
+        
+        if (n % 2 == 0) {
+            fprintf(stderr, "Even numbers are not expected\n");
+            exit(EXIT_FAILURE);
+        }
     }
     return self;
 }
