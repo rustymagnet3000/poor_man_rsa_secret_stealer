@@ -23,7 +23,7 @@
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         
         dispatch_async(dispatchQueue, ^{
-            printf("[+]Searching for factors of: %llu\n",self.n);
+            printf("[+]Searching factors of: %llu\n",self.n);
             [self factorize];
         });
         return self;
@@ -43,6 +43,7 @@
     unsigned long long upper_limit = n/2;
     
     OUTERLOOP: for(; i <= upper_limit; i += 2) {
+        
         if (n % i == 0){
             
             unsigned long long y=floor_limit;
@@ -58,6 +59,7 @@
             printf ("[+]%llu is a prime factor \n", i);
         }
     }
+
     [self factorize_completed];
 }
 
