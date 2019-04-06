@@ -193,6 +193,10 @@ http://sep.stanford.edu/sep/claudio/Research/Prst_ExpRefl/ShtPSPI/intel/mkl/10.0
 
 https://machinecognitis.github.io/Math.Gmp.Native/html/52ce0428-7c09-f2b9-f517-d3d02521f365.htm
 
+https://frenchfries.net/paul/factoring/source.html
+
+http://www.martani.net/2011/12/factoring-integers-part-1-pollards-rho.html
+
 #### C References
 
 https://www.systutorials.com/docs/linux/man/3-strtol/
