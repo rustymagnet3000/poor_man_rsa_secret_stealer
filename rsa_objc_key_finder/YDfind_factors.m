@@ -1,11 +1,5 @@
 #import "YDfind_factors.h"
 
-#ifdef DEBUG
-#define NSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
-#else
-#define NSLog(...) {}
-#endif
-
 @implementation YDFindFactors : NSObject
 
 @synthesize p;
@@ -23,7 +17,7 @@
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         
         dispatch_async(dispatchQueue, ^{
-            printf("[+]Searching factors of: %llu\n",self.n);
+            [YDPrettyPrint multiple:@"Searching factors of: %llu",self.n];
             [self factorize];
         });
         return self;
@@ -56,7 +50,7 @@
                 y += 2;
                 
             }while( y < i );
-            printf ("[+]%llu is a prime factor \n", i);
+            [YDPrettyPrint multiple:@"Prime factor:: %llu",i];
         }
     }
 
