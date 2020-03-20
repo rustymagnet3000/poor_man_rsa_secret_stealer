@@ -8,7 +8,7 @@
 {
     if ([notification.name isEqualToString:@"FactorSearchComplete"])
     {
-        printf("[+]Notification received. Exiting.%p\n", [notification object]);
+        [YDPrettyPrint multiple:@"Notification received. Exiting.%p",[notification object]];
         [YDStart cleanExit];
     }
 }
