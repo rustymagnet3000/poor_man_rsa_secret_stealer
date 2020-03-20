@@ -4,43 +4,51 @@
 
 Below was a challenge from the article:
 ```
-Encryption parameters
-e:              65537
-N:              1034776851837418228051242693253376923
-Cipher:         582984697800119976959378162843817868
-We are using    60 bit primes
-```
-The first game was to calculate the factors of N.  After that, and more hops, you would derive the Private Key.  With that key you would decrypt the ciphertext into plaintext.  Revealing a secret message! 🕵🏼‍.
+RSA Parameters
+e:                          65537
+N:                          1034776851837418228051242693253376923
+P:                          <unknown>
+Q:                          <unknown>
+Length of Prime Numbers:    60 bits
 
-## Goal
-My first goal was to take a user entered `N` and attempt to find `P` and `Q` without blowing up my computer.  This was harder than I imagined but each roadblock was a fun lesson.
+Encrypted secret:           582984697800119976959378162843817868
+```
+The first game was to calculate the `factors` of N.  After that, and more hops, you would derive the Private Key.  
 
-Even as I moved through this project, I still used tiny numbers compared to real-world RSA implementations.  This project was purely for academic / personal use and would not work against a real RSA implementation [unless somebody went against recommendations on RSA Key Lengths that were published here: __INSERTLINK__.
-```
-------------------------------------------------------------------------------------
-1034776851837418228051242693253376923 = 1086027579223696553 x 952809000096560291
-------------------------------------------------------------------------------------
-```
+With the Private Key you would decrypt the ciphertext (above) into plaintext.  Revealing a secret message! 🕵🏼‍
+
+The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit keys`.  Where the standards organization (`NIST`) disallowed anything less than `2048 bits`.
+
+This project was purely for academic interest and would not work against a real RSA implementation.  
+
+
+## Goal 1: Read and factorize N
+My first goal was to take a long, user entered number (`N`).  Once you had `N` you would attempt to `Factorize` and find `P` and `Q`.  
+
+Sounds easy?   Defintely not; this is a [`Time Complex`](https://en.wikipedia.org/wiki/Time_complexity) problem.
+
+
+
 ## Design steps
-#### Attempt 1: the Naive Trial Division Algorithm
-After receiving a positive, large `N`, my app attempted to follow the same code path as a thousand other StackOverflow readers.  This was cynically (and probably fairly) labelled the `the Naive Trial Division Algorithm` by people who understood the _Math Theory_ behind the problem.  I did not have this understanding.  I hit every bump on the journey 🤕.
+#### Assumptions about the number N
 
-#### The number N
-Assumptions about the `N` number:
  - [x] Not a negative
- - [x] Not even [as this implies there was a non-prime input `(100 = 5 * 20)`
+ - [x] Not even [as this implies a non-prime input `(100 = 5 * 20)`
  - [x] Not a prime number
 
 #### Brainstorm
-My idea was to write super simple code.
+My original idea was to write super simple code that did the following checks:
 
-- verify that N was not even
-- check every odd number less than < ( N / 2 )
-- remove 1, 2 from possible primes
-- check whether I could divide N / odd number and get a zero remainder
-- checked whether any found odd number was a prime
+- N was not even
+- Only `odd` numbers
+- Only numbers less than less than ` N / 2 `
+- Any found odd number was a prime
+- divide N / found odd number was a zero remainder
+- discount 1 and 2
 
-#### Results 1
+
+My code was the same as thousands of other `StackOverflow` readers.  This was cynically (and probably fairly) labelled the **the Naive Trial Division Algorithm** by people who understood the _Math Theory_ behind the problem.
+#### Result 1
 ```
 ✅ [3, 11] = 33       // find both prime factors but not 1 or 2
 ✅ [3, 13] = 39       // same as previous
@@ -48,24 +56,29 @@ My idea was to write super simple code.
 🔸 [5, 20] = 100      // wrong. My code should have rejected n = 100
 ```
 
-#### Code setup
-I wrote a mix of C and Objective-C code.  xCode was the IDE.  That allowed me to apply existing Apple `Classes` [ like `run-loop` and `background threading` ] to kill my app and keep the U.I. refreshing.  My kill timer was set to 20 minutes.  This was my fail-safe to `N` values that were too large.  I ran the find factors on a background thread, to avoid blocking the UI thread. I added an `Observer` to check whether the code to find factors of a large number had been found.
+#### Original code setup
+I wrote a mix of C and Objective-C code.  I preferred `Objective-C` as existing Apple `Classes` helped my basic requirements:
 
-I could have written everything in C but it would take longer and I found my C code soon became spaghetti without `Objects` to keep things structured.
+- Know when my code completed [ `NSNotificationCenter` ]
+- kill my app if it took too long [ `Run-Loop set to 20 mins ` ]
+- Keep the U.I. refreshing [ `background threading` ]
 
-At the beginning, I did not use third party libraries to tell me if a number was prime.
+
+I set a `kill timer` to 20 minutes.  This was my `fail-safe` for `N` values that were too large.  I ran the find factors code on a background thread, to avoid blocking the UI thread. I added an `Observer` to check whether the code to find factors of a large number finished.
+
+On my first attempts to code this solution, I did not use third party libraries.  That was a mistake.
 
 #### Results 2: Bugs everywhere 🐜 🐜 🐜
 Status| Number (N) | Primes
 --|---|--
-🐝| 3000009  |  3 * 1000003
-🐝| 101003333 |  101 * 1000033
-🐍| 7919261327 |  7919 * 1000033
-🐍| 17746761831 |  3 * 5915587277                              
+✅| 3000009  |  3 * 1000003
+✅| 101003333 |  101 * 1000033
+🐜| 7919261327 |  7919 * 1000033
+🐜| 17746761831 |  3 * 5915587277                              
 
-A crazy value was returned shown when I tried to find the factors of `7919261327`.  Why?  Almost 8 billion.  I had the common sense to check the limits of C Types (good reference: https://docs.microsoft.com/en-us/cpp/cpp/data-type-ranges?view=vs-2017).
+A crazy value was returned shown when I tried to find the factors of `7919261327`.  Why?  Almost 8 billion.  I had the common sense to check the [limits of C Types](https://docs.microsoft.com/en-us/cpp/cpp/data-type-ranges?view=vs-2017).
 
-I picked the `Unsigned Long Long`.  Any variable of that type could store up to `18,446,744,073,709,551,615`.  Big.  That is 18 billion billion.  20 decimal digits.
+I had the common sense to pick the `Unsigned Long Long`.  Any variable of that type could store a positive value up to `18,446,744,073,709,551,615`. That is 18 billion billion.  20 characters.
 
 Well, I made several errors with the same root cause.  I had used `int` and `unsigned long long` C Types interchangeably.  For your amusement, my bugs were the following:
 
@@ -122,7 +135,7 @@ Using my crude calculation again, with 2 x Primes of 8-digits, my `N` value woul
 #### Failings of the Naive Trial Division Algorithm
 In summary, on small values, like most code on StackOverflow, my code worked.  But when I grew the size of N == 2 primes of 8 or more digits, my CPU would have to run at 99% for many days, weeks, millennia !
 
-The `Naive Trial Division Algorithm` had no chance of dealing with a `60 bit primes`.  It took 5 hours to search all odd numbers when the loop's upper limit was set to 4 trillions  __INSERT BIT LENGTH OF 8069212743871__   My crude numbers illustrate this:
+The `Naive Trial Division Algorithm` had no chance of dealing with a `60 bit primes`.  It took 5 hours to search all odd numbers when the loop's upper limit was set to 4 trillions (43 bits)  My crude numbers illustrated this as follows:
 ```
 My computer could do 4 trillion in 5 hours
 18 quintillion \ 4 trillion == 4.5 million
@@ -200,6 +213,10 @@ http://www.martani.net/2011/12/factoring-integers-part-1-pollards-rho.html
 #### C References
 
 https://www.systutorials.com/docs/linux/man/3-strtol/
+
+#### Key Length References
+
+https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf
 
 #### References
 
