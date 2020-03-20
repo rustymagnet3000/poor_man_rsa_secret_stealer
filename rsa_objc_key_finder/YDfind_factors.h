@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "progressbar.h"
 #import "statusbar.h"
+#include "YDPrettyPrint.h"
 
 @interface YDFindFactors : NSObject{
     unsigned long long n;
