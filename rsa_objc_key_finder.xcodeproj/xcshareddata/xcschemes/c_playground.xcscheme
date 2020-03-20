@@ -67,12 +67,12 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "39"
+            argument = "8069212743871"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "2015994091679141905085000807307"
-            isEnabled = "NO">
+            argument = "1034776851837418228051242693253376923"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "24212989121030676023"
@@ -84,7 +84,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "7919261327"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
