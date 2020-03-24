@@ -12,8 +12,8 @@
 		0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
 		0F220E9922381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
 		0F220E9A22381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
-		0FD3E9982237B208002CFD67 /* YDstart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDstart.m */; };
-		0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAC4B3222D3211002DBAAC /* YDnotifications.m */; };
+		0F8317442424F5B4001ABDBA /* YDPrettyPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */; };
+		0FD3E9982237B208002CFD67 /* YDmanager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDmanager.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
 		30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDfind_factors.m */; };
 /* End PBXBuildFile section */
@@ -47,10 +47,10 @@
 		0F518C2722366E7C004EDA57 /* statusbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = statusbar.h; sourceTree = "<group>"; };
 		0F518C2822366E7C004EDA57 /* progressbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = progressbar.h; sourceTree = "<group>"; };
 		0F518C2922366E94004EDA57 /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
-		0FD3E9972237B208002CFD67 /* YDstart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDstart.m; sourceTree = "<group>"; };
-		0FD3E9992237B24A002CFD67 /* YDstart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDstart.h; sourceTree = "<group>"; };
-		0FEAC4B3222D3211002DBAAC /* YDnotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDnotifications.m; sourceTree = "<group>"; };
-		0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDnotifications.h; sourceTree = "<group>"; };
+		0F8317422424F5B4001ABDBA /* YDPrettyPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDPrettyPrint.h; sourceTree = "<group>"; };
+		0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDPrettyPrint.m; sourceTree = "<group>"; };
+		0FD3E9972237B208002CFD67 /* YDmanager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDmanager.m; sourceTree = "<group>"; };
+		0FD3E9992237B24A002CFD67 /* YDmanager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDmanager.h; sourceTree = "<group>"; };
 		30FA0588221FC9DA00230559 /* rsa_objc_key_finder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rsa_objc_key_finder; sourceTree = BUILT_PRODUCTS_DIR; };
 		30FA058B221FC9DA00230559 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		30FA0592221FCACA00230559 /* YDfind_factors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDfind_factors.m; sourceTree = "<group>"; };
@@ -130,12 +130,12 @@
 		30FA058A221FC9DA00230559 /* rsa_objc_key_finder */ = {
 			isa = PBXGroup;
 			children = (
-				0FD3E9972237B208002CFD67 /* YDstart.m */,
-				0FD3E9992237B24A002CFD67 /* YDstart.h */,
-				0FEAC4B3222D3211002DBAAC /* YDnotifications.m */,
-				0FEAC4B5222D32D0002DBAAC /* YDnotifications.h */,
+				0FD3E9972237B208002CFD67 /* YDmanager.m */,
+				0FD3E9992237B24A002CFD67 /* YDmanager.h */,
 				30FA0592221FCACA00230559 /* YDfind_factors.m */,
 				30FA0594221FCAD800230559 /* YDfind_factors.h */,
+				0F8317422424F5B4001ABDBA /* YDPrettyPrint.h */,
+				0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */,
 			);
 			path = rsa_objc_key_finder;
 			sourceTree = "<group>";
@@ -225,9 +225,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0FEAC4B4222D3211002DBAAC /* YDnotifications.m in Sources */,
+				0F8317442424F5B4001ABDBA /* YDPrettyPrint.m in Sources */,
 				30FA058C221FC9DA00230559 /* main.m in Sources */,
-				0FD3E9982237B208002CFD67 /* YDstart.m in Sources */,
+				0FD3E9982237B208002CFD67 /* YDmanager.m in Sources */,
 				30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +389,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/libraries",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = "-lncurses";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -405,6 +406,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/libraries",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = "-lncurses";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

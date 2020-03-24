@@ -6,32 +6,49 @@
 @synthesize q;
 @synthesize n;
 
-- (BOOL)preChecks {
-    char *endptr;
-    unsigned long long n = strtoull(n_as_char, &endptr, 10);
+- (BOOL)convertToULL {
     
-    if (strlen(endptr) > 0){
+    char *endptr = NULL;
+    
+    n = strtoull(self.rawInput, NULL, 10);
+
+    if (endptr != NULL){
         [YDPrettyPrint single:@"Only enter digits"];
-        return NULL;
+        return FALSE;
     }
+    
+    return TRUE;
+}
+
+- (BOOL)preChecks {
     
     if (n >= ULONG_LONG_MAX || n <= 2) {  // also catches null values
          [YDPrettyPrint single:@"Outside the supported number range"];
-        return NULL;
+        return FALSE;
     }
     
     if (n % 2 == 0) {
         [YDPrettyPrint single:@"Even numbers are not expected"];
-        return NULL;
+        return FALSE;
     }
+    
+    return TRUE;
 }
-- (instancetype)initWithN: (unsigned long long)N{
+
+- (instancetype)initWithN:(const char*)N{
     {
         self = [super init];
         if (self) {
-            self->n = N;
-            self->p = 0;
-            self->q = 0;
+                       
+            self.rawInput = N;
+            
+            if([self convertToULL] == FALSE){
+                return NULL;
+            }
+            
+            if([self preChecks] == FALSE){
+                return NULL;
+            }
         }
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         
