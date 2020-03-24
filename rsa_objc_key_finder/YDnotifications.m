@@ -8,8 +8,8 @@
 {
     if ([notification.name isEqualToString:@"FactorSearchComplete"])
     {
-        [YDPrettyPrint multiple:@"Notification received. Exiting.%p",[notification object]];
-        [YDStart cleanExit];
+        [YDPrettyPrint multiple:@"Notification received. Need to add exit.%p",[notification object]];
+//        [YDManager cleanExit];
     }
 }
 
