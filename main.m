@@ -1,29 +1,23 @@
 #import <Foundation/Foundation.h>
-#import "YDstart.h"
+#import "YDmanager.h"
 #import "gmp.h"
-#import "progressbar.h"
-#import "statusbar.h"
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
 
             /******* Naive Trial Division Algorithm *******/
-
-            [YDStart startTime];
-            YDStart *start = [[YDStart alloc] initWithRawN:argc rawN:argv[1]];
-        
+            
+            YDManager *start = [[YDManager alloc] init:argc];
             [start setNotification];
-        
-            /* TO DO: move validation to Start object */
+
             unsigned long long n = strtoull(argv[1], NULL, 10);
             if (n % 2 == 0)
                 exit(2);
         
             __unused YDFindFactors *findfacors = [[YDFindFactors alloc] initWithN:n];
             [start startRunLoop];
-        
-        printf("[+]Run-loop killed\n");
-        
+
+            [YDPrettyPrint single:@"Run-loop killed"];
         }
     return 0;
 }
