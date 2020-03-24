@@ -5,18 +5,26 @@
 - (instancetype) init: (int)argCount{
     self = [super init];
     if (self) {
-        self.startTime = [NSDate now];
+        self.startTime = [NSDate date];
         if (argCount != 2){
             [YDPrettyPrint single:@"Usage: keyfinder [n]"];
             return NULL;
         }
     }
+    [YDPrettyPrint multiple:@"Started %@", [YDManager prettyDate:self.startTime]];
     return self;
+}
+
++ (NSString *)prettyDate: (NSDate *)date
+{
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"HH:mm:ss"];
+    return [dateFormat stringFromDate:date];
 }
 
 - (void)cleanExit
 {
-    self.endTime = [NSDate now];
+    self.endTime = [NSDate date];
     [YDPrettyPrint multiple:@"Finished in: %ld seconds", lroundf(-[_startTime timeIntervalSinceNow])];
     exit(1);
 }
@@ -40,8 +48,17 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorSearchComplete" object:nil queue:nil usingBlock:^(NSNotification *note)
      {
          [YDPrettyPrint single:@"Start: Added observer"];
-         [YDNotifications receiveNotification:note];
+         [self receiveNotification:note];
      }];
+}
+
+-(void) receiveNotification:(NSNotification*)notification
+{
+    if ([notification.name isEqualToString:@"FactorSearchComplete"])
+    {
+        [YDPrettyPrint multiple:@"Notification received %p",[notification object]];
+        [self cleanExit];
+    }
 }
 
 @end
