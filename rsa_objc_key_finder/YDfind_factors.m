@@ -6,6 +6,25 @@
 @synthesize q;
 @synthesize n;
 
+- (BOOL)preChecks {
+    char *endptr;
+    unsigned long long n = strtoull(n_as_char, &endptr, 10);
+    
+    if (strlen(endptr) > 0){
+        [YDPrettyPrint single:@"Only enter digits"];
+        return NULL;
+    }
+    
+    if (n >= ULONG_LONG_MAX || n <= 2) {  // also catches null values
+         [YDPrettyPrint single:@"Outside the supported number range"];
+        return NULL;
+    }
+    
+    if (n % 2 == 0) {
+        [YDPrettyPrint single:@"Even numbers are not expected"];
+        return NULL;
+    }
+}
 - (instancetype)initWithN: (unsigned long long)N{
     {
         self = [super init];
@@ -50,7 +69,7 @@
                 y += 2;
                 
             }while( y < i );
-            [YDPrettyPrint multiple:@"Prime factor:: %llu",i];
+            [YDPrettyPrint multiple:@"Prime factor: %llu",i];
         }
     }
 
