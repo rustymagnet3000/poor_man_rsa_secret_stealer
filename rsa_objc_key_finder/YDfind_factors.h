@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#include "YDPrettyPrint.h"
+#include "YDPrettyConsole.h"
 
 
 @protocol YDFactorSetupRules <NSObject>

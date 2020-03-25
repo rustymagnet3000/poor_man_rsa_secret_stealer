@@ -5,13 +5,15 @@
 - (instancetype) init: (int)argCount{
     self = [super init];
     if (self) {
-        self.startTime = [NSDate date];
+        startTime = [NSDate date];
         if (argCount != 2){
-            [YDPrettyPrint single:@"Usage: keyfinder [n]"];
+            [YDPrettyConsole single:@"Usage: keyfinder [n]"];
             return NULL;
         }
     }
-    [YDPrettyPrint multiple:@"Started %@", [YDManager prettyDate:self.startTime]];
+    [YDPrettyConsole multiple:@"Started %@", [YDManager prettyDate:startTime]];
+    progressBar = [[YDPrettyConsole alloc] init];
+
     [self setNotification];
     return self;
 }
@@ -26,8 +28,8 @@
 
 - (void)cleanExit
 {
-    self.endTime = [NSDate date];
-    [YDPrettyPrint multiple:@"Finished in: %ld seconds", lroundf(-[_startTime timeIntervalSinceNow])];
+    endTime = [NSDate date];
+    [YDPrettyConsole multiple:@"Finished in: %ld seconds", lroundf(-[startTime timeIntervalSinceNow])];
     exit(1);
 }
 
@@ -40,15 +42,14 @@
     NSInteger killTime = 120;
     NSDate *startPlusKillTimer = [currentCalendar dateByAddingUnit:NSCalendarUnitSecond
                                                                value:killTime
-                                                              toDate:_startTime
+                                                              toDate:startTime
                                                              options:NSCalendarMatchNextTime];
     [runLoop runUntilDate:startPlusKillTimer];
     
-    [YDPrettyPrint single:@"Run-loop started"];
+    [YDPrettyConsole single:@"Run-loop started"];
 }
 
 - (void) setNotification {
-    [YDPrettyPrint single:@"Watching Factor Search..."];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorSearchComplete" object:nil queue:nil usingBlock:^(NSNotification *note)
      {
          [self receiveNotification:note];
@@ -59,8 +60,7 @@
 {
     if ([notification.name isEqualToString:@"FactorSearchComplete"])
     {
-
-
+        [progressBar setRunning:FALSE];
         [self cleanExit];
     }
 }

@@ -2,10 +2,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface YDPrettyPrint : NSObject
+@interface YDPrettyConsole : NSObject
+
+@property BOOL running;
 
 + (void)single:(NSString *)message;
 + (void)multiple:(NSString *)message,...;
+
 @end
 
 NS_ASSUME_NONNULL_END
