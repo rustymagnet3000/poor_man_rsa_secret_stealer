@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "YDmanager.h"
+#import "YDPrettyConsole.h"
 #import "gmp.h"
 
 
@@ -7,14 +8,13 @@
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
-       
-            YDManager *start = [[YDManager alloc] init:argc];
 
-            __unused YDFindFactors *findfactors = [[YDFindFactors alloc] initWithN:argv[1]];
+        YDManager *start = [[YDManager alloc] init:argc];
 
-            [start startRunLoop];
+        __unused YDFindFactors *findfactors = [[YDFindFactors alloc] initWithN:argv[1]];
+        [start startRunLoop];
 
-            [YDPrettyPrint single:@"Run-loop killed"];
+        [YDPrettyConsole single:@"Run-loop killed"];
         }
     return 0;
 }

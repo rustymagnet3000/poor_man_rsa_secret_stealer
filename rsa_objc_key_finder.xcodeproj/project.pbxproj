@@ -10,7 +10,7 @@
 		0F220E8822381A28001C82A3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0F220E8722381A28001C82A3 /* main.c */; };
 		0F220E9722381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
 		0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
-		0F8317442424F5B4001ABDBA /* YDPrettyPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */; };
+		0F8317442424F5B4001ABDBA /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
 		0FD3E9982237B208002CFD67 /* YDmanager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDmanager.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
 		30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDfind_factors.m */; };
@@ -42,8 +42,8 @@
 		0F220E8722381A28001C82A3 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		0F220E9522381E60001C82A3 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
 		0F518C2922366E94004EDA57 /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
-		0F8317422424F5B4001ABDBA /* YDPrettyPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDPrettyPrint.h; sourceTree = "<group>"; };
-		0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDPrettyPrint.m; sourceTree = "<group>"; };
+		0F8317422424F5B4001ABDBA /* YDPrettyConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDPrettyConsole.h; sourceTree = "<group>"; };
+		0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDPrettyConsole.m; sourceTree = "<group>"; };
 		0FD3E9972237B208002CFD67 /* YDmanager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDmanager.m; sourceTree = "<group>"; };
 		0FD3E9992237B24A002CFD67 /* YDmanager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDmanager.h; sourceTree = "<group>"; };
 		30FA0588221FC9DA00230559 /* rsa_objc_key_finder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rsa_objc_key_finder; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,8 +124,8 @@
 				0FD3E9992237B24A002CFD67 /* YDmanager.h */,
 				30FA0592221FCACA00230559 /* YDfind_factors.m */,
 				30FA0594221FCAD800230559 /* YDfind_factors.h */,
-				0F8317422424F5B4001ABDBA /* YDPrettyPrint.h */,
-				0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */,
+				0F8317422424F5B4001ABDBA /* YDPrettyConsole.h */,
+				0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */,
 			);
 			path = rsa_objc_key_finder;
 			sourceTree = "<group>";
@@ -190,6 +190,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 30FA057F221FC9DA00230559;
 			productRefGroup = 30FA0589221FC9DA00230559 /* Products */;
@@ -215,7 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F8317442424F5B4001ABDBA /* YDPrettyPrint.m in Sources */,
+				0F8317442424F5B4001ABDBA /* YDPrettyConsole.m in Sources */,
 				30FA058C221FC9DA00230559 /* main.m in Sources */,
 				0FD3E9982237B208002CFD67 /* YDmanager.m in Sources */,
 				30FA0593221FCACA00230559 /* YDfind_factors.m in Sources */,
