@@ -39,7 +39,6 @@
     {
         self = [super init];
         if (self) {
-                       
             self.rawInput = N;
             
             if([self convertToULL] == FALSE){

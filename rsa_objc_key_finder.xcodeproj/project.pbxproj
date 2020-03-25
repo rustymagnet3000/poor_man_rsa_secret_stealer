@@ -10,8 +10,6 @@
 		0F220E8822381A28001C82A3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0F220E8722381A28001C82A3 /* main.c */; };
 		0F220E9722381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
 		0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
-		0F220E9922381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
-		0F220E9A22381E60001C82A3 /* libprogressbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9622381E60001C82A3 /* libprogressbar.a */; };
 		0F8317442424F5B4001ABDBA /* YDPrettyPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */; };
 		0FD3E9982237B208002CFD67 /* YDmanager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDmanager.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
@@ -43,9 +41,6 @@
 		0F220E8522381A28001C82A3 /* YDc_playground */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = YDc_playground; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F220E8722381A28001C82A3 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		0F220E9522381E60001C82A3 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
-		0F220E9622381E60001C82A3 /* libprogressbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libprogressbar.a; sourceTree = "<group>"; };
-		0F518C2722366E7C004EDA57 /* statusbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = statusbar.h; sourceTree = "<group>"; };
-		0F518C2822366E7C004EDA57 /* progressbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = progressbar.h; sourceTree = "<group>"; };
 		0F518C2922366E94004EDA57 /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
 		0F8317422424F5B4001ABDBA /* YDPrettyPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDPrettyPrint.h; sourceTree = "<group>"; };
 		0F8317432424F5B4001ABDBA /* YDPrettyPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YDPrettyPrint.m; sourceTree = "<group>"; };
@@ -62,7 +57,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F220E9A22381E60001C82A3 /* libprogressbar.a in Frameworks */,
 				0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,7 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F220E9922381E60001C82A3 /* libprogressbar.a in Frameworks */,
 				0F220E9722381E60001C82A3 /* libgmp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,8 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				0F518C2922366E94004EDA57 /* gmp.h */,
-				0F518C2822366E7C004EDA57 /* progressbar.h */,
-				0F518C2722366E7C004EDA57 /* statusbar.h */,
 			);
 			path = includes;
 			sourceTree = "<group>";
@@ -101,7 +92,6 @@
 			isa = PBXGroup;
 			children = (
 				0F220E9522381E60001C82A3 /* libgmp.a */,
-				0F220E9622381E60001C82A3 /* libprogressbar.a */,
 			);
 			path = libraries;
 			sourceTree = "<group>";
