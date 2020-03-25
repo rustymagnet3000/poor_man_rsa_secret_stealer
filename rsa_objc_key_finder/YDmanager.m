@@ -1,7 +1,7 @@
 #import "YDmanager.h"
 
 @implementation YDManager : NSObject
-
+   
 - (instancetype) init: (int)argCount{
     self = [super init];
     if (self) {
@@ -12,8 +12,10 @@
         }
     }
     [YDPrettyPrint multiple:@"Started %@", [YDManager prettyDate:self.startTime]];
+    [self setNotification];
     return self;
 }
+
 
 + (NSString *)prettyDate: (NSDate *)date
 {
@@ -31,8 +33,8 @@
 
 - (void)startRunLoop
 {
-    NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-        
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+
     NSCalendar *currentCalendar = [NSCalendar currentCalendar];
     
     NSInteger killTime = 120;
@@ -40,14 +42,15 @@
                                                                value:killTime
                                                               toDate:_startTime
                                                              options:NSCalendarMatchNextTime];
-    [theRL runUntilDate:startPlusKillTimer];
+    [runLoop runUntilDate:startPlusKillTimer];
+    
     [YDPrettyPrint single:@"Run-loop started"];
 }
 
 - (void) setNotification {
+    [YDPrettyPrint single:@"Watching Factor Search..."];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorSearchComplete" object:nil queue:nil usingBlock:^(NSNotification *note)
      {
-         [YDPrettyPrint single:@"Start: Added observer"];
          [self receiveNotification:note];
      }];
 }
@@ -56,7 +59,8 @@
 {
     if ([notification.name isEqualToString:@"FactorSearchComplete"])
     {
-        [YDPrettyPrint multiple:@"Notification received %p",[notification object]];
+
+
         [self cleanExit];
     }
 }
