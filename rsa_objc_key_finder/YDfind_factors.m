@@ -13,7 +13,7 @@
     n = strtoull(self.rawInput, NULL, 10);
 
     if (endptr != NULL){
-        [YDPrettyPrint single:@"Only enter digits"];
+        [YDPrettyConsole single:@"Only enter digits"];
         return FALSE;
     }
     
@@ -23,12 +23,12 @@
 - (BOOL)preChecks {
     
     if (n >= ULONG_LONG_MAX || n <= 2) {  // also catches null values
-         [YDPrettyPrint single:@"Outside the supported number range"];
+         [YDPrettyConsole single:@"Outside the supported number range"];
         return FALSE;
     }
     
     if (n % 2 == 0) {
-        [YDPrettyPrint single:@"Even numbers are not expected"];
+        [YDPrettyConsole single:@"Even numbers are not expected"];
         return FALSE;
     }
     
@@ -52,7 +52,7 @@
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         
         dispatch_async(dispatchQueue, ^{
-            [YDPrettyPrint multiple:@"Searching factors of: %llu",self.n];
+            [YDPrettyConsole multiple:@"Searching factors of: %llu",self.n];
             [self factorize];
         });
         return self;
@@ -85,7 +85,7 @@
                 y += 2;
                 
             }while( y < i );
-            [YDPrettyPrint multiple:@"Prime factor: %llu",i];
+            [YDPrettyConsole multiple:@"Prime factor: %llu",i];
         }
     }
 
