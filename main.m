@@ -3,7 +3,6 @@
 #import "YDPrettyConsole.h"
 #import "gmp.h"
 
-
 /******* Naive Trial Division Algorithm *******/
 
 int main(int argc, const char *argv[]) {
@@ -15,6 +14,6 @@ int main(int argc, const char *argv[]) {
         [start startRunLoop];
 
         [YDPrettyConsole single:@"Run-loop killed"];
-        }
+    }
     return 0;
 }
