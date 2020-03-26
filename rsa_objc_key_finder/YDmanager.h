@@ -2,6 +2,7 @@
 #import "YDfind_factors.h"
 #import "YDPrettyConsole.h"
 
+
 @protocol YDManagerRules <NSObject>
 @required
 - (void) startRunLoop;
@@ -16,6 +17,6 @@
 - (instancetype) init:(int)argCount;
 - (void)startRunLoop;
 - (void)setNotification;
-- (void)cleanExit;
+- (void)dirtyExit;
 
 @end

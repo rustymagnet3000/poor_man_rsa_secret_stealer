@@ -1,9 +1,9 @@
 #import "YDmanager.h"
-#define KILLTIMER 5
+#define KILLTIMER 60
 
 @implementation YDManager : NSObject
 
-NSTimer *killTimer;
+
 
 - (BOOL)preCheck: (int)args {
 
@@ -22,7 +22,6 @@ NSTimer *killTimer;
         startTime = [NSDate date];
         [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
         [YDPrettyConsole multiple:@"Kill Timer\t%d", KILLTIMER];
-        
         [YDPrettyConsole banner];
         if([self preCheck: argCount] == FALSE){
             return NULL;
@@ -46,27 +45,26 @@ NSTimer *killTimer;
 - (void)cleanExit
 {
     endTime = [NSDate date];
-    [YDPrettyConsole multiple:@"Finished in: %.1f seconds", [endTime timeIntervalSinceDate:startTime]];
+    [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
+    exit(EXIT_SUCCESS);
 }
 
 - (void)dirtyExit
 {
     endTime = [NSDate date];
     [YDPrettyConsole multiple:@"Kill timer fired: %.1f seconds", [endTime timeIntervalSinceDate:startTime]];
-    [killTimer invalidate];
 }
 
 - (void)startRunLoop
 {
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:KILLTIMER
-                                                      target:self
-                                                    selector:@selector(dirtyExit)
-                                                    userInfo:nil
-                                                     repeats:NO];
-    
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-    [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-    [runLoop run];
+    NSCalendar *currentCalendar = [NSCalendar currentCalendar];
+
+    NSDate *startPlusKillTimer = [currentCalendar dateByAddingUnit:NSCalendarUnitSecond
+                                                               value:KILLTIMER
+                                                              toDate:startTime
+                                                             options:NSCalendarMatchNextTime];
+    [runLoop runUntilDate:startPlusKillTimer];
 }
 
 - (void) setNotification {

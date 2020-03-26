@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #include "YDPrettyConsole.h"
-
+#define MAX_FOUND_FACTORS 100
 
 @protocol YDFactorSetupRules <NSObject>
 @required

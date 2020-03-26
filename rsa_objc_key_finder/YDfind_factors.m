@@ -5,7 +5,7 @@
 @synthesize p;
 @synthesize q;
 @synthesize n;
-NSArray *foundFactors;
+unsigned long long foundFactors[MAX_FOUND_FACTORS];
 
 - (BOOL)convertToULL {
     
@@ -50,6 +50,7 @@ NSArray *foundFactors;
                 return NULL;
             }
         }
+        
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         
         dispatch_async(dispatchQueue, ^{
@@ -86,6 +87,7 @@ NSArray *foundFactors;
                 y += 2;
                 
             }while( y < i );
+            foundFactors
             [YDPrettyConsole multiple:@"Prime factor: %llu",i];
         }
     }
