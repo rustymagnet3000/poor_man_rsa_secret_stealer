@@ -1,20 +1,34 @@
 #import "YDmanager.h"
 
 @implementation YDManager : NSObject
-   
+
+
+- (BOOL)preCheck: (int)args {
+
+    if (args != 2){
+        [YDPrettyConsole multiple:@"Usage: enter N value. You entered %d argument(s)", args];
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
 - (instancetype) init: (int)argCount{
     self = [super init];
     if (self) {
+       
+        [YDPrettyConsole banner];
         startTime = [NSDate date];
-        if (argCount != 2){
-            [YDPrettyConsole single:@"Usage: keyfinder [n]"];
+        [YDPrettyConsole multiple:@"Started %@", [YDManager prettyDate:startTime]];
+
+        if([self preCheck: argCount] == FALSE){
             return NULL;
         }
-    }
-    [YDPrettyConsole multiple:@"Started %@", [YDManager prettyDate:startTime]];
-    progressBar = [[YDPrettyConsole alloc] init];
 
-    [self setNotification];
+        progressBar = [[YDPrettyConsole alloc] init];
+        [self setNotification];
+    }
+
     return self;
 }
 

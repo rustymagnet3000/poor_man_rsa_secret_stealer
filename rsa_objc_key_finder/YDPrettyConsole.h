@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#include <sys/ioctl.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -8,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)single:(NSString *)message;
 + (void)multiple:(NSString *)message,...;
++ (void)banner;
 
 @end
 
