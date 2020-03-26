@@ -1,7 +1,9 @@
 #import "YDmanager.h"
+#define KILLTIMER 5
 
 @implementation YDManager : NSObject
 
+NSTimer *killTimer;
 
 - (BOOL)preCheck: (int)args {
 
@@ -17,10 +19,11 @@
     self = [super init];
     if (self) {
        
-        [YDPrettyConsole banner];
         startTime = [NSDate date];
-        [YDPrettyConsole multiple:@"Started %@", [YDManager prettyDate:startTime]];
-
+        [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
+        [YDPrettyConsole multiple:@"Kill Timer\t%d", KILLTIMER];
+        
+        [YDPrettyConsole banner];
         if([self preCheck: argCount] == FALSE){
             return NULL;
         }
@@ -36,31 +39,34 @@
 + (NSString *)prettyDate: (NSDate *)date
 {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"HH:mm:ss"];
+    [dateFormat setDateFormat:@"HH:mm:ss:mm"];
     return [dateFormat stringFromDate:date];
 }
 
 - (void)cleanExit
 {
     endTime = [NSDate date];
-    [YDPrettyConsole multiple:@"Finished in: %ld seconds", lroundf(-[startTime timeIntervalSinceNow])];
-    exit(1);
+    [YDPrettyConsole multiple:@"Finished in: %.1f seconds", [endTime timeIntervalSinceDate:startTime]];
+}
+
+- (void)dirtyExit
+{
+    endTime = [NSDate date];
+    [YDPrettyConsole multiple:@"Kill timer fired: %.1f seconds", [endTime timeIntervalSinceDate:startTime]];
+    [killTimer invalidate];
 }
 
 - (void)startRunLoop
 {
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:KILLTIMER
+                                                      target:self
+                                                    selector:@selector(dirtyExit)
+                                                    userInfo:nil
+                                                     repeats:NO];
+    
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-
-    NSCalendar *currentCalendar = [NSCalendar currentCalendar];
-    
-    NSInteger killTime = 120;
-    NSDate *startPlusKillTimer = [currentCalendar dateByAddingUnit:NSCalendarUnitSecond
-                                                               value:killTime
-                                                              toDate:startTime
-                                                             options:NSCalendarMatchNextTime];
-    [runLoop runUntilDate:startPlusKillTimer];
-    
-    [YDPrettyConsole single:@"Run-loop started"];
+    [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+    [runLoop run];
 }
 
 - (void) setNotification {

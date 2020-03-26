@@ -10,9 +10,10 @@ int main(int argc, const char *argv[]) {
 
         YDManager *start = [[YDManager alloc] init:argc];
 
-        __unused YDFindFactors *findfactors = [[YDFindFactors alloc] initWithN:argv[1]];
-        [start startRunLoop];
-
+        if(start != NULL){
+            __unused YDFindFactors *findfactors = [[YDFindFactors alloc] initWithN:argv[1]];
+            [start startRunLoop];
+        }
         [YDPrettyConsole single:@"Run-loop killed"];
     }
     return 0;

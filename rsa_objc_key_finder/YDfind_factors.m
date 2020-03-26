@@ -5,6 +5,7 @@
 @synthesize p;
 @synthesize q;
 @synthesize n;
+NSArray *foundFactors;
 
 - (BOOL)convertToULL {
     
