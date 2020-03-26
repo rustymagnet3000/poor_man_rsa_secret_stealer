@@ -1,4 +1,5 @@
 #include "YDPrettyConsole.h"
+#define DEFAULT_WIDTH 30
 
 #ifdef DEBUG
 #define NSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
@@ -7,6 +8,8 @@
 #endif
 
 @implementation YDPrettyConsole
+
+static int width;
 
 - (instancetype)init{
         self = [super init];
@@ -30,13 +33,19 @@
 }
 
 + (void)banner{
-    NSLog(@"🐝 banner time");
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
-    
-    printf ("lines %d\n", w.ws_row);
-    printf ("columns %d\n", w.ws_col);
+    if(width == 0) {
+        struct winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        if(w.ws_row > 0) {
+            width = w.ws_col;
+        } else {
+            width = DEFAULT_WIDTH;
+        }
+    }
+    for (int i = 0; i < width; i++)
+        putchar('-');
+    putchar('\n');
 }
 
 + (void)single:(NSString *)message{
@@ -49,6 +58,15 @@
     NSString *concatStr= [[NSString alloc] initWithFormat:message arguments:args];
     NSLog(@"🐝 %@", concatStr);
     va_end(args);
+}
+
++ (void)error:(NSString *)message,...{
+    va_list args;
+    va_start(args,message);
+    NSString *concatStr= [[NSString alloc] initWithFormat:message arguments:args];
+    NSLog(@"🐝 %@", concatStr);
+    va_end(args);
+    exit(99);
 }
 
 @end

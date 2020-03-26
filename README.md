@@ -7,23 +7,27 @@ Below was a challenge from the article:
 RSA Parameters
 e:                          65537
 N:                          1034776851837418228051242693253376923
-P:                          <unknown>
-Q:                          <unknown>
+P:                          < unknown Prime Number >
+Q:                          < unknown Prime Number >
 Length of Prime Numbers:    60 bits
 
 Encrypted secret:           582984697800119976959378162843817868
 ```
-The first game was to calculate the `factors` of N.  After that, and more hops, you would derive the Private Key.  
+The code in this repo was built to find a `Private Key` that would reveal a secret message.
 
-With the Private Key you would decrypt the ciphertext (above) into plaintext.  Revealing a secret message! 🕵🏼‍
+The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  A `Prime Number` is divisible only by itself and one.
 
-The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit keys`.  Where the standards organization (`NIST`) disallowed anything less than `2048 bits`.
+After `factorizing` the app could derive the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
+
+## Context
+
+The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit keys`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bits`.
 
 This project was purely for academic interest and would not work against a real RSA implementation.  
 
 
 ## Goal 1: Read and factorize N
-My first goal was to take a long, user entered number (`N`).  Once you had `N` you would attempt to `Factorize` and find `P` and `Q`.  
+My first goal was to take a long, user entered number (`N`).  Eventually my code would handle the challenge `N` value of ` 1034776851837418228051242693253376923`.
 
 Sounds easy?   Defintely not; this is a [`Time Complex`](https://en.wikipedia.org/wiki/Time_complexity) problem.
 
@@ -35,6 +39,7 @@ Sounds easy?   Defintely not; this is a [`Time Complex`](https://en.wikipedia.or
  - [x] Not a negative
  - [x] Not even [as this implies a non-prime input `(100 = 5 * 20)`
  - [x] Not a prime number
+ - [x] A "good" `N` was made of two `Primes`.
 
 #### Brainstorm
 My original idea was to write super simple code that did the following checks:
