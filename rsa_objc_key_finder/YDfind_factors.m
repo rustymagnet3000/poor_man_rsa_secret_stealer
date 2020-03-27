@@ -2,16 +2,14 @@
 
 @implementation YDFindFactors : NSObject
 
-@synthesize p;
-@synthesize q;
-@synthesize n;
+
 unsigned long long foundFactors[MAX_FOUND_FACTORS];
 
 - (BOOL)convertToULL {
     
     char *endptr = NULL;
     
-    n = strtoull(self.rawInput, NULL, 10);
+    n = strtoull(rawInput, NULL, 10);
 
     if (endptr != NULL){
         [YDPrettyConsole single:@"Only enter digits"];
@@ -40,7 +38,7 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
     {
         self = [super init];
         if (self) {
-            self.rawInput = N;
+            rawInput = N;
             
             if([self convertToULL] == FALSE){
                 return NULL;
@@ -51,10 +49,9 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
             }
         }
         
+        [YDPrettyConsole multiple:@"Searching factors of: %llu", n];
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-        
         dispatch_async(dispatchQueue, ^{
-            [YDPrettyConsole multiple:@"Searching factors of: %llu",self.n];
             [self factorize];
         });
         return self;
@@ -87,7 +84,7 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
                 y += 2;
                 
             }while( y < i );
-            foundFactors
+            
             [YDPrettyConsole multiple:@"Prime factor: %llu",i];
         }
     }
