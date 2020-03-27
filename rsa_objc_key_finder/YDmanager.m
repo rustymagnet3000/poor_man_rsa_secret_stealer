@@ -39,15 +39,13 @@
 
 - (void)cleanExit
 {
-    endTime = [NSDate date];
     [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
     exit(EXIT_SUCCESS);
 }
 
-- (void)dirtyExit
++ (void)dirtyExit
 {
-    endTime = [NSDate date];
-    [YDPrettyConsole multiple:@"Kill timer fired: %.1f seconds", [endTime timeIntervalSinceDate:startTime]];
+    [YDPrettyConsole single:@"Run-loop expired or error in setup.  timer fired: %.1f seconds"];
 }
 
 - (void)startRunLoop
@@ -67,11 +65,20 @@
      {
          [self receiveNotification:note];
      }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ProgressBarFinished" object:NULL queue:NULL usingBlock:^(NSNotification *prettyConsole)
+     {
+         [self receiveNotification:prettyConsole];
+     }];
 }
+
 
 -(void) receiveNotification:(NSNotification*)notification
 {
     if ([notification.name isEqualToString:@"FactorizationCompleted"])
+    {
+        endTime = [NSDate date];
+    }
+    if ([notification.name isEqualToString:@"ProgressBarFinished"])
     {
         [self cleanExit];
     }

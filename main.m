@@ -14,7 +14,7 @@ int main(int argc, const char *argv[]) {
             __unused YDFindFactors *findfactors = [[YDFindFactors alloc] initWithN:argv[1]];
             [manager startRunLoop];
         }
-        [manager dirtyExit];
+        [YDManager dirtyExit];
     }
     return 0;
 }

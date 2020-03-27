@@ -89,6 +89,7 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
             }while( y < i );
             putchar('P');
             [foundFactors addObject:[NSNumber numberWithUnsignedLongLong:i]];
+            progressBar.curser_counter ++;
         }
     }
 
