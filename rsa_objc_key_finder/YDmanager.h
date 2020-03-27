@@ -16,6 +16,6 @@
 - (instancetype) init:(int)argCount;
 - (void)startRunLoop;
 - (void)setNotification;
-- (void)dirtyExit;
++ (void)dirtyExit;
 
 @end

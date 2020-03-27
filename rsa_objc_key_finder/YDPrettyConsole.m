@@ -9,7 +9,6 @@
 @implementation YDPrettyConsole
 
 static int width;
-int curser_counter;
 
 - (instancetype)init{
         self = [super init];
@@ -28,23 +27,24 @@ int curser_counter;
 - (void) UIProgressStart{
 
     while (self.running == TRUE) {
-        if(curser_counter == width){
-            curser_counter = 0;
+        if(_curser_counter == width){
+            _curser_counter = 0;
             putchar('\n');
         }
-        curser_counter++;
+        _curser_counter++;
         putchar(PROGRESS_CHAR);
         usleep(750000); // 0.75 second
     }
     #pragma mark - complete search banner.
-    for (; curser_counter < width; curser_counter++){
+    for (; _curser_counter < width; _curser_counter++){
         putchar(PROGRESS_CHAR);
     }
     putchar('\n');
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ProgressBarFinished" object:NULL userInfo:NULL];
 }
 
 - (void)setNotification {
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:nil queue:nil usingBlock:^(NSNotification *note)
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:NULL queue:NULL usingBlock:^(NSNotification *note)
      {
          [self receiveNotification:note];
      }];
