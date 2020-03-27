@@ -1,9 +1,7 @@
 #import "YDmanager.h"
-#define KILLTIMER 60
+#define KILLTIMER 10
 
 @implementation YDManager : NSObject
-
-
 
 - (BOOL)preCheck: (int)args {
 
@@ -22,12 +20,9 @@
         startTime = [NSDate date];
         [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
         [YDPrettyConsole multiple:@"Kill Timer\t%d", KILLTIMER];
-        [YDPrettyConsole banner];
         if([self preCheck: argCount] == FALSE){
             return NULL;
         }
-
-        progressBar = [[YDPrettyConsole alloc] init];
         [self setNotification];
     }
 
@@ -68,7 +63,7 @@
 }
 
 - (void) setNotification {
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorSearchComplete" object:nil queue:nil usingBlock:^(NSNotification *note)
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:nil queue:nil usingBlock:^(NSNotification *note)
      {
          [self receiveNotification:note];
      }];
@@ -76,9 +71,8 @@
 
 -(void) receiveNotification:(NSNotification*)notification
 {
-    if ([notification.name isEqualToString:@"FactorSearchComplete"])
+    if ([notification.name isEqualToString:@"FactorizationCompleted"])
     {
-        [progressBar setRunning:FALSE];
         [self cleanExit];
     }
 }

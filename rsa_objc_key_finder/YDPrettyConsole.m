@@ -1,5 +1,4 @@
 #include "YDPrettyConsole.h"
-#define DEFAULT_WIDTH 30
 
 #ifdef DEBUG
 #define NSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
@@ -10,14 +9,16 @@
 @implementation YDPrettyConsole
 
 static int width;
+int curser_counter;
 
 - (instancetype)init{
         self = [super init];
         if (self) {
-             dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+            [self setNotification];
+            self.running = TRUE;
+            dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
              
              dispatch_async(dispatchQueue, ^{
-                 self.running = TRUE;
                  [self UIProgressStart];
              });
         }
@@ -25,10 +26,35 @@ static int width;
 }
 
 - (void) UIProgressStart{
-    putchar('>');
+
     while (self.running == TRUE) {
-        putchar('_');
-        sleep(1);
+        if(curser_counter == width){
+            curser_counter = 0;
+            putchar('\n');
+        }
+        curser_counter++;
+        putchar(PROGRESS_CHAR);
+        usleep(750000); // 0.75 second
+    }
+    #pragma mark - complete search banner.
+    for (; curser_counter < width; curser_counter++){
+        putchar(PROGRESS_CHAR);
+    }
+    putchar('\n');
+}
+
+- (void)setNotification {
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:nil queue:nil usingBlock:^(NSNotification *note)
+     {
+         [self receiveNotification:note];
+     }];
+}
+
+- (void)receiveNotification:(NSNotification*)notification
+{
+    if ([notification.name isEqualToString:@"FactorizationCompleted"])
+    {
+        [self setRunning:FALSE];
     }
 }
 
@@ -44,7 +70,7 @@ static int width;
         }
     }
     for (int i = 0; i < width; i++)
-        putchar('-');
+        putchar('*');
     putchar('\n');
 }
 
