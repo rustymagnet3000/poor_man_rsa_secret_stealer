@@ -1,5 +1,4 @@
 #import "YDmanager.h"
-#define KILLTIMER 10
 
 @implementation YDManager : NSObject
 
@@ -37,6 +36,13 @@
     return [dateFormat stringFromDate:date];
 }
 
+- (void)exitAfterRunLoop
+{
+    endTime = [NSDate date];
+    [YDPrettyConsole multiple:@"Run-loop stopped. %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
+    exit(EXIT_FAILURE);
+}
+
 - (void)cleanExit
 {
     [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
@@ -45,7 +51,7 @@
 
 + (void)dirtyExit
 {
-    [YDPrettyConsole single:@"Run-loop expired or error in setup.  timer fired: %.1f seconds"];
+    [YDPrettyConsole single:@"Error in setup"];
 }
 
 - (void)startRunLoop

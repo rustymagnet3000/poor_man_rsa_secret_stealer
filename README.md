@@ -1,4 +1,4 @@
-# Find an RSA Private Key
+# Find a Private Key
 ## Challenge
 `https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7`
 
@@ -6,16 +6,16 @@ Below was a challenge from the article:
 ```
 RSA Parameters
 e:                          65537
-N:                          1034776851837418228051242693253376923
-P:                          < unknown Prime Number >
-Q:                          < unknown Prime Number >
+𝑁:                          1034776851837418228051242693253376923
+𝑝:                          < unknown Prime Number >
+𝑞:                          < unknown Prime Number >
 Length of Prime Numbers:    60 bits
 
 Encrypted secret:           582984697800119976959378162843817868
 ```
 The code in this repo was built to find a `Private Key` that would reveal a secret message.
 
-The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  A `Prime Number` is divisible only by itself and one.
+The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  The found numbers were referred to as `𝑝` and `𝑞` and were to be kept secret.  `𝑁` was not a secret and it was part of the `Public Key`.
 
 After `factorizing` the app could derive the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
 
@@ -42,7 +42,7 @@ Sounds easy?   Defintely not; this is a [`Time Complex`](https://en.wikipedia.or
  - [x] A "good" `N` was made of two `Primes`.
 
 #### Brainstorm
-My original idea was to write super simple code that did the following checks:
+My original idea was to write super simple code that enforced:
 
 - N was not even
 - Only `odd` numbers
@@ -103,10 +103,10 @@ I purged my code of `int` types.  I sped up my search loop by removing stupid co
 
 Status| Number (N) | Primes found | Time taken
 --|---|--|--
-🐝| 505371799 | 16127 * 31337 | 1 second
-🐝| 7919261327 | 7919 * 1000033  | 19 seconds
+✅| 505371799 | 16127 * 31337 | 1 second
+✅| 7919261327 | 7919 * 1000033  | 19 seconds
 🐜| 10175656859 | 100033 * 101723 | 25 seconds. Failed to find all factors
-🐝| 17746761831 | 3 * 5915587277  | 72 seconds
+✅| 17746761831 | 3 * 5915587277  | 72 seconds
 🐜| 8069212743871 |  2840261 * 2841011 (7) | Found factors but timed out.
 🐜| 100001880003211 | 10000019 * 10000169 (8) | Found factors but timed out.
 
@@ -135,6 +135,21 @@ upper_limit / 4 trill == 12.5
 12.5 * 6 hours == 75 hours.
 ```
 Using my crude calculation again, with 2 x Primes of 8-digits, my `N` value would take over **3 days** to exhaust all possible `N` values.
+
+#### Results 4: Which N is valid?
+It appears when 𝑝 and 𝑞 prime, 𝑁 will have only two factors.  I wanted to verify this and also test something I missed on the `Key Generation for RSA`.
+
+> p and q should be chosen at random, and should be similar in magnitude but differ in length by a few digits to make factoring harder.
+
+Primes here: https://primes.utm.edu/lists/small/100000.txt
+
+Status| Number (N) | Primes found | Time taken
+--|---|--|--
+✅| 505371799 | 16127 * 31337 | 1 second
+✅| 57564127333 | 869273 * 66221| 140 seconds
+✅| 33726446021 | 341233 * 98837| 82 seconds
+✅| 25125434821 | 1180873 * 21277| 62 seconds
+✅| 85828944079 | 1192549 * 71971| 207 seconds
 
 ## Summary
 #### Failings of the Naive Trial Division Algorithm

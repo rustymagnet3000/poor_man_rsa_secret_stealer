@@ -20,7 +20,7 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
 
 - (BOOL)preChecks {
     
-    if (n >= ULONG_LONG_MAX || n <= 2) {  // also catches null values
+    if (n >= ULONG_LONG_MAX || n <= 2) {  // catches null values
          [YDPrettyConsole single:@"Outside the supported number range"];
         return FALSE;
     }
@@ -98,6 +98,7 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
 
 - (void) factorize_completed
 {
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
 }
 @end

@@ -13,8 +13,10 @@ int main(int argc, const char *argv[]) {
         if(manager != NULL){
             __unused YDFindFactors *findfactors = [[YDFindFactors alloc] initWithN:argv[1]];
             [manager startRunLoop];
+            [manager exitAfterRunLoop];
+        }else {
+            [YDManager dirtyExit];
         }
-        [YDManager dirtyExit];
     }
     return 0;
 }
