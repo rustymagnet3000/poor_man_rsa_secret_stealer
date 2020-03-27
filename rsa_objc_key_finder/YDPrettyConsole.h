@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YDPrettyConsole : NSObject
 
 @property BOOL running;
+@property int curser_counter;
 
 + (void)single:(NSString *)message;
 + (void)multiple:(NSString *)message,...;
