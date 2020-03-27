@@ -8,9 +8,10 @@
 - (BOOL)preChecks;
 @end
 
-
 @interface YDFindFactors : NSObject <YDFactorSetupRules>{
+    YDPrettyConsole *progressBar;
     unsigned long long n;
+    NSMutableArray *foundFactors;
     char *binaryRepresentation;
     const char *rawInput;
 }

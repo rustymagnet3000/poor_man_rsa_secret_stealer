@@ -2,7 +2,6 @@
 
 @implementation YDFindFactors : NSObject
 
-
 unsigned long long foundFactors[MAX_FOUND_FACTORS];
 
 - (BOOL)convertToULL {
@@ -49,7 +48,11 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
             }
         }
         
-        [YDPrettyConsole multiple:@"Searching factors of: %llu", n];
+        foundFactors = [NSMutableArray array];
+        [YDPrettyConsole multiple:@"Factorizing: %llu", n];
+        [YDPrettyConsole banner];
+        progressBar = [[YDPrettyConsole alloc] init];
+        #pragma mark - DISPATCH_QUEUE_PRIORITY_BACKGROUND much slower
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         dispatch_async(dispatchQueue, ^{
             [self factorize];
@@ -84,20 +87,16 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
                 y += 2;
                 
             }while( y < i );
-            
-            [YDPrettyConsole multiple:@"Prime factor: %llu",i];
+            putchar('P');
+            [foundFactors addObject:[NSNumber numberWithUnsignedLongLong:i]];
         }
     }
 
     [self factorize_completed];
 }
 
-#pragma mark - BOOL: factorization completed
-
-- (BOOL)factorize_completed
+- (void) factorize_completed
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorSearchComplete" object:self userInfo:nil];
-
-    return TRUE;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
 }
 @end

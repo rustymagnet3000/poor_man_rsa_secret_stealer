@@ -9,7 +9,6 @@
 @end
 
 @interface YDManager : NSObject  <YDManagerRules>{
-    YDPrettyConsole *progressBar;
     NSDate *startTime;
     NSDate *endTime;
 }
