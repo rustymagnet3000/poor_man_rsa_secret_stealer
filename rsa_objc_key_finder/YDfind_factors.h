@@ -9,14 +9,11 @@
 @end
 
 
-@interface YDFindFactors : NSObject <YDFactorSetupRules>
-
-@property (readwrite) unsigned long long n;
-@property (readwrite) unsigned long long p;
-@property (readwrite) unsigned long long q;
-@property (readwrite) char *binaryRepresentation;
-@property (readwrite) const char *rawInput;
-
+@interface YDFindFactors : NSObject <YDFactorSetupRules>{
+    unsigned long long n;
+    char *binaryRepresentation;
+    const char *rawInput;
+}
 - (instancetype)initWithN:(const char*)N;
 
 @end

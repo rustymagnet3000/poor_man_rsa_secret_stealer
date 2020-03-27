@@ -8,13 +8,13 @@
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
 
-        YDManager *start = [[YDManager alloc] init:argc];
+        YDManager *manager = [[YDManager alloc] init:argc];
 
-        if(start != NULL){
+        if(manager != NULL){
             __unused YDFindFactors *findfactors = [[YDFindFactors alloc] initWithN:argv[1]];
-            [start startRunLoop];
+            [manager startRunLoop];
         }
-        [start dirtyExit];
+        [manager dirtyExit];
     }
     return 0;
 }
