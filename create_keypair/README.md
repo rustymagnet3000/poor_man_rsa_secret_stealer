@@ -1,8 +1,9 @@
 
 
 ## The Secret Message
+```
 echo -n -e '\x41\x42\x43\x44' > secret.plaintext
-
+```
 Verify no character returns..
 ```
 xxd secret.plaintext
@@ -25,23 +26,16 @@ data too large for modulus:crypto/rsa/rsa_ossl.c:131:
 ```
 
 echo -n -e '\x41\x42\x43\x44\x45\x46\x47' > secret.plaintext
+➜  create_keypair git:(foundfactors) ✗ openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
+RSA operation error
+4347848128:error:04068084:rsa routines:rsa_ossl_public_encrypt:
 
 
 
 
 
 ## Generate Short RSA Private Key
-The normal tools set a minimum version that you cannot override.
-```
-ssh-keygen -t rsa -b 512 
-Invalid RSA key length: minimum is 1024 bits
-```
-This also fail with:
-```
-openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:100
-genpkey: Error setting rsa_keygen_bits:100 parameter:
-```
-But can you set a custom Private Key?
+We are trying to create a file that completes this Struct:
 
 ```
 RSAPrivateKey ::= SEQUENCE {
@@ -57,9 +51,8 @@ RSAPrivateKey ::= SEQUENCE {
     otherPrimeInfos   OtherPrimeInfos OPTIONAL
 }
 ```
-
-
-## Custom Keys
+Then create the key:
+```
 openssl asn1parse -genconf custom_key.txt -out key.der 
 
 
@@ -74,15 +67,37 @@ openssl asn1parse -genconf custom_key.txt -out key.der
    44:d=1  hl=2 l=   3 prim: INTEGER           :02C695
    49:d=1  hl=2 l=   3 prim: INTEGER           :1898A2
 
-
-$openssl asn1parse -genconf asn_format_mykey.txt -out key.der
+```
+Convert to PEM format:
+```
 $openssl rsa -inform der -in key.der -outform pem > key.pem
+```
+Extract the Public Key:
+```
 $openssl rsa -inform der -in key.der -outform pem -pubout>pkey.pem
+```
+Print the Public Key:
+```
+openssl rsa -inform PEM -pubin -in pkey.pem -text -noout 
+RSA Public-Key: (49 bit)
+Modulus: 305512047893009 (0x115dc9116da11)
+Exponent: 78221649299689 (0x4724659ec8e9)
+```
 
 
-echo 'AAAAAAA'| openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -out message.encrypted
-RSA operation error
-4514530752:error:0406B06E:rsa routines:RSA_padding_add_none:data too large for key size:crypto/rsa/rsa_none.c:18:
+## Why not use the normal commands?
+The normal tools set a minimum version that you cannot override.
+```
+ssh-keygen -t rsa -b 512 
+Invalid RSA key length: minimum is 1024 bits
+
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:100
+genpkey: Error setting rsa_keygen_bits:100 parameter:
+```
+
+
+
+
 
 
 ## References
