@@ -1,18 +1,22 @@
 #import <Foundation/Foundation.h>
 #include "YDPrettyConsole.h"
 #define MAX_FOUND_FACTORS 100
+#define CHAR_ARRY_MAX 64
+#define INT_ARRY_MAX 16
 
 @protocol YDFactorSetupRules <NSObject>
 @required
 - (BOOL)convertToULL;
 - (BOOL)preChecks;
+- (void)deriveBinString;
+
 @end
 
 @interface YDFindFactors : NSObject <YDFactorSetupRules>{
     YDPrettyConsole *progressBar;
     unsigned long long n;
     NSMutableArray *foundFactors;
-    char *binaryRepresentation;
+    NSString *binaryString;
     const char *rawInput;
 }
 - (instancetype)initWithN:(const char*)N;

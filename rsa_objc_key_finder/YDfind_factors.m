@@ -4,6 +4,42 @@
 
 unsigned long long foundFactors[MAX_FOUND_FACTORS];
 
+
+- (void)ullToBinary:(unsigned long long) ullDec buffer:(char *)buf index:(int *)i{
+
+    if (ullDec < 2){
+        buf[*i] = ullDec + '0';
+        return;
+    }
+
+    int temp = ((ullDec / 2  * 10 + ullDec) % 2);
+    buf[*i] = temp + '0';
+    *i = *i + 1;
+    [self ullToBinary:ullDec/2 buffer:buf index:i];
+
+}
+
+- (void)deriveBinString {
+    
+    int len = 0;
+    unsigned long long ullDecimal = n;
+    char *binaryStr = calloc(CHAR_ARRY_MAX, sizeof(char));
+    char *revbinStr = calloc(CHAR_ARRY_MAX, sizeof(char));
+    
+    [self ullToBinary:ullDecimal buffer:binaryStr index:&len];
+    
+    for (int i = 0; binaryStr[i] != '\0'; i++)
+        revbinStr[i] = binaryStr[len - i];
+
+    binaryString = [NSString stringWithUTF8String:revbinStr];
+    binaryStr = NULL;
+    revbinStr = NULL;
+    free(binaryStr);
+    free(revbinStr);
+}
+
+
+
 - (BOOL)convertToULL {
     
     char *endptr = NULL;
@@ -49,7 +85,9 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
         }
         
         foundFactors = [NSMutableArray array];
-        [YDPrettyConsole multiple:@"Factorizing: %llu", n];
+        [self deriveBinString];
+        [YDPrettyConsole multiple:@"Factorizing %llu", n];
+        [YDPrettyConsole multiple:@"Binary %@ (%d bits)", binaryString, [binaryString length]];
         [YDPrettyConsole banner];
         progressBar = [[YDPrettyConsole alloc] init];
         #pragma mark - DISPATCH_QUEUE_PRIORITY_BACKGROUND much slower
