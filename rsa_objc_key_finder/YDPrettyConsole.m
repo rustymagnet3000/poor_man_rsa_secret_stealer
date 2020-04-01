@@ -24,8 +24,16 @@ static int width;
     return self;
 }
 
-- (void) UIProgressStart{
+- (void) UIProgressStop{
+    #pragma mark - complete search banner.
+    for (; _curser_counter < width; _curser_counter++){
+        putchar(PROGRESS_CHAR);
+    }
+    putchar('\n');
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ProgressBarFinished" object:NULL userInfo:NULL];
+}
 
+- (void) UIProgressStart{
     while (self.running == TRUE) {
         if(_curser_counter == width){
             _curser_counter = 0;
@@ -35,12 +43,6 @@ static int width;
         putchar(PROGRESS_CHAR);
         usleep(750000); // 0.75 second
     }
-    #pragma mark - complete search banner.
-    for (; _curser_counter < width; _curser_counter++){
-        putchar(PROGRESS_CHAR);
-    }
-    putchar('\n');
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ProgressBarFinished" object:NULL userInfo:NULL];
 }
 
 - (void)setNotification {

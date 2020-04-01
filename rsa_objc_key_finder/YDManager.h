@@ -1,11 +1,11 @@
 #import <Foundation/Foundation.h>
-#import "YDfind_factors.h"
+#import "YDFindFactors.h"
 #import "YDPrettyConsole.h"
-#define KILLTIMER 600
+#define KILLTIMER 10
 
 @protocol YDManagerRules <NSObject>
 @required
-- (void)startRunLoop;
+
 - (void)setNotification;
 @end
 
@@ -15,9 +15,8 @@
 }
 
 - (instancetype) init:(int)argCount;
-- (void)startRunLoop;
-- (void)exitAfterRunLoop;
 - (void)setNotification;
+- (void)cleanExit;
 + (void)dirtyExit;
 
 @end
