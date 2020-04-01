@@ -8,16 +8,18 @@
 - (BOOL)convertToULL;
 - (BOOL)preChecks;
 - (void)deriveBinString;
-
 @end
 
 @interface YDFindFactors : NSObject <YDFactorSetupRules>{
-    YDPrettyConsole *progressBar;
     unsigned long long n;
+    unsigned long long e;
     NSMutableArray *foundFactors;
     NSString *binaryString;
     const char *rawInput;
 }
+@property YDPrettyConsole *progressBar;
+
 - (instancetype)initWithN:(const char*)N;
+- (void)factorize;
 - (BOOL)postChecks;
 @end

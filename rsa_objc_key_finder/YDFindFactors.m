@@ -1,9 +1,8 @@
-#import "YDfind_factors.h"
+#import "YDFindFactors.h"
 
 @implementation YDFindFactors : NSObject
 
 - (instancetype)initWithN:(const char*)N{
-    {
         self = [super init];
         if (self) {
             rawInput = N;
@@ -22,15 +21,8 @@
         [YDPrettyConsole multiple:@"Factorizing %llu", n];
         [YDPrettyConsole multiple:@"Binary %@ (%d bits)", binaryString, [binaryString length]];
         [YDPrettyConsole banner];
-        
-        progressBar = [[YDPrettyConsole alloc] init];
-        #pragma mark - DISPATCH_QUEUE_PRIORITY_BACKGROUND much slower
-        dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-        dispatch_async(dispatchQueue, ^{
-            [self factorize];
-        });
+        _progressBar = [[YDPrettyConsole alloc] init];
         return self;
-    }
 }
 
 - (void)ullToBinary:(unsigned long long) ullDec buffer:(char *)buf index:(int *)i{
@@ -102,7 +94,7 @@
 {
     return FALSE;
 }
-#pragma mark - void: factorize work horse
+#pragma mark - Naive Trial Division Algorithm
 
 - (void)factorize
 {
@@ -125,26 +117,24 @@
                 
             }while( y < i );
             putchar('P');
-            NSLog(@"%llu ", i);
             [foundFactors addObject:[NSNumber numberWithUnsignedLongLong:i]];
-            progressBar.curser_counter ++;
+            _progressBar.curser_counter ++;
         }
     }
-
     [self factorizeCompleted];
 }
 
-- (void) factorizeCompleted
-{
+- (void) factorizeCompleted{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
 }
 
-- (BOOL)postChecks {
+- (BOOL)postChecks{
+    
     [YDPrettyConsole multiple:@"Factors: %@", foundFactors];
     if([foundFactors count] == 2)
         return TRUE;
     return FALSE;
-  }
+}
 
 
 @end
