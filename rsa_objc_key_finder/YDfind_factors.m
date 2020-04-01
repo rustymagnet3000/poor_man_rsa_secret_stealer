@@ -2,8 +2,36 @@
 
 @implementation YDFindFactors : NSObject
 
-unsigned long long foundFactors[MAX_FOUND_FACTORS];
-
+- (instancetype)initWithN:(const char*)N{
+    {
+        self = [super init];
+        if (self) {
+            rawInput = N;
+            
+            if([self convertToULL] == FALSE){
+                return NULL;
+            }
+            
+            if([self preChecks] == FALSE){
+                return NULL;
+            }
+        }
+        
+        foundFactors = [NSMutableArray array];
+        [self deriveBinString];
+        [YDPrettyConsole multiple:@"Factorizing %llu", n];
+        [YDPrettyConsole multiple:@"Binary %@ (%d bits)", binaryString, [binaryString length]];
+        [YDPrettyConsole banner];
+        
+        progressBar = [[YDPrettyConsole alloc] init];
+        #pragma mark - DISPATCH_QUEUE_PRIORITY_BACKGROUND much slower
+        dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+        dispatch_async(dispatchQueue, ^{
+            [self factorize];
+        });
+        return self;
+    }
+}
 
 - (void)ullToBinary:(unsigned long long) ullDec buffer:(char *)buf index:(int *)i{
 
@@ -69,35 +97,6 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
     return TRUE;
 }
 
-- (instancetype)initWithN:(const char*)N{
-    {
-        self = [super init];
-        if (self) {
-            rawInput = N;
-            
-            if([self convertToULL] == FALSE){
-                return NULL;
-            }
-            
-            if([self preChecks] == FALSE){
-                return NULL;
-            }
-        }
-        
-        foundFactors = [NSMutableArray array];
-        [self deriveBinString];
-        [YDPrettyConsole multiple:@"Factorizing %llu", n];
-        [YDPrettyConsole multiple:@"Binary %@ (%d bits)", binaryString, [binaryString length]];
-        [YDPrettyConsole banner];
-        progressBar = [[YDPrettyConsole alloc] init];
-        #pragma mark - DISPATCH_QUEUE_PRIORITY_BACKGROUND much slower
-        dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-        dispatch_async(dispatchQueue, ^{
-            [self factorize];
-        });
-        return self;
-    }
-}
 
 - (BOOL)divideNoRemainder
 {
@@ -126,17 +125,26 @@ unsigned long long foundFactors[MAX_FOUND_FACTORS];
                 
             }while( y < i );
             putchar('P');
+            NSLog(@"%llu ", i);
             [foundFactors addObject:[NSNumber numberWithUnsignedLongLong:i]];
             progressBar.curser_counter ++;
         }
     }
 
-    [self factorize_completed];
+    [self factorizeCompleted];
 }
 
-- (void) factorize_completed
+- (void) factorizeCompleted
 {
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
 }
+
+- (BOOL)postChecks {
+    [YDPrettyConsole multiple:@"Factors: %@", foundFactors];
+    if([foundFactors count] == 2)
+        return TRUE;
+    return FALSE;
+  }
+
+
 @end
