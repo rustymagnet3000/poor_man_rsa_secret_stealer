@@ -5,13 +5,12 @@
 Below was a challenge from the article:
 ```
 Encryption Parameters of a RSA Public key
-e: (Exponent)                         65537
-𝑁: (Modulus)                          1034776851837418228051242693253376923
-𝑝:                          < unknown Prime Number >
-𝑞:                          < unknown Prime Number >
-Length of Modulus:    60 bits
-
-Encrypted secret:           582984697800119976959378162843817868
+e: (Exponent)                      65537
+𝑁: (Modulus)                      1034776851837418228051242693253376923
+𝑝:                                 < unknown Prime Number >
+𝑞:                                 < unknown Prime Number >
+Length of Modulus:                60 bits
+Encrypted secret:                 582984697800119976959378162843817868
 ```
 The code in this repo was built to find a `Private Key` that would reveal a secret message.
 
@@ -26,8 +25,6 @@ Step to find Private Key | Expressed as
 `Extended Euclidean algorithm (GCD)` | 𝑒 was 𝑒𝑑(mod𝜑(𝑛))=1  or ed =1(mod𝜑(𝑛))
 𝑥𝑒𝑑(mod𝑛)=𝑥
 
-
-
 ### Euler's totient function
 Number (N) | Primes
 --|--
@@ -40,15 +37,15 @@ As we know the above numbers were prime, this step is simple.
 ϕ(𝑛)=(7918)(1000032)
 ϕ(𝑛)=7918253376
 ```
+### Greatest Common Denominator (GCD) / Modular multiplicative inverse
+So you need `e [ Exponent ]` for this step.  Remember `e` is a Public value readable inside the Public Key.
+
+We need to calculate the `Modular multiplicative inverse`:
+```
+Inverse of  65537  mod  7918253376
+```
 
 
-### Greatest Common Denominator (GCD)
-So you need `e` for this step.  Here is a dummy Public Key I had. You can see `e` is readable.
-```
-openssl rsa -inform PEM -pubin -in pkey.pem -text -noout                                      
-RSA Public-Key: (49 bit)
-Exponent: 78221649299689 (0x4724659ec8e9)
-```
 This is where my knowledge is thin. Apparently you can't just calculate `φ(n)`. You need to do `𝜑(𝑛)=(𝑝−1)(𝑞−1)`.
 ```
 gcd(e, φ(n)) = 1
@@ -63,7 +60,7 @@ gcd(65537, 7918253376) = 1
 
 ### Context
 
-The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit keys`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bits`.
+The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit Primes`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bit number (Modulus) and 1,024 bit prime numbers`.
 
 This project was purely for academic interest and would not work against a real RSA implementation.  
 

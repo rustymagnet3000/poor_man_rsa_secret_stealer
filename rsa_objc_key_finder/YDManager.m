@@ -1,4 +1,4 @@
-#import "YDmanager.h"
+#import "YDManager.h"
 
 @implementation YDManager : NSObject
 
@@ -36,26 +36,6 @@
     return [dateFormat stringFromDate:date];
 }
 
-- (void)exitAfterRunLoop
-{
-    endTime = [NSDate date];
-    [YDPrettyConsole multiple:@"Run-loop stopped. %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
-    exit(EXIT_FAILURE);
-}
-
-- (void)startRunLoop
-{
-        
-    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-    NSCalendar *currentCalendar = [NSCalendar currentCalendar];
-
-    NSDate *startPlusKillTimer = [currentCalendar dateByAddingUnit:NSCalendarUnitSecond
-                                                               value:KILLTIMER
-                                                              toDate:startTime
-                                                             options:NSCalendarMatchNextTime];
-    [runLoop runUntilDate:startPlusKillTimer];
-}
-
 - (void) setNotification {
     [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:nil queue:nil usingBlock:^(NSNotification *note)
      {
@@ -82,9 +62,6 @@
 
 - (void)cleanExit
 {
-
-    CFRunLoopRef cfRunLoop = ([[NSRunLoop currentRunLoop] getCFRunLoop]);
-    CFRunLoopStop(cfRunLoop);
     [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
 }
 
