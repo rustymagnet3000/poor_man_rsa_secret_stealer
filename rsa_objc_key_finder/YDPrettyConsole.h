@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YDPrettyConsole : NSObject
 
-@property BOOL running;
+@property (nonatomic) BOOL running;
 @property int curser_counter;
 
 + (void)single:(NSString *)message;
