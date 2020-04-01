@@ -43,19 +43,9 @@
     exit(EXIT_FAILURE);
 }
 
-- (void)cleanExit
-{
-    [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
-    exit(EXIT_SUCCESS);
-}
-
-+ (void)dirtyExit
-{
-    [YDPrettyConsole single:@"Error in setup"];
-}
-
 - (void)startRunLoop
 {
+        
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
     NSCalendar *currentCalendar = [NSCalendar currentCalendar];
 
@@ -90,4 +80,16 @@
     }
 }
 
+- (void)cleanExit
+{
+
+    CFRunLoopRef cfRunLoop = ([[NSRunLoop currentRunLoop] getCFRunLoop]);
+    CFRunLoopStop(cfRunLoop);
+    [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
+}
+
++ (void)dirtyExit
+{
+    [YDPrettyConsole single:@"Error in setup"];
+}
 @end

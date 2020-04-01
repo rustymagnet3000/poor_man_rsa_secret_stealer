@@ -4,12 +4,12 @@
 
 Below was a challenge from the article:
 ```
-RSA Parameters
-e:                          65537
-𝑁:                          1034776851837418228051242693253376923
+Encryption Parameters of a RSA Public key
+e: (Exponent)                         65537
+𝑁: (Modulus)                          1034776851837418228051242693253376923
 𝑝:                          < unknown Prime Number >
 𝑞:                          < unknown Prime Number >
-Length of Prime Numbers:    60 bits
+Length of Modulus:    60 bits
 
 Encrypted secret:           582984697800119976959378162843817868
 ```
@@ -17,9 +17,51 @@ The code in this repo was built to find a `Private Key` that would reveal a secr
 
 The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  The found numbers were referred to as `𝑝` and `𝑞` and were to be kept secret.  `𝑁` was not a secret and it was part of the `Public Key`.
 
-After `factorizing` the app could derive the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
+After `factorizing` other steps were required:
 
-## Context
+Step to find Private Key | Expressed as
+--|--
+`Factorization` | 𝑝,𝑞 primes, 𝑛=𝑝𝑞
+`Euler's Totient function (PHI)` |𝑑 relatively prime to 𝜑(𝑛)=(𝑝−1)(𝑞−1)
+`Extended Euclidean algorithm (GCD)` | 𝑒 was 𝑒𝑑(mod𝜑(𝑛))=1  or ed =1(mod𝜑(𝑛))
+𝑥𝑒𝑑(mod𝑛)=𝑥
+
+
+
+### Euler's totient function
+Number (N) | Primes
+--|--
+7919261327 |  7919 * 1000033
+
+As we know the above numbers were prime, this step is simple.
+```
+ϕ(𝑛)=(𝑝−1)(𝑞−1)
+ϕ(𝑛)=(7919−1)(1000033−1)
+ϕ(𝑛)=(7918)(1000032)
+ϕ(𝑛)=7918253376
+```
+
+
+### Greatest Common Denominator (GCD)
+So you need `e` for this step.  Here is a dummy Public Key I had. You can see `e` is readable.
+```
+openssl rsa -inform PEM -pubin -in pkey.pem -text -noout                                      
+RSA Public-Key: (49 bit)
+Exponent: 78221649299689 (0x4724659ec8e9)
+```
+This is where my knowledge is thin. Apparently you can't just calculate `φ(n)`. You need to do `𝜑(𝑛)=(𝑝−1)(𝑞−1)`.
+```
+gcd(e, φ(n)) = 1
+e = Exponent. Pre-selected, and public information.
+gcd(65537, 7918253376) = 1
+```
+
+
+
+
+ these steps, the app had derived the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
+
+### Context
 
 The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit keys`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bits`.
 
@@ -239,6 +281,7 @@ https://www.systutorials.com/docs/linux/man/3-strtol/
 https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf
 
 #### References
+https://www.cryptool.org/en/cto-highlights/rsa-step-by-step
 
 https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm
 
