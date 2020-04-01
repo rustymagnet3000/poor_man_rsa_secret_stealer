@@ -5,7 +5,7 @@
 - (BOOL)preCheck: (int)args {
 
     if (args != 2){
-        [YDPrettyConsole multiple:@"Usage: enter N value. You entered %d argument(s)", args];
+        [YDPrettyConsole multiple:@"Usage: <n> <e> of RSA Public Key. \nYou entered %d argument(s)", args];
         return FALSE;
     }
     
@@ -15,13 +15,15 @@
 - (instancetype) init: (int)argCount{
     self = [super init];
     if (self) {
-       
-        startTime = [NSDate date];
-        [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
-        [YDPrettyConsole multiple:@"Kill Timer\t%d", KILLTIMER];
+
         if([self preCheck: argCount] == FALSE){
             return NULL;
         }
+        
+        startTime = [NSDate date];
+        [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
+        [YDPrettyConsole multiple:@"Kill Timer\t%d", KILLTIMER];
+        
         [self setNotification];
     }
 
@@ -54,13 +56,9 @@
     {
         endTime = [NSDate date];
     }
-    if ([notification.name isEqualToString:@"ProgressBarFinished"])
-    {
-        [self cleanExit];
-    }
 }
 
-- (void)cleanExit
+- (void)timeTaken
 {
     [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
 }
@@ -68,5 +66,6 @@
 + (void)dirtyExit
 {
     [YDPrettyConsole single:@"Error in setup"];
+    exit(EXIT_FAILURE);
 }
 @end

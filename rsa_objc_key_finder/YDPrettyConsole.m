@@ -15,13 +15,21 @@ static int width;
         if (self) {
             [self setNotification];
             self.running = TRUE;
-            dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-             
-             dispatch_async(dispatchQueue, ^{
-                 [self UIProgressStart];
-             });
+
         }
     return self;
+}
+
+- (void) setRunning:(BOOL)running{
+    if(running){
+        dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+         
+         dispatch_async(dispatchQueue, ^{
+             [self UIProgressStart];
+         });
+    }else{
+        [self UIProgressStop];
+    }
 }
 
 - (void) UIProgressStop{

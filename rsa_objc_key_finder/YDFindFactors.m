@@ -2,27 +2,50 @@
 
 @implementation YDFindFactors : NSObject
 
+- (BOOL)preChecks {
+    
+    char *endptr = NULL;
+    
+    n = strtoull(rawInput, NULL, 10);
+
+    if (endptr != NULL){
+        [YDPrettyConsole single:@"Only enter digits"];
+        return FALSE;
+    }
+
+    if (n >= ULONG_LONG_MAX || n <= 2) {  // catches NULL values
+         [YDPrettyConsole single:@"Outside the supported number range, or non Decimal characters"];
+        return FALSE;
+    }
+    
+    if (n % 2 == 0) {
+        [YDPrettyConsole single:@"Even numbers are not expected"];
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
+
 - (instancetype)initWithN:(const char*)N{
         self = [super init];
         if (self) {
+
             rawInput = N;
-            
-            if([self convertToULL] == FALSE){
-                return NULL;
-            }
             
             if([self preChecks] == FALSE){
                 return NULL;
             }
+            
+            foundFactors = [NSMutableArray array];
+            [self deriveBinString];
+            [YDPrettyConsole multiple:@"Factorizing %llu", n];
+            [YDPrettyConsole multiple:@"Binary %@ (%d bits)", binaryString, [binaryString length]];
+            [YDPrettyConsole banner];
+            _progressBar = [[YDPrettyConsole alloc] init];
+            
         }
-        
-        foundFactors = [NSMutableArray array];
-        [self deriveBinString];
-        [YDPrettyConsole multiple:@"Factorizing %llu", n];
-        [YDPrettyConsole multiple:@"Binary %@ (%d bits)", binaryString, [binaryString length]];
-        [YDPrettyConsole banner];
-        _progressBar = [[YDPrettyConsole alloc] init];
-        return self;
+      return self;
 }
 
 - (void)ullToBinary:(unsigned long long) ullDec buffer:(char *)buf index:(int *)i{
@@ -57,38 +80,6 @@
     free(binaryStr);
     free(revbinStr);
 }
-
-
-
-- (BOOL)convertToULL {
-    
-    char *endptr = NULL;
-    
-    n = strtoull(rawInput, NULL, 10);
-
-    if (endptr != NULL){
-        [YDPrettyConsole single:@"Only enter digits"];
-        return FALSE;
-    }
-    
-    return TRUE;
-}
-
-- (BOOL)preChecks {
-    
-    if (n >= ULONG_LONG_MAX || n <= 2) {  // catches null values
-         [YDPrettyConsole single:@"Outside the supported number range"];
-        return FALSE;
-    }
-    
-    if (n % 2 == 0) {
-        [YDPrettyConsole single:@"Even numbers are not expected"];
-        return FALSE;
-    }
-    
-    return TRUE;
-}
-
 
 - (BOOL)divideNoRemainder
 {

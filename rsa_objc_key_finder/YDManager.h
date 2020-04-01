@@ -16,7 +16,7 @@
 
 - (instancetype) init:(int)argCount;
 - (void)setNotification;
-- (void)cleanExit;
+- (void)timeTaken;
 + (void)dirtyExit;
 
 @end
