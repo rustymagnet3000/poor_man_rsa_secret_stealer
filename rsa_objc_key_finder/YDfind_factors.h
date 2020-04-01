@@ -2,7 +2,6 @@
 #include "YDPrettyConsole.h"
 #define MAX_FOUND_FACTORS 100
 #define CHAR_ARRY_MAX 64
-#define INT_ARRY_MAX 16
 
 @protocol YDFactorSetupRules <NSObject>
 @required
@@ -20,5 +19,5 @@
     const char *rawInput;
 }
 - (instancetype)initWithN:(const char*)N;
-
+- (BOOL)postChecks;
 @end
