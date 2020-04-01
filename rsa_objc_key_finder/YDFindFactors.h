@@ -5,9 +5,8 @@
 
 @protocol YDFactorSetupRules <NSObject>
 @required
-- (BOOL)convertToULL;
-- (BOOL)preChecks;
-- (void)deriveBinString;
+-(BOOL)preChecks;
+-(instancetype)initWithN:(const char*)N;
 @end
 
 @interface YDFindFactors : NSObject <YDFactorSetupRules>{
