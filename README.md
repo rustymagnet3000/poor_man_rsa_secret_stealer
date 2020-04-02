@@ -23,7 +23,7 @@ Step to find Private Key | Expressed as
 `Factorization` | 𝑝,𝑞 primes, 𝑛=𝑝𝑞
 `Euler's Totient function (PHI)` |𝑑 relatively prime to 𝜑(𝑛)=(𝑝−1)(𝑞−1)
 `Extended Euclidean algorithm (GCD)` | 𝑒 was 𝑒𝑑(mod𝜑(𝑛))=1  or ed =1(mod𝜑(𝑛))
-𝑥𝑒𝑑(mod𝑛)=𝑥
+| 𝑥𝑒𝑑(mod𝑛)=𝑥
 
 ### Euler's totient function
 Number (N) | Primes
@@ -144,7 +144,7 @@ Status| Number (N) | Primes found | Time taken
 --|---|--|--
 ✅| 505371799 | 16127 * 31337 | 1 second
 ✅| 7919261327 | 7919 * 1000033  | 19 seconds
-🐜| 10175656859 | 100033 * 101723 | 25 seconds. Failed to find all factors
+🐜| 10175656859 | 100033 * 101723 | This was a mistake! 100033 was not a Prime.
 ✅| 17746761831 | 3 * 5915587277  | 72 seconds
 🐜| 8069212743871 |  2840261 * 2841011 (7) | Found factors but timed out.
 🐜| 100001880003211 | 10000019 * 10000169 (8) | Found factors but timed out.
@@ -159,24 +159,16 @@ In 20 minutes, my computer running was able to check `N` values of up to ~220 bi
 20 minutes * 18.1 = 362 minutes
 362 = 6 hours
 ```
-
-#### Brute Force is slow
+#### Result 4: Hitting the limits
 I set my kill timer to 10 hours, while I slept.  My crude calculation was accurate enough.
 
 Status| Number (N) | Primes | Time taken
 --|---|--|--
-🐝| 8069212743871 |  2840261 * 2841011 (7) | 5 hours.
+🐝| 8069212743871 |  2840261 * 2841011 | 5 hours.
+  |   |   |  
 
-How long to calculate `100001880003211` which is just over 100 trillion?
-```
-100 trill / 2 == upper_limit
-upper_limit / 4 trill == 12.5
-12.5 * 6 hours == 75 hours.
-```
-Using my crude calculation again, with 2 x Primes of 8-digits, my `N` value would take over **3 days** to exhaust all possible `N` values.
-
-#### Results 4: Which N is valid?
-It appears when 𝑝 and 𝑞 prime, 𝑁 will have only two factors.  I wanted to verify this and also test something I missed on the `Key Generation for RSA`.
+#### Results 6: Choosing P and Q
+I assumed when 𝑝 and 𝑞 were prime, 𝑁 would have only two factors.  I wanted to verify this and test something I missed on the `Key Generation for RSA`.
 
 > p and q should be chosen at random, and should be similar in magnitude but differ in length by a few digits to make factoring harder.
 
@@ -188,40 +180,55 @@ Status| Number (N) | Primes found | Time taken
 ✅| 57564127333 | 869273 * 66221| 140 seconds
 ✅| 33726446021 | 341233 * 98837| 82 seconds
 ✅| 25125434821 | 1180873 * 21277| 62 seconds
-✅| 85828944079 | 1192549 * 71971| 207 seconds
+
+Things looked up.
+
+When I started this project, I didn't know this.  I picked `Primes` that were "close together".  That led me to write this code:
+
+```
+unsigned long long upper_limit = n / 2;
+```  
+
+This caused bugs with some numbers where you had widely different primes `10185829159 = 11 * 925984469`.  I could fix it.
+```
+unsigned long long upper_limit = n;
+```  
+But that hurt performance. See the following difference:
+
+Status| Number (N) | Bits | Primes found | Time taken
+
+✅| 112740085193 | 37 |  86771 * 1299283 | 522 seconds.
+✅| 112740085193 | 37 |  86771 * 1299283 | 264 seconds.
 
 ## Summary
 #### Failings of the Naive Trial Division Algorithm
-In summary, on small values, like most code on StackOverflow, my code worked.  But when I grew the size of N == 2 primes of 8 or more digits, my CPU would have to run at 99% for many days, weeks, millennia !
+In summary, on small values my initial code worked well.  Most code from `StackOverflow` was the same.  When you grew the size of `n` the `Factorization` sent your machine into warp speed and a problem that could not be solved in reasonable time.  
 
-The `Naive Trial Division Algorithm` had no chance of dealing with a `60 bit primes`.  It took 5 hours to search all odd numbers when the loop's upper limit was set to 4 trillions (43 bits)  My crude numbers illustrated this as follows:
+That said, the `Naive Trial Division Algorithm` does work if the `Public Key's Modulus (n)` is "short".  By short, my proof is `35-39 bit` numbers were solved in minutes by my code:
+ For example,
+```
+🐝 Factorizing 85828944079
+🐝 Binary 1001111111011110011011100000011001111 (37 bits)
+-PP---------------------------
+🐝 Factors: (
+    71971,
+    1192549
+)
+🐝 Finished in: 196.60 seconds
+```
+It took 5 hours to search all odd numbers when the loop's upper limit was set to 4 trillions (43 bits).  But a number that was over `100 trillion (47 bits)` I estimated **3 days** to finish.  
+
+#### Computing Power
+This code could never work against a real world RSA implementation.  The `Naive Trial Division Algorithm` had no chance of dealing with a `60 bit primes`.    Crudely illustrated as follows:
 ```
 My computer could do 4 trillion in 5 hours
 18 quintillion \ 4 trillion == 4.5 million
 4.5 million * 5 hours = 2,500 years
 ```
-**2,500 years** just to exhaust a single prime.
+**2,500 years**  to exhaust a single `60 bit` prime?
 
-Back to the challenge text:  `we are using 60 bit primes`.  The native `unsigned long` C type gave a ceiling of a positive, ~4 billion decimal value.  Another way to say it:
-```
-C Type unsigned long  (max 4294967295):
-11111111111111111111111111111111  (32 bits)
-
-C Type unsigned long long (max 18446744073709551615)
-1111111111111111111111111111111111111111111111111111111111111111 (64 bits)
-
-A 65 bit prime (29497513910652490397):
-11001100101011100001110001001111000000001100101011101001010011101 (65 bits)
-```
-
-Remember `P * Q = N`.  I could probably get away with `unsigned long long` for P and Q ( 60-65 bits each) but how would I even define N as variable when it was so much bigger than the either of those values ?  
-```
-N = P * Q
-812434587229347807826931000341281416581 = 29497513910652490397 * 27542476619900900873
-N = 130 bits
-```
-## Redesign
-So I didn't send my machine into warp speed and melt the CPU, I searched for better methods to achieve what I wanted. The following article changed my entire approach:
+## Re-Design
+I searched for better methods to achieve what I wanted. The following article changed my entire approach:
 
 https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
 
