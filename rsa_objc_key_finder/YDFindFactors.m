@@ -109,7 +109,7 @@
             }while( y < i );
             putchar('P');
             [foundFactors addObject:[NSNumber numberWithUnsignedLongLong:i]];
-            _progressBar.curser_counter ++;
+            _progressBar.curserCounter ++;
         }
     }
     [self factorizeCompleted];

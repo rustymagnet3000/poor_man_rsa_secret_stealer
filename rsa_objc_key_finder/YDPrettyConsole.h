@@ -6,15 +6,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface YDPrettyConsole : NSObject
+@interface YDPrettyConsole : NSObject{
+    BOOL running;
+}
 
-@property (nonatomic) BOOL running;
-@property int curser_counter;
+@property BOOL running;
+@property int curserCounter;
 
 + (void)single:(NSString *)message;
 + (void)multiple:(NSString *)message,...;
 + (void)banner;
-- (void)UIProgressStop;
+
 @end
 
 NS_ASSUME_NONNULL_END
