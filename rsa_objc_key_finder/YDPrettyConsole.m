@@ -11,16 +11,16 @@
 static int width;
 
 - (instancetype)init{
-        self = [super init];
-        if (self) {
-            [self setNotification];
-            self.running = TRUE;
-
-        }
-    return self;
+    self = [super init];
+    if (self) {
+        return self;
+        
+    }
+    return NULL;
 }
 
-- (void) setRunning:(BOOL)running{
+- (void) setRunning:(BOOL)r{
+    running = r;
     if(running){
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
          
@@ -31,10 +31,13 @@ static int width;
         [self UIProgressStop];
     }
 }
+-(BOOL)running{
+    return running;
+}
 
 - (void) UIProgressStop{
     #pragma mark - complete search banner.
-    for (; _curser_counter < width; _curser_counter++){
+    for (; _curserCounter < width; _curserCounter++){
         putchar(PROGRESS_CHAR);
     }
     putchar('\n');
@@ -42,29 +45,14 @@ static int width;
 }
 
 - (void) UIProgressStart{
-    while (self.running == TRUE) {
-        if(_curser_counter == width){
-            _curser_counter = 0;
+    while (running == YES) {
+        if(_curserCounter == width){
+            _curserCounter = 0;
             putchar('\n');
         }
-        _curser_counter++;
+        _curserCounter++;
         putchar(PROGRESS_CHAR);
         usleep(750000); // 0.75 second
-    }
-}
-
-- (void)setNotification {
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:NULL queue:NULL usingBlock:^(NSNotification *note)
-     {
-         [self receiveNotification:note];
-     }];
-}
-
-- (void)receiveNotification:(NSNotification*)notification
-{
-    if ([notification.name isEqualToString:@"FactorizationCompleted"])
-    {
-        [self setRunning:FALSE];
     }
 }
 
