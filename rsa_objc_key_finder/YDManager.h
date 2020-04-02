@@ -1,11 +1,10 @@
 #import <Foundation/Foundation.h>
 #import "YDFindFactors.h"
 #import "YDPrettyConsole.h"
-#define KILLTIMER 10
+#define KILLTIMER 360
 
 @protocol YDManagerRules <NSObject>
 @required
-
 - (void)setNotification;
 @end
 

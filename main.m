@@ -15,10 +15,11 @@ int main(int argc, const char *argv[]) {
             [YDManager dirtyExit];
         
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
               @autoreleasepool {
+                  [findfactors.progressBar setRunning:YES];
                   [findfactors factorize];
-                  [findfactors.progressBar setRunning:FALSE];
+                  [findfactors.progressBar setRunning:NO];
                   [findfactors postChecks];
                   [manager timeTaken];
               }

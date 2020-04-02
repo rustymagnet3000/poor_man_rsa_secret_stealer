@@ -1,6 +1,6 @@
-#import "YDManager.h"
+#include "YDManager.h"
 
-@implementation YDManager : NSObject
+@implementation YDManager
 
 - (BOOL)preCheck: (int)args {
 
