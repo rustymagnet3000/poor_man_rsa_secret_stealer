@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F220E8822381A28001C82A3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0F220E8722381A28001C82A3 /* main.c */; };
+		0F0EC73124360FD300227816 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0EC73024360FD300227816 /* main.m */; };
+		0F0EC735243610A000227816 /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
 		0F220E9722381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
-		0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
 		0F8317442424F5B4001ABDBA /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
 		0FD3E9982237B208002CFD67 /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		0F220E8322381A28001C82A3 /* CopyFiles */ = {
+		0F0EC72C24360FD300227816 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -38,8 +38,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0F220E8522381A28001C82A3 /* YDc_playground */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = YDc_playground; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F220E8722381A28001C82A3 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		0F0EC72E24360FD300227816 /* objc_playground */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = objc_playground; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F0EC73024360FD300227816 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0F220E9522381E60001C82A3 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgmp.a; sourceTree = "<group>"; };
 		0F518C2922366E94004EDA57 /* gmp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmp.h; sourceTree = "<group>"; };
 		0F8317422424F5B4001ABDBA /* YDPrettyConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YDPrettyConsole.h; sourceTree = "<group>"; };
@@ -53,11 +53,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0F220E8222381A28001C82A3 /* Frameworks */ = {
+		0F0EC72B24360FD300227816 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F220E9822381E60001C82A3 /* libgmp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +71,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0F220E8622381A28001C82A3 /* c_playground */ = {
+		0F0EC72F24360FD300227816 /* objc_playground */ = {
 			isa = PBXGroup;
 			children = (
-				0F220E8722381A28001C82A3 /* main.c */,
+				0F0EC73024360FD300227816 /* main.m */,
 			);
-			path = c_playground;
+			path = objc_playground;
 			sourceTree = "<group>";
 		};
 		0F220E9022381C4D001C82A3 /* includes */ = {
@@ -101,9 +100,9 @@
 			children = (
 				30FA058B221FC9DA00230559 /* main.m */,
 				30FA058A221FC9DA00230559 /* rsa_objc_key_finder */,
-				0F220E8622381A28001C82A3 /* c_playground */,
 				0F220E9422381E60001C82A3 /* libraries */,
 				0F220E9022381C4D001C82A3 /* includes */,
+				0F0EC72F24360FD300227816 /* objc_playground */,
 				30FA0589221FC9DA00230559 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,7 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				30FA0588221FC9DA00230559 /* rsa_objc_key_finder */,
-				0F220E8522381A28001C82A3 /* YDc_playground */,
+				0F0EC72E24360FD300227816 /* objc_playground */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -133,21 +132,21 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0F220E8422381A28001C82A3 /* YDc_playground */ = {
+		0F0EC72D24360FD300227816 /* objc_playground */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0F220E8B22381A28001C82A3 /* Build configuration list for PBXNativeTarget "YDc_playground" */;
+			buildConfigurationList = 0F0EC73224360FD300227816 /* Build configuration list for PBXNativeTarget "objc_playground" */;
 			buildPhases = (
-				0F220E8122381A28001C82A3 /* Sources */,
-				0F220E8222381A28001C82A3 /* Frameworks */,
-				0F220E8322381A28001C82A3 /* CopyFiles */,
+				0F0EC72A24360FD300227816 /* Sources */,
+				0F0EC72B24360FD300227816 /* Frameworks */,
+				0F0EC72C24360FD300227816 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = YDc_playground;
-			productName = YDc_playground;
-			productReference = 0F220E8522381A28001C82A3 /* YDc_playground */;
+			name = objc_playground;
+			productName = objc_playground;
+			productReference = 0F0EC72E24360FD300227816 /* objc_playground */;
 			productType = "com.apple.product-type.tool";
 		};
 		30FA0587221FC9DA00230559 /* rsa_objc_key_finder */ = {
@@ -176,8 +175,8 @@
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = rusty_magneto;
 				TargetAttributes = {
-					0F220E8422381A28001C82A3 = {
-						CreatedOnToolsVersion = 10.1;
+					0F0EC72D24360FD300227816 = {
+						CreatedOnToolsVersion = 11.2.1;
 					};
 					30FA0587221FC9DA00230559 = {
 						CreatedOnToolsVersion = 10.1;
@@ -198,17 +197,18 @@
 			projectRoot = "";
 			targets = (
 				30FA0587221FC9DA00230559 /* rsa_objc_key_finder */,
-				0F220E8422381A28001C82A3 /* YDc_playground */,
+				0F0EC72D24360FD300227816 /* objc_playground */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		0F220E8122381A28001C82A3 /* Sources */ = {
+		0F0EC72A24360FD300227816 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F220E8822381A28001C82A3 /* main.c in Sources */,
+				0F0EC735243610A000227816 /* YDPrettyConsole.m in Sources */,
+				0F0EC73124360FD300227816 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,36 +226,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		0F220E8922381A28001C82A3 /* Debug */ = {
+		0F0EC73324360FD300227816 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/libraries",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				OTHER_LDFLAGS = "-lncurses";
+				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		0F220E8A22381A28001C82A3 /* Release */ = {
+		0F0EC73424360FD300227816 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/libraries",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				OTHER_LDFLAGS = "-lncurses";
+				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -410,11 +396,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0F220E8B22381A28001C82A3 /* Build configuration list for PBXNativeTarget "YDc_playground" */ = {
+		0F0EC73224360FD300227816 /* Build configuration list for PBXNativeTarget "objc_playground" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0F220E8922381A28001C82A3 /* Debug */,
-				0F220E8A22381A28001C82A3 /* Release */,
+				0F0EC73324360FD300227816 /* Debug */,
+				0F0EC73424360FD300227816 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

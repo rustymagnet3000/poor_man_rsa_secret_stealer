@@ -4,20 +4,20 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>c_playground.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 		<key>kf_in_terminal.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>rsa_key_finder_terminal.xcscheme</key>
+		<key>objc_playground.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
+		</dict>
+		<key>rsa_key_finder_terminal.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 		<key>rsa_key_finder_xcode_debug.xcscheme</key>
 		<dict>
@@ -27,6 +27,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0F0EC72D24360FD300227816</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0F220E8422381A28001C82A3</key>
 		<dict>
 			<key>primary</key>
