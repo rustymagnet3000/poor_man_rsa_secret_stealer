@@ -91,7 +91,7 @@
 {
     int floor_limit = 3;
     unsigned long long i = floor_limit;
-    unsigned long long upper_limit = n/2;
+    unsigned long long upper_limit = n;
     
     OUTERLOOP: for(; i <= upper_limit; i += 2) {
         
@@ -126,6 +126,4 @@
         return TRUE;
     return FALSE;
 }
-
-
 @end

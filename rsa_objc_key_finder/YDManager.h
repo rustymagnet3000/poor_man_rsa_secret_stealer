@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "YDFindFactors.h"
 #import "YDPrettyConsole.h"
-#define KILLTIMER 360
+#define KILLTIMER 600
 
 @protocol YDManagerRules <NSObject>
 @required

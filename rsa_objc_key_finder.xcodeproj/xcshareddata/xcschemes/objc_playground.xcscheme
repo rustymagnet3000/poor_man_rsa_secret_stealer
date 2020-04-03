@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0F220E8422381A28001C82A3"
-               BuildableName = "YDc_playground"
-               BlueprintName = "YDc_playground"
+               BlueprintIdentifier = "0F0EC72D24360FD300227816"
+               BuildableName = "objc_playground"
+               BlueprintName = "objc_playground"
                ReferencedContainer = "container:rsa_objc_key_finder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,15 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0F220E8422381A28001C82A3"
-            BuildableName = "YDc_playground"
-            BlueprintName = "YDc_playground"
-            ReferencedContainer = "container:rsa_objc_key_finder.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
       </Testables>
    </TestAction>
@@ -53,38 +44,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0F220E8422381A28001C82A3"
-            BuildableName = "YDc_playground"
-            BlueprintName = "YDc_playground"
+            BlueprintIdentifier = "0F0EC72D24360FD300227816"
+            BuildableName = "objc_playground"
+            BlueprintName = "objc_playground"
             ReferencedContainer = "container:rsa_objc_key_finder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "27"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "8069212743871"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "1034776851837418228051242693253376923"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "24212989121030676023"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "17746761831"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "7919261327"
-            isEnabled = "NO">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -96,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0F220E8422381A28001C82A3"
-            BuildableName = "YDc_playground"
-            BlueprintName = "YDc_playground"
+            BlueprintIdentifier = "0F0EC72D24360FD300227816"
+            BuildableName = "objc_playground"
+            BlueprintName = "objc_playground"
             ReferencedContainer = "container:rsa_objc_key_finder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
