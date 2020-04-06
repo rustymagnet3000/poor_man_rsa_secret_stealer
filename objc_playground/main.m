@@ -5,7 +5,7 @@
 @protocol YDDeriveDecryptionKey <NSObject>
 @required
 -(BOOL)totient;
--(BOOL)deriveMultiInverse;
+-(BOOL)deriveMultiplicativeInverse;
 @end
 
 @interface FooBar : NSObject <YDDeriveDecryptionKey>{
@@ -47,30 +47,34 @@
     return YES;
 }
 
--(BOOL)deriveMultiInverse{
+-(BOOL)deriveMultiplicativeInverse{
     
-    NSUInteger factorCount = [_foundFactors count];
-    if (factorCount != 2){
-        return NO;
-    }
-    // Inverse of  65537  mod  1034776851837418226012406113933120080
-    _PHI = ([_p unsignedLongLongValue] - 1) * ([_q unsignedLongLongValue] - 1);
-
-    mpz_t phi, e, decKey;
+    mpz_t phi, e, actualDecKey, derivedDecKey;
+    mpz_inits ( phi, e, actualDecKey, derivedDecKey, NULL);
+    int flag = 0;
     
-    mpz_inits ( phi, e, decKey, NULL);
-
-    mpz_set_ui(phi, _PHI);
+    const char *rawPhi = "1034776851837418226012406113933120080";
+    const char *correctDecKey =  "568411228254986589811047501435713";
+    flag = mpz_set_str(phi,rawPhi, 10);
+    assert (flag == 0); // If zero, it succeeded.
+    flag = mpz_set_str(actualDecKey,correctDecKey, 10);
+    assert (flag == 0); // If zero, it succeeded.
+    
     mpz_set_ui(e, [_exponent unsignedLongLongValue]);
     gmp_printf("[+]\tphi ( in gmp ): %Zd: exponent:\t%Zd\n", phi, e);
     
-    int flag = 0;
-    flag = mpz_invert(decKey, e, phi);
+    flag = 0;
+    flag = mpz_invert(derivedDecKey, e, phi);
     assert (flag != 0);  // If inverse exists, the return value is non-zero
+
+    gmp_printf("[+]\tdecKey\t%Zd\n", derivedDecKey);
+
+    flag = mpz_cmp(derivedDecKey, actualDecKey);
+    if (flag == 0){
+        puts("Decryption key passed");
+    }
     
-    gmp_printf("[+]\tdecKey\t%Zd\n", decKey);
-    
-    mpz_clears ( phi, e, decKey, NULL );
+    mpz_clears ( phi, e, derivedDecKey, actualDecKey, NULL );
     
     return YES;
 }
@@ -84,9 +88,8 @@ int main(int argc, const char * argv[]) {
         FooBar *foo = [FooBar new];
         if([foo totient] == NO)
             return EXIT_FAILURE;
-        if([foo deriveMultiInverse] == NO)
+        if([foo deriveMultiplicativeInverse] == NO)
             return EXIT_FAILURE;
-
 
     }
     return 0;
