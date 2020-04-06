@@ -10,6 +10,7 @@
 		0F0EC73124360FD300227816 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0EC73024360FD300227816 /* main.m */; };
 		0F0EC735243610A000227816 /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
 		0F220E9722381E60001C82A3 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
+		0F49E199243B268500DF17F6 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
 		0F8317442424F5B4001ABDBA /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
 		0FD3E9982237B208002CFD67 /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F49E199243B268500DF17F6 /* libgmp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +234,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libraries",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -242,6 +248,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U8MSEX235L;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libraries",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
