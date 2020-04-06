@@ -74,7 +74,16 @@
     gmp_printf("[+]\tplainText:%Zd\n", _plainText);
 }
 
+-(void)encryptMessage{
+    
 
+    mpz_t   _newCipherText;
+    mpz_inits ( _newCipherText, NULL);
+    
+    mpz_powm(_newCipherText, _plainText, _exponent, _n);
+    gmp_printf("[+]\tencrypted message:%Zd\n", _newCipherText);
+    mpz_clears ( _newCipherText, NULL );
+}
 
 -(BOOL)deriveMultiplicativeInverse{
     
@@ -98,6 +107,7 @@ int main(int argc, const char * argv[]) {
         if([foo deriveMultiplicativeInverse] == NO)
             return EXIT_FAILURE;
         [foo decryptMessage];
+        [foo encryptMessage];
     }
     return 0;
 }
