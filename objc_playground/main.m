@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "YDPrettyConsole.h"
+#import "YDPlistReader.h"
 #import "gmp.h"
 
 @protocol YDDeriveDecryptionKey <NSObject>
@@ -101,6 +102,10 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
 
+        YDPListReader *reader = [[YDPListReader alloc] init];
+        if(reader == NULL)
+            NSLog(@"🍭Can't find Plist file");
+        
         FooBar *foo = [FooBar new];
         if([foo totient] == NO)
             return EXIT_FAILURE;
