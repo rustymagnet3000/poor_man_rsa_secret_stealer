@@ -5,9 +5,9 @@
 @interface YDPListReader : NSObject{
     NSString *_name;
     NSString *_file;
-    NSDictionary *_foundDictItems;
 }
 
+@property NSDictionary *foundDictItems;
 - (instancetype)initWithPlistName:(NSString *)name;
 
 @end
