@@ -3,40 +3,56 @@
 #import "YDPlistReader.h"
 #import "gmp.h"
 
-@protocol YDDeriveDecryptionKey <NSObject>
+@protocol YDReverseRSAProtocol <NSObject>
 @required
+-(BOOL)parseRecievedPubKey;
 -(BOOL)totient;
 -(BOOL)deriveMultiplicativeInverse;
 @end
 
-@interface FooBar : NSObject <YDDeriveDecryptionKey>{
+@interface YDReverseRSAIngrediants : NSObject <YDReverseRSAProtocol> {
+    NSDictionary *_recPubKeyAndCiphertext;
     mpz_t   _exponent,
             _n,
             _p,
             _q,
             _PHI,
             _derivedDecryptionKey,
-            _cipherText,
-            _plainText;
+            _ciphertext,
+            _plaintext;
 }
+- (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict;
 
 @end
 
-@implementation FooBar
+@implementation YDReverseRSAIngrediants
 
-- (instancetype)init{
+- (BOOL)parseRecievedPubKey{
+
+    int flag = 0;
+    
+    flag = mpz_set_str(_exponent,[_recPubKeyAndCiphertext [@"Exponent"] UTF8String], 10);
+    assert(flag == 0);
+        
+    flag = mpz_set_str(_n,[_recPubKeyAndCiphertext [@"Modulus"] UTF8String], 10);
+    assert(flag == 0);
+        
+    flag = mpz_set_str(_ciphertext,[_recPubKeyAndCiphertext [@"Ciphertext"] UTF8String], 10);
+    assert(flag == 0);
+        
+    return YES;
+}
+
+- (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict{
     self = [super init];
     if (self) {
         int flag = 0;
-        mpz_inits ( _exponent, _n, _p, _q, _PHI,_derivedDecryptionKey, _cipherText, _plainText, NULL);
+        mpz_inits ( _exponent, _n, _p, _q, _PHI,_derivedDecryptionKey, _ciphertext, _plaintext, NULL);
         
-        NSString *e = @"65537";
-        flag = mpz_set_str(_exponent,[e UTF8String], 10);
-        assert (flag == 0);
-
-        NSString *n = @"1034776851837418228051242693253376923";
-        flag = mpz_set_str(_n,[n UTF8String], 10);
-        assert (flag == 0);
+        _recPubKeyAndCiphertext = pubKeyDict;
+        
+        if([self parseRecievedPubKey] == NO)
+            return NULL;
 
         NSString *p = @"1086027579223696553";
         flag = mpz_set_str(_p,[p UTF8String], 10);
@@ -46,9 +62,6 @@
         flag = mpz_set_str(_q,[q UTF8String], 10);
         assert (flag == 0);
 
-        NSString *cipherText = @"582984697800119976959378162843817868";
-        flag = mpz_set_str(_cipherText,[cipherText UTF8String], 10);
-        assert (flag == 0);
     }
   return self;
 }
@@ -71,8 +84,8 @@
 }
 
 -(void)decryptMessage{
-    mpz_powm(_plainText, _cipherText, _derivedDecryptionKey, _n);
-    gmp_printf("[+]\tplainText:%Zd\n", _plainText);
+    mpz_powm(_plaintext, _ciphertext, _derivedDecryptionKey, _n);
+    gmp_printf("[+]\tplainText:%Zd\n", _plaintext);
 }
 
 -(void)encryptMessage{
@@ -81,7 +94,7 @@
     mpz_t   _newCipherText;
     mpz_inits ( _newCipherText, NULL);
     
-    mpz_powm(_newCipherText, _plainText, _exponent, _n);
+    mpz_powm(_newCipherText, _plaintext, _exponent, _n);
     gmp_printf("[+]\tencrypted message:%Zd\n", _newCipherText);
     mpz_clears ( _newCipherText, NULL );
 }
@@ -102,17 +115,20 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
 
-        YDPListReader *reader = [[YDPListReader alloc] init];
-        if(reader == NULL)
+        YDPListReader *pubKeyAndCipherText = [[YDPListReader alloc] init];
+        if(pubKeyAndCipherText == NULL)
             NSLog(@"🍭Can't find Plist file");
         
-        FooBar *foo = [FooBar new];
-        if([foo totient] == NO)
+        YDReverseRSAIngrediants *reverse = [[YDReverseRSAIngrediants alloc]initWithPubKey:pubKeyAndCipherText.foundDictItems];
+
+        if(reverse == NULL)
             return EXIT_FAILURE;
-        if([foo deriveMultiplicativeInverse] == NO)
+        if([reverse totient] == NO)
             return EXIT_FAILURE;
-        [foo decryptMessage];
-        [foo encryptMessage];
+        if([reverse deriveMultiplicativeInverse] == NO)
+            return EXIT_FAILURE;
+  //      [reverse decryptMessage];
+  //      [reverse encryptMessage];
     }
     return 0;
 }
