@@ -27,18 +27,50 @@
 
 @implementation YDReverseRSAIngrediants
 
+#pragma mark - Naive Trial Division Algorithm
+
+- (void)factorize
+{
+    int floor_limit = 3;
+    unsigned long long i = floor_limit;
+    
+    OUTERLOOP: for(; i <= _n; i += 2) {
+        
+        if (_n % i == 0){
+            
+            unsigned long long y=floor_limit;
+            do {
+                if (i != floor_limit && i % y == 0){
+                    i += 2;
+                    goto OUTERLOOP; // Found a non-prime factor
+                }
+                
+                y += 2;
+                
+            }while( y < i );
+            putchar('P');
+            [foundFactors addObject:[NSNumber numberWithUnsignedLongLong:i]];
+            _progressBar.curserCounter ++;
+        }
+    }
+    [self factorizeCompleted];
+}
+
 - (BOOL)parseRecievedPubKey{
 
     int flag = 0;
     
     flag = mpz_set_str(_exponent,[_recPubKeyAndCiphertext [@"Exponent"] UTF8String], 10);
-    assert(flag == 0);
+    if(flag == -1)
+        return NO;
         
     flag = mpz_set_str(_n,[_recPubKeyAndCiphertext [@"Modulus"] UTF8String], 10);
-    assert(flag == 0);
+    if(flag == -1)
+        return NO;
         
     flag = mpz_set_str(_ciphertext,[_recPubKeyAndCiphertext [@"Ciphertext"] UTF8String], 10);
-    assert(flag == 0);
+    if(flag == -1)
+        return NO;
         
     return YES;
 }
@@ -118,6 +150,7 @@ int main(int argc, const char * argv[]) {
         YDPListReader *pubKeyAndCipherText = [[YDPListReader alloc] init];
         if(pubKeyAndCipherText == NULL)
             NSLog(@"🍭Can't find Plist file");
+
         
         YDReverseRSAIngrediants *reverse = [[YDReverseRSAIngrediants alloc]initWithPubKey:pubKeyAndCipherText.foundDictItems];
 

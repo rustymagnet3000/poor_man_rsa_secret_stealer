@@ -30,14 +30,6 @@
         NSLog(@"Not able to read plist file or unexpected values");
         return NO;
     }
-    
-    NSEnumerator *enumerator = [_foundDictItems keyEnumerator];
-    
-    id key;
-    while ((key = [enumerator nextObject])) {
-        NSLog(@"%@ %@", key, [_foundDictItems valueForKey:key]);
-    }
-    
     return YES;
 }
 
@@ -47,14 +39,11 @@
     if (self) {
         _name = name;
         
-        if(![self fileChecks]){
+        if(![self fileChecks])
             return NULL;
-        }
-        NSLog(@"🍭 Found Public Key file");
-        if(![self checkPlistContents]){
+
+        if(![self checkPlistContents])
             return NULL;
-        }
-        NSLog(@"🍭 Public Key and Ciphertext found");
     }
     return self;
 }

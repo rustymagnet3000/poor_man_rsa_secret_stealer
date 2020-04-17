@@ -25,6 +25,35 @@ Step to find Private Key | Expressed as
 `Extended Euclidean algorithm (GCD)` | 𝑒 was 𝑒𝑑(mod𝜑(𝑛))=1  or ed =1(mod𝜑(𝑛))
 | 𝑥𝑒𝑑(mod𝑛)=𝑥
 
+
+## Re-Design
+I searched for more efficient ways to `Factorize` a large number.  The following article changed my approach:
+
+https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
+
+You could use the `Birthday Paradox` to give you an efficient, *probabilistic* method to achieve the same.  **probabilistic**, huh?  The code could fail.  But it could work the next time you ran the code.
+
+Step forward the `C library` called `GMP` .  I also considered `openSSL` but - after some later trial and error - I realized `gmp` could achieve everything I wanted.
+
+#### Results 6: Pollard Rho
+A basic implementation, without optimization:
+
+Status| Number (N) | Primes found | Time taken
+--|---|--|--
+✅| 4657259 | 443 * 10513 | instant
+✅| 505371799 | 16127 * 31337 | instant
+✅| 57564127333 | 869273 * 66221 | instant
+✅| 8069212743871 | 2840261 * 2841011 | instant. Amazing. This took 5hours with the Naive factoring method.
+✅| 4728829254758513 | 10000019 * 472882027 | instant
+❌| 464583729100140631 | 982451653 * 472882027  | Not found. sucked 300MB before completing 20k cycles!
+❌| 1034776....253376923 | < unknown > | Not found. Sucked up a 3MB every second of RAM. Got to 2.7GB used!
+
+
+
+
+
+
+
 ### Euler's totient function
 Number (N) | Primes
 --|--
@@ -40,7 +69,8 @@ As we know the above numbers were prime, this step is simple.
 ### Greatest Common Denominator (GCD) / Modular multiplicative inverse
 So you need `e [ Exponent ]` for this step.  Remember `e` is a Public value readable inside the Public Key.
 
-We need to calculate the `Modular multiplicative inverse`:
+Use the `Extended Euclidean Algorithm` to compute a `modular multiplicative inverse`.
+
 ```
 Inverse of  65537  mod  7918253376
 ```
@@ -60,7 +90,7 @@ gcd(65537, 7918253376) = 1
 
 ### Context
 
-The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit Primes`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bit number (Modulus) and 1,024 bit prime numbers`.
+The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit Primes`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bit number (Modulus) and 1,024 bit prime numbers`.  How hard is `factoring` for a computer?  A great video on this [topic](https://www.youtube.com/watch?v=tq8dTl74bL0).
 
 This project was purely for academic interest and would not work against a real RSA implementation.  
 
@@ -226,15 +256,6 @@ My computer could do 4 trillion in 5 hours
 4.5 million * 5 hours = 2,500 years
 ```
 **2,500 years**  to exhaust a single `60 bit` prime?
-
-## Re-Design
-I searched for better methods to achieve what I wanted. The following article changed my entire approach:
-
-https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
-
-You could use the `Birthday Paradox` to give you an efficient, *probabilistic* method to achieve the same.  **probabilistic**, huh?  The code could fail.  But it could work the next time you ran the code.  Fun?
-
-Step forward the **gmp** library.  I also considered `openSSL's` in-built Big Number functionality but I didn't want to unpick the `openssl` security or networking code.  I expected that decision would bite later [ as I would need a RSA key generation and an RSA decrypt function to test my code ].
 
 
 
