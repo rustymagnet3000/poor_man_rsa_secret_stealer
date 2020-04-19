@@ -36,7 +36,7 @@ You could use the `Birthday Paradox` to give you an efficient, *probabilistic* m
 Step forward the `C library` called `GMP` .  I also considered `openSSL` but - after some later trial and error - I realized `gmp` could achieve everything I wanted.
 
 #### Results 6: Pollard Rho
-A basic implementation, without optimization:
+Without optimization and some memory inefficiencies my new code did:
 
 Status| Number (N) | Primes found | Time taken
 --|---|--|--
@@ -49,7 +49,15 @@ Status| Number (N) | Primes found | Time taken
 ❌| 1034776....253376923 | < unknown > | Not found. Sucked up a 3MB every second of RAM. Got to 2.7GB used!
 
 
+#### Results 7: Pollard Rho
+Re-using a tidier algorithm, I was able to factorize the challenge `n`.
 
+Status| Number (N) | Primes found | Time taken
+--|---|--|--
+
+✅| 4728829254758513 | 10000019 * 472882027 | a few second
+✅| 464583729100140631 | 982451653 * 472882027  | a few seconds
+✅| 1034776....253376923 |p:1086027579223696553		q:952809000096560291
 
 
 
@@ -298,6 +306,7 @@ https://frenchfries.net/paul/factoring/source.html
 http://www.martani.net/2011/12/factoring-integers-part-1-pollards-rho.html
 
 #### C References
+https://en.cppreference.com/w/c/types/limits
 
 https://www.systutorials.com/docs/linux/man/3-strtol/
 
