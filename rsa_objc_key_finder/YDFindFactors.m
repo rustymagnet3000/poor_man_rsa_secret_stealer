@@ -110,7 +110,7 @@
     return YES;
 }
 
--(void)totient{
+-(BOOL)totient{
     
     mpz_t tempP, tempQ;
     mpz_inits ( tempP, tempQ, NULL);
@@ -121,11 +121,13 @@
     mpz_mul(_PHI,tempP,tempQ);
     [YDPrettyConsole multiple:@"PHI:%@", [self prettyGMPStr:_PHI]];
     mpz_clears ( tempP, tempQ, NULL );
+    return YES;
 }
 
--(void)decryptMessage{
+-(BOOL)decryptMessage{
     mpz_powm(_plaintext, _ciphertext, _derivedDecryptionKey, _n);
-    gmp_printf("[+]\tplainText:%Zd\n", _plaintext);
+    [YDPrettyConsole multiple:@"Plaintext:%@", [self prettyGMPStr:_plaintext]];
+    return YES;
 }
 
 -(void)encryptMessage{
@@ -138,12 +140,10 @@
 }
 
 -(BOOL)deriveMultiplicativeInverse{
-    
     int flag = 0;
-    
     flag = mpz_invert(_derivedDecryptionKey, _exponent, _PHI);
-    assert (flag != 0);  // If inverse exists, the return value is non-zero
-    gmp_printf("[+]\tdecKey\t%Zd\n", _derivedDecryptionKey);
+    assert (flag != 0);
+    [YDPrettyConsole multiple:@"Decryption Key:%@", [self prettyGMPStr:_derivedDecryptionKey]];
     return YES;
 }
 

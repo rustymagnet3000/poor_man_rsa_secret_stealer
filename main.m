@@ -2,7 +2,6 @@
 #import "YDManager.h"
 #import "YDPrettyConsole.h"
 
-
 int main(void) {
     @autoreleasepool {
 
@@ -21,7 +20,9 @@ int main(void) {
                   [findfactors factorize];
                   [findfactors.progressBar setRunning:NO];
                   [findfactors postFactorize];
-                  [findfactors totient];
+                  [findfactors totient];                        // bool
+                  [findfactors deriveMultiplicativeInverse];    // bool
+                  [findfactors decryptMessage];                 // bool
                   [mngr timeTaken];
               }
               dispatch_semaphore_signal(semaphore);
