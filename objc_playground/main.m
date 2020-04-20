@@ -33,7 +33,6 @@
 @implementation YDReverseRSAIngrediants
 
 #pragma mark - Pollard Rho
-
 - (BOOL) factorize
 {
     mpz_t exp, gcd, secretFactor, x, xTemp, xFixed;
@@ -72,9 +71,11 @@
      mpz_clears ( exp, gcd, secretFactor, x, xTemp, xFixed, NULL );
      return _loopsToFactorize <= MAX_LOOPS ? YES : NO;
 }
+
+#pragma mark - Summarize and Notify Factorize step
 - (void) postFactorize {
     gmp_printf("[*] n:%Zd\n[*] p:%Zd\n[*] q:%Zd\n", _n, _p, _q);
-    printf("\n[*] Finished k values: %d, loop: %d\n", _kToFactorize, _loopsToFactorize);
+    printf("[*] Finished k values: %d, loop: %d\n", _kToFactorize, _loopsToFactorize);
 }
 
 - (BOOL)parseRecievedPubKey{
@@ -117,9 +118,7 @@
     
     mpz_sub_ui(tempP,_p,1);
     mpz_sub_ui(tempQ,_q,1);
-    gmp_printf("[+]\tNew p: %Zd: Old p:%Zd\n", tempP, _p);
-    gmp_printf("[+]\tNew q: %Zd: Old q:%Zd\n", tempQ, _q);
-    
+
     mpz_mul(_PHI,tempP,tempQ);
     gmp_printf("[+]\tPHI:%Zd\n", _PHI);
     
@@ -169,8 +168,8 @@ int main(int argc, const char * argv[]) {
         if([reverse factorize] == NO)
             return EXIT_FAILURE;
         [reverse postFactorize];
-//        if([reverse totient] == NO)
-//            return EXIT_FAILURE;
+        if([reverse totient] == NO)
+            return EXIT_FAILURE;
 //        if([reverse deriveMultiplicativeInverse] == NO)
 //            return EXIT_FAILURE;
   //      [reverse decryptMessage];
