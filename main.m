@@ -1,22 +1,16 @@
 #import <Foundation/Foundation.h>
 #import "YDManager.h"
 #import "YDPrettyConsole.h"
-#import "YDPlistReader.h"
 
-int main(int argc, const char *argv[]) {
+
+int main(void) {
     @autoreleasepool {
 
-        YDManager *manager = [[YDManager alloc] init:argc];
-        if(manager == NULL)
+        YDManager *mngr = [[YDManager alloc] init];
+        if(mngr == NULL)
             [YDManager dirtyExit];
         
-        YDPListReader *pubKeyAndCipherText = [[YDPListReader alloc] init];
-        if(pubKeyAndCipherText == NULL){
-            [YDPrettyConsole single:@"Can't find Public Key file."];
-            return EXIT_FAILURE;
-        }
-        
-        YDFindFactors *findfactors = [[YDFindFactors alloc]initWithPubKey:pubKeyAndCipherText.foundDictItems];
+        YDFindFactors *findfactors = [[YDFindFactors alloc]initWithPubKey:mngr.keyToAnalyze.foundDictItems];
         if(findfactors == NULL)
             return EXIT_FAILURE;
         
@@ -25,10 +19,10 @@ int main(int argc, const char *argv[]) {
               @autoreleasepool {
                   [findfactors.progressBar setRunning:YES];
                   [findfactors factorize];
+                  [findfactors.progressBar setRunning:NO];
                   [findfactors postFactorize];
                   [findfactors totient];
-                  [findfactors.progressBar setRunning:NO];
-                  [manager timeTaken];
+                  [mngr timeTaken];
               }
               dispatch_semaphore_signal(semaphore);
           });

@@ -2,22 +2,20 @@
 
 @implementation YDManager
 
-- (BOOL)preCheck: (int)args {
-
-    if (args != 2){
-        [YDPrettyConsole multiple:@"Usage: <n> <e> of RSA Public Key. \nYou entered %d argument(s)", args];
-        return FALSE;
-    }
-    
-    return TRUE;
+- (instancetype)init {
+    return [self init:@"pubKeyAndCipherText"];
 }
 
-- (instancetype) init: (int)argCount{
+- (instancetype)init:(NSString *)pubKeyfilename{
     self = [super init];
     if (self) {
-        if([self preCheck: argCount] == FALSE){
+        self.keyToAnalyze = [[YDPListReader alloc] init];
+        
+        if(self.keyToAnalyze == NULL){
+            [YDPrettyConsole single:@"Can't find Public Key file."];
             return NULL;
         }
+        
         startTime = [NSDate date];
         [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
         [self setNotification];
@@ -29,7 +27,7 @@
 + (NSString *)prettyDate: (NSDate *)date
 {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"HH:mm:ss:mm"];
+    [dateFormat setDateFormat:@"HH:mm:ss"];
     return [dateFormat stringFromDate:date];
 }
 
@@ -55,7 +53,7 @@
 
 - (void)timeTaken
 {
-    [YDPrettyConsole multiple:@"Finished in: %.2f seconds", [endTime timeIntervalSinceDate:startTime]];
+    [YDPrettyConsole multiple:@"Finished in: %.3f seconds", [endTime timeIntervalSinceDate:startTime]];
 }
 
 + (void)dirtyExit

@@ -33,7 +33,8 @@
         if([self preChecks] == NO)
             return NULL;
         
-        [YDPrettyConsole multiple:@"Factorize:%@", [self prettyGMPStr:_n]];
+        [YDPrettyConsole multiple:@"Factorize N:%@", [self prettyGMPStr:_n]];
+        [YDPrettyConsole multiple:@"Bits length of N:%zu", _lenOfN];
         [YDPrettyConsole banner];
         _progressBar = [[YDPrettyConsole alloc] init];
     }
@@ -99,7 +100,9 @@
     flag = mpz_set_str(_n,[_recPubKeyAndCiphertext [@"Modulus"] UTF8String], 10);
     if(flag != 0)
         return NO;
-        
+    
+    _lenOfN = mpz_sizeinbase(_n, 2);
+    
     flag = mpz_set_str(_ciphertext,[_recPubKeyAndCiphertext [@"Ciphertext"] UTF8String], 10);
     if(flag != 0)
         return NO;
@@ -116,8 +119,7 @@
     mpz_sub_ui(tempQ,_q,1);
 
     mpz_mul(_PHI,tempP,tempQ);
-    gmp_printf("[+]\tPHI:%Zd\n", _PHI);
-    
+    [YDPrettyConsole multiple:@"PHI:%@", [self prettyGMPStr:_PHI]];
     mpz_clears ( tempP, tempQ, NULL );
 }
 
