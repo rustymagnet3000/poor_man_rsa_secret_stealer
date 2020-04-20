@@ -35,7 +35,8 @@
 - (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict;
 - (BOOL)factorize;
 - (void)postFactorize;
-- (void)totient;
+- (BOOL)totient;
 - (BOOL)deriveMultiplicativeInverse;
+- (BOOL)decryptMessage;
 @end
 
