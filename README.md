@@ -36,29 +36,27 @@ You could use the `Birthday Paradox` to give you an efficient, *probabilistic* m
 Step forward the `C library` called `GMP` .  I also considered `openSSL` but - after some later trial and error - I realized `gmp` could achieve everything I wanted.
 
 #### Results 6: Pollard Rho
-Without optimization and some memory inefficiencies my new code did:
+Even with no optimization and memory bugs, Pollard Rho's algorithm unlocked massive improvements:
 
 Status| Number (N) | Primes found | Time taken
 --|---|--|--
-✅| 4657259 | 443 * 10513 | instant
-✅| 505371799 | 16127 * 31337 | instant
-✅| 57564127333 | 869273 * 66221 | instant
-✅| 8069212743871 | 2840261 * 2841011 | instant. Amazing. This took 5hours with the Naive factoring method.
-✅| 4728829254758513 | 10000019 * 472882027 | instant
+✅| 8069212743871 | 2840261 * 2841011 |  8069212743871. Instant. Took 5 hours with the `Naive` factoring.
 ❌| 464583729100140631 | 982451653 * 472882027  | Not found. sucked 300MB before completing 20k cycles!
 ❌| 1034776....253376923 | < unknown > | Not found. Sucked up a 3MB every second of RAM. Got to 2.7GB used!
-
 
 #### Results 7: Pollard Rho
 Re-using a tidier algorithm, I was able to factorize the challenge `n`.
 
 Status| Number (N) | Primes found | Time taken
 --|---|--|--
-
-✅| 4728829254758513 | 10000019 * 472882027 | a few second
-✅| 464583729100140631 | 982451653 * 472882027  | a few seconds
-✅| 1034776851837418228051242693253376923 |p:1086027579223696553		q:952809000096560291
-✅| 1642061677267048469007620094567254201801 | 36413321723440003717		q:45095080578985454453
+✅| 4657259 | 443 * 10513 | 0.008 seconds
+✅| 505371799 | 16127 * 31337 | 0.008 seconds
+✅| 57564127333 | 869273 * 66221 | 0.009 seconds
+✅| 8069212743871 | 2840261 * 2841011 |  8069212743871. Took 5 hours with the `Naive` factoring.  
+✅| 4728829254758513 | 10000019 * 472882027 | 0.010 seconds
+✅| 464583729100140631 | 982451653 * 472882027  | 0.243 seconds
+✅| 1034776851837418228051242693253376923 | 1086027579223696553 *	952809000096560291 | 6 minutes 21 seconds
+✅| 1642061677267048469007620094567254201801 | 36413321723440003717 * 45095080578985454453   | 42 seconds
 
 ### Euler's totient function
 Number (N) | Primes

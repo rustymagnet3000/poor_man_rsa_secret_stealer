@@ -8,8 +8,8 @@
 }
 
 @property NSDictionary *foundDictItems;
-- (instancetype)initWithPlistName:(NSString *)name;
 
+- (instancetype)initWithPlistName:(NSString *)name;
 @end
 
 #endif /* YDPlistReader_h */

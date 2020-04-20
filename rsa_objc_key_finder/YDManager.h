@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "YDFindFactors.h"
+#import "YDPlistReader.h"
 #import "YDPrettyConsole.h"
 #define KILLTIMER 600
 
@@ -13,7 +14,9 @@
     NSDate *endTime;
 }
 
-- (instancetype) init:(int)argCount;
+@property YDPListReader *keyToAnalyze;
+
+- (instancetype)init:(NSString *)pubKeyfilename;
 - (void)setNotification;
 - (void)timeTaken;
 + (void)dirtyExit;
