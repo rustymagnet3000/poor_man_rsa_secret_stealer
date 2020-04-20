@@ -14,6 +14,25 @@ Encrypted secret:                 582984697800119976959378162843817868
 ```
 The code in this repo was built to find a `Private Key` that would reveal a secret message.
 
+## Challenge 1: Answer
+```
+e: 65537
+N: 498702132445864856509611776937010471
+Ciphertext: 96708304500902540927682601709667939
+
+```
+## Answer 2
+```
+e: 65537
+𝑁: 1034776851837418228051242693253376923
+Ciphertext: 582984697800119976959378162843817868
+Secret Message:   345
+```
+Answer:
+```
+
+```
+## Steps
 The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  The found numbers were referred to as `𝑝` and `𝑞` and were to be kept secret.  `𝑁` was not a secret and it was part of the `Public Key`.
 
 After `factorizing` other steps were required:
@@ -24,7 +43,6 @@ Step to find Private Key | Expressed as
 `Euler's Totient function (PHI)` |𝑑 relatively prime to 𝜑(𝑛)=(𝑝−1)(𝑞−1)
 `Extended Euclidean algorithm (GCD)` | 𝑒 was 𝑒𝑑(mod𝜑(𝑛))=1  or ed =1(mod𝜑(𝑛))
 | 𝑥𝑒𝑑(mod𝑛)=𝑥
-
 
 ## Re-Design
 I searched for more efficient ways to `Factorize` a large number.  The following article changed my approach:

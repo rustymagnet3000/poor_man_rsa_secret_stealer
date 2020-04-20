@@ -53,6 +53,7 @@
 
 - (void)timeTaken
 {
+    [YDPrettyConsole banner];
     [YDPrettyConsole multiple:@"Finished in: %.3f seconds", [endTime timeIntervalSinceDate:startTime]];
 }
 
