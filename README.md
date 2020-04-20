@@ -57,10 +57,8 @@ Status| Number (N) | Primes found | Time taken
 
 ✅| 4728829254758513 | 10000019 * 472882027 | a few second
 ✅| 464583729100140631 | 982451653 * 472882027  | a few seconds
-✅| 1034776....253376923 |p:1086027579223696553		q:952809000096560291
-
-
-
+✅| 1034776851837418228051242693253376923 |p:1086027579223696553		q:952809000096560291
+✅| 1642061677267048469007620094567254201801 | 36413321723440003717		q:45095080578985454453
 
 ### Euler's totient function
 Number (N) | Primes
@@ -278,15 +276,6 @@ This already had the `primality test` code.  This was a `probabilistic primality
 ```
 I also read that `Reasonable values of reps are between 15 and 50.` on `https://machinecognitis.github.io/Math.Gmp.Native/html/52ce0428-7c09-f2b9-f517-d3d02521f365.htm`.
 
-#### Test Vectors
-```
-Non-Prime Pair: [3,9] = 27
-Primes : [3, 11] = 33
-Primes : [13, 29] = 377
-Primes : [467, 601] = 280667
-Primes : [3461, 3319] = 11487059
-Primes : [45095080578985454453, 36413321723440003717] = 1642061677267048469007620094567254201801
-```
 #### GMP References
 
 https://stackoverflow.com/questions/4424374/determining-if-a-number-is-prime

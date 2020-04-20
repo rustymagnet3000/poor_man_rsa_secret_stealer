@@ -2,10 +2,13 @@
 #import "YDPrettyConsole.h"
 #import "YDPlistReader.h"
 #import "gmp.h"
+#define MAX_LOOPS 50
+
 
 @protocol YDReverseRSAProtocol <NSObject>
 @required
 -(BOOL)parseRecievedPubKey;
+-(BOOL)factorize;
 -(BOOL)totient;
 -(BOOL)deriveMultiplicativeInverse;
 @end
@@ -20,6 +23,8 @@
             _derivedDecryptionKey,
             _ciphertext,
             _plaintext;
+    int _loopsToFactorize;
+    int _kToFactorize;
 }
 - (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict;
 
@@ -27,33 +32,49 @@
 
 @implementation YDReverseRSAIngrediants
 
-#pragma mark - Naive Trial Division Algorithm
+#pragma mark - Pollard Rho
 
-- (void)factorize
+- (BOOL) factorize
 {
-    int floor_limit = 3;
-    unsigned long long i = floor_limit;
+    mpz_t exp, gcd, secretFactor, x, xTemp, xFixed;
+    int flag = 0, count;
+    _kToFactorize = 2;
+    _loopsToFactorize = 1;
     
-    OUTERLOOP: for(; i <= _n; i += 2) {
-        
-        if (_n % i == 0){
-            
-            unsigned long long y=floor_limit;
-            do {
-                if (i != floor_limit && i % y == 0){
-                    i += 2;
-                    goto OUTERLOOP; // Found a non-prime factor
-                }
-                
-                y += 2;
-                
-            }while( y < i );
-            putchar('P');
-            [foundFactors addObject:[NSNumber numberWithUnsignedLongLong:i]];
-            _progressBar.curserCounter ++;
-        }
-    }
-    [self factorizeCompleted];
+    mpz_inits(exp, gcd, xTemp, xFixed, secretFactor, NULL);
+    mpz_init_set_ui(x, 2);
+
+     do {
+         count = _kToFactorize;
+
+         do {
+             mpz_add_ui(exp,x,1);
+             mpz_powm(x, x, exp, _n);
+
+             mpz_sub(xTemp,x, xFixed);
+             mpz_gcd(gcd, xTemp, _n);
+
+             flag = mpz_cmp_ui (gcd, 1);
+             if(flag > 0){
+                 mpz_cdiv_q (secretFactor, _n, gcd);
+                                  mpz_set(xFixed,x);
+                 mpz_set(_p, secretFactor);
+                 mpz_set(_q, gcd);
+                 break;
+             }
+         } while (--count && flag == 0);
+
+         _kToFactorize *= 2;
+         mpz_set(xFixed,x);
+         _loopsToFactorize++;
+     } while (flag < 1 || _loopsToFactorize >= MAX_LOOPS);
+
+     mpz_clears ( exp, gcd, secretFactor, x, xTemp, xFixed, NULL );
+     return _loopsToFactorize <= MAX_LOOPS ? YES : NO;
+}
+- (void) postFactorize {
+    gmp_printf("[*] n:%Zd\n[*] p:%Zd\n[*] q:%Zd\n", _n, _p, _q);
+    printf("\n[*] Finished k values: %d, loop: %d\n", _kToFactorize, _loopsToFactorize);
 }
 
 - (BOOL)parseRecievedPubKey{
@@ -78,22 +99,13 @@
 - (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict{
     self = [super init];
     if (self) {
-        int flag = 0;
+
         mpz_inits ( _exponent, _n, _p, _q, _PHI,_derivedDecryptionKey, _ciphertext, _plaintext, NULL);
         
         _recPubKeyAndCiphertext = pubKeyDict;
         
         if([self parseRecievedPubKey] == NO)
             return NULL;
-
-        NSString *p = @"1086027579223696553";
-        flag = mpz_set_str(_p,[p UTF8String], 10);
-        assert (flag == 0);
-        
-        NSString *q = @"952809000096560291";
-        flag = mpz_set_str(_q,[q UTF8String], 10);
-        assert (flag == 0);
-
     }
   return self;
 }
@@ -121,8 +133,6 @@
 }
 
 -(void)encryptMessage{
-    
-
     mpz_t   _newCipherText;
     mpz_inits ( _newCipherText, NULL);
     
@@ -156,10 +166,13 @@ int main(int argc, const char * argv[]) {
 
         if(reverse == NULL)
             return EXIT_FAILURE;
-        if([reverse totient] == NO)
+        if([reverse factorize] == NO)
             return EXIT_FAILURE;
-        if([reverse deriveMultiplicativeInverse] == NO)
-            return EXIT_FAILURE;
+        [reverse postFactorize];
+//        if([reverse totient] == NO)
+//            return EXIT_FAILURE;
+//        if([reverse deriveMultiplicativeInverse] == NO)
+//            return EXIT_FAILURE;
   //      [reverse decryptMessage];
   //      [reverse encryptMessage];
     }
