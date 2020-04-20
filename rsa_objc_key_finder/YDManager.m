@@ -29,12 +29,12 @@
 + (NSString *)prettyDate: (NSDate *)date
 {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"HH:mm:ss"];
+    [dateFormat setDateFormat:@"HH:mm:ss:mm"];
     return [dateFormat stringFromDate:date];
 }
 
 - (void) setNotification {
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:nil queue:nil usingBlock:^(NSNotification *note)
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:NULL queue:NULL usingBlock:^(NSNotification *note)
      {
          [self receiveNotification:note];
      }];

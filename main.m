@@ -11,8 +11,10 @@ int main(int argc, const char *argv[]) {
             [YDManager dirtyExit];
         
         YDPListReader *pubKeyAndCipherText = [[YDPListReader alloc] init];
-        if(pubKeyAndCipherText == NULL)
-            NSLog(@"🍭Can't find Plist file");
+        if(pubKeyAndCipherText == NULL){
+            [YDPrettyConsole single:@"Can't find Public Key file."];
+            return EXIT_FAILURE;
+        }
         
         YDFindFactors *findfactors = [[YDFindFactors alloc]initWithPubKey:pubKeyAndCipherText.foundDictItems];
         if(findfactors == NULL)
