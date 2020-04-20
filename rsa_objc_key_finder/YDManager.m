@@ -15,26 +15,21 @@
 - (instancetype) init: (int)argCount{
     self = [super init];
     if (self) {
-
         if([self preCheck: argCount] == FALSE){
             return NULL;
         }
-        
         startTime = [NSDate date];
         [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
-        [YDPrettyConsole multiple:@"Kill Timer\t%d", KILLTIMER];
-        
         [self setNotification];
     }
 
     return self;
 }
 
-
 + (NSString *)prettyDate: (NSDate *)date
 {
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"HH:mm:ss:mm"];
+    [dateFormat setDateFormat:@"HH:mm:ss"];
     return [dateFormat stringFromDate:date];
 }
 
