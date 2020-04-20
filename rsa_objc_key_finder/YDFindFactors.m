@@ -3,29 +3,20 @@
 @implementation YDFindFactors : NSObject
 
 - (BOOL)preChecks {
-    
-// check for nulls
-// check for evens
+      
+    /* stop if even number found */
   
-//    if (_n % 2 == 0) {
-//        [YDPrettyConsole single:@"Even numbers are not expected"];
-//        return FALSE;
-//    }
+    int flag = 0;
+    flag = mpz_odd_p(_n);
+    if(flag == 0)
+        return NO;
+  
+    /* check for empty value */
+    flag = mpz_sgn(_n);
+    if(flag == 0)
+        return NO;
     
     return TRUE;
-}
-
-- (NSString *)prettyGMPStr:(mpz_t)gmpStr {
-   
-    NSZone *dz = NSDefaultMallocZone();
-    char *buf;
-    NSString *res;
-
-    buf = NSZoneMalloc(dz, mpz_sizeinbase(gmpStr, 10)+2);
-    mpz_get_str(buf, 10, gmpStr);
-    res = [NSString stringWithCString:buf encoding:NSUTF8StringEncoding];
-    NSZoneFree(dz, buf);
-    return res;
 }
 
 - (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict{
@@ -33,62 +24,20 @@
     if (self) {
 
         mpz_inits ( _exponent, _n, _p, _q, _PHI,_derivedDecryptionKey, _ciphertext, _plaintext, NULL);
-        
-//        if([self preChecks] == FALSE){
-//            return NULL;
-//        }
-        
+               
         _recPubKeyAndCiphertext = pubKeyDict;
         
         if([self parseRecievedPubKey] == NO)
             return NULL;
         
+        if([self preChecks] == NO)
+            return NULL;
         
         [YDPrettyConsole multiple:@"Factorize:%@", [self prettyGMPStr:_n]];
-        //  [self deriveBinString];
-        // [YDPrettyConsole multiple:@"Binary %@ (%d bits)", binaryString, [binaryString length]];
         [YDPrettyConsole banner];
         _progressBar = [[YDPrettyConsole alloc] init];
     }
   return self;
-}
-
-- (void)ullToBinary:(unsigned long long) ullDec buffer:(char *)buf index:(int *)i{
-
-    if (ullDec < 2){
-        buf[*i] = ullDec + '0';
-        return;
-    }
-
-    int temp = ((ullDec / 2  * 10 + ullDec) % 2);
-    buf[*i] = temp + '0';
-    *i = *i + 1;
-    [self ullToBinary:ullDec/2 buffer:buf index:i];
-
-}
-
-- (void)deriveBinString {
-    
-    int len = 0;
-    unsigned long long ullDecimal = _n;
-    char *binaryStr = calloc(CHAR_ARRY_MAX, sizeof(char));
-    char *revbinStr = calloc(CHAR_ARRY_MAX, sizeof(char));
-    
-    [self ullToBinary:ullDecimal buffer:binaryStr index:&len];
-    
-    for (int i = 0; binaryStr[i] != '\0'; i++)
-        revbinStr[i] = binaryStr[len - i];
-
-    binaryString = [NSString stringWithUTF8String:revbinStr];
-    binaryStr = NULL;
-    revbinStr = NULL;
-    free(binaryStr);
-    free(revbinStr);
-}
-
-- (BOOL)divideNoRemainder
-{
-    return FALSE;
 }
 
 #pragma mark - Pollard Rho
@@ -136,7 +85,7 @@
     [YDPrettyConsole multiple:@"P:%@", [self prettyGMPStr:_p]];
     [YDPrettyConsole multiple:@"Q:%@", [self prettyGMPStr:_q]];
     [YDPrettyConsole multiple:@"Finished at loop: %d k values: %d", _loopsToFactorize, _kToFactorize ];
-  //  [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
 }
 
 - (BOOL)parseRecievedPubKey{
@@ -144,15 +93,15 @@
     int flag = 0;
     
     flag = mpz_set_str(_exponent,[_recPubKeyAndCiphertext [@"Exponent"] UTF8String], 10);
-    if(flag == -1)
+    if(flag != 0)
         return NO;
         
     flag = mpz_set_str(_n,[_recPubKeyAndCiphertext [@"Modulus"] UTF8String], 10);
-    if(flag == -1)
+    if(flag != 0)
         return NO;
         
     flag = mpz_set_str(_ciphertext,[_recPubKeyAndCiphertext [@"Ciphertext"] UTF8String], 10);
-    if(flag == -1)
+    if(flag != 0)
         return NO;
         
     return YES;
@@ -194,6 +143,19 @@
     assert (flag != 0);  // If inverse exists, the return value is non-zero
     gmp_printf("[+]\tdecKey\t%Zd\n", _derivedDecryptionKey);
     return YES;
+}
+
+- (NSString *)prettyGMPStr:(mpz_t)gmpStr {
+   
+    NSZone *dz = NSDefaultMallocZone();
+    char *buf;
+    NSString *res;
+
+    buf = NSZoneMalloc(dz, mpz_sizeinbase(gmpStr, 10)+2);
+    mpz_get_str(buf, 10, gmpStr);
+    res = [NSString stringWithCString:buf encoding:NSUTF8StringEncoding];
+    NSZoneFree(dz, buf);
+    return res;
 }
 
 

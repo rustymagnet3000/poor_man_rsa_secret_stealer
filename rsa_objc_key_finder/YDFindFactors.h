@@ -9,6 +9,7 @@
 @protocol YDReverseRSAProtocol <NSObject>
 @required
 -(BOOL)parseRecievedPubKey;
+-(BOOL)preChecks;
 -(BOOL)factorize;
 -(BOOL)totient;
 -(BOOL)deriveMultiplicativeInverse;
@@ -17,7 +18,6 @@
 @interface YDFindFactors : NSObject <YDReverseRSAProtocol>{
     NSDictionary *_recPubKeyAndCiphertext;
     NSString *binaryString;
-    const char *rawInput;
     mpz_t   _exponent,
             _n,
             _p,
