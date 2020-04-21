@@ -1,22 +1,27 @@
 #import <Foundation/Foundation.h>
 #include <sys/ioctl.h>
 #define DEFAULT_WIDTH 30
-#define KILL_TIMER 5
 #define PROGRESS_CHAR '-'
+
+#ifdef DEBUG
+#define NSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NSLog(...) {}
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YDPrettyConsole : NSObject{
-    BOOL running;
+    BOOL _running;
+    int _curserCounter;
+    int _width;
 }
 
 @property BOOL running;
-@property int curserCounter;
 
 + (void)single:(NSString *)message;
 + (void)multiple:(NSString *)message,...;
-+ (void)banner;
+- (void)banner;
 
 @end
-
 NS_ASSUME_NONNULL_END
