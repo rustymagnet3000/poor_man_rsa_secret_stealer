@@ -14,12 +14,40 @@ Encrypted secret:                 582984697800119976959378162843817868
 ```
 The code in this repo was built to find a `Private Key` that would reveal a secret message.
 
-## Challenge 1: Answer
+## Challenge 1: 60 bit Primes
 ```
-e: 65537
-N: 498702132445864856509611776937010471
-Ciphertext: 96708304500902540927682601709667939
+🐝 Started	16:52:38
+🐝 Factorize N:1034776851837418228051242693253376923
+🐝 Exponent: 65537
+🐝 Ciphertext: 582984697800119976959378162843817868
+🐝 Length of n:120 bits
+******************************
+🐝 P:952809000096560291 (60 bits)
+🐝 Q:1086027579223696553 (60 bits)
+🐝 Finished at loop: 28 k values: 268435456
+🐝 PHI:1034776851837418226012406113933120080
+🐝 Decryption Key:568411228254986589811047501435713
+🐝 Plaintext:345
+******************************
+🐝 Finished in: 385.018 seconds
 
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+🐝 Started	06:48:55
+🐝 Factorize N:498702132445864856509611776937010471
+🐝 Exponent: 65537
+🐝 Ciphertext: 96708304500902540927682601709667939
+🐝 Bits length of N:119
+******************************
+🐝 P:640224252335299439 (60 bits)
+🐝 Q:778949142627423689 (60 bits)
+🐝 Finished at loop: 31 k values: -2147483648       // notice the bug here?
+🐝 PHI:498702132445864855090438381974287344
+🐝 Decryption Key:385107896622560911412972764596132081
+🐝 Plaintext:638
+******************************
+🐝 Finished in: 3627.512 seconds
 ```
 ## Answer 2
 ```
@@ -28,10 +56,7 @@ e: 65537
 Ciphertext: 582984697800119976959378162843817868
 Secret Message:   345
 ```
-Answer:
-```
 
-```
 ## Steps
 The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  The found numbers were referred to as `𝑝` and `𝑞` and were to be kept secret.  `𝑁` was not a secret and it was part of the `Public Key`.
 
