@@ -24,13 +24,6 @@
     return self;
 }
 
-+ (NSString *)prettyDate: (NSDate *)date
-{
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"HH:mm:ss"];
-    return [dateFormat stringFromDate:date];
-}
-
 - (void) setNotification {
     [[NSNotificationCenter defaultCenter] addObserverForName:@"FactorizationCompleted" object:NULL queue:NULL usingBlock:^(NSNotification *note)
      {
@@ -53,8 +46,24 @@
 
 - (void)timeTaken
 {
-    [YDPrettyConsole banner];
-    [YDPrettyConsole multiple:@"Finished in: %.3f seconds", [endTime timeIntervalSinceDate:startTime]];
+    NSTimeInterval difference = [endTime timeIntervalSinceDate:startTime];
+    [YDManager prettyPrintTimeFromSeconds:difference];
+}   
+
++ (NSString *)prettyDate: (NSDate *)date
+{
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"HH:mm:ss"];
+    return [dateFormat stringFromDate:date];
+}
+
++ (void)prettyPrintTimeFromSeconds: (NSTimeInterval)timeInSecs
+{
+    NSDateComponentsFormatter *componentFormatter = [[NSDateComponentsFormatter alloc] init];
+    componentFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
+    componentFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorDropLeading;
+    NSString *prettyTimeTaken = [componentFormatter stringFromTimeInterval:timeInSecs];
+    [YDPrettyConsole single: prettyTimeTaken];
 }
 
 + (void)dirtyExit
