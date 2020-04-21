@@ -89,9 +89,9 @@
     size_t lenPrime;
     lenPrime = mpz_sizeinbase(_n, 2);
     [YDPrettyConsole multiple:@"n:%@ (%zu bits)", [self prettyGMPStr:_n], lenPrime];
-    [YDPrettyConsole multiple:@"Exponent length of N:%@", [self prettyGMPStr:_exponent]];
+    [YDPrettyConsole multiple:@"Exponent:%@", [self prettyGMPStr:_exponent]];
     [YDPrettyConsole multiple:@"Ciphertext:%@", [self prettyGMPStr:_ciphertext]];
-    [YDPrettyConsole banner];
+    [self.progressBar banner];
 }
 
 #pragma mark - Summarize and Notify Factorize step
@@ -118,8 +118,6 @@
     flag = mpz_set_str(_n,[_recPubKeyAndCiphertext [@"Modulus"] UTF8String], 10);
     if(flag != 0)
         return NO;
-    
-    _lenOfN = mpz_sizeinbase(_n, 2);
     
     flag = mpz_set_str(_ciphertext,[_recPubKeyAndCiphertext [@"Ciphertext"] UTF8String], 10);
     if(flag != 0)

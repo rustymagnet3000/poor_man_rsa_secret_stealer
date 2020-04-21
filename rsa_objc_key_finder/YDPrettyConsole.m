@@ -1,27 +1,28 @@
 #include "YDPrettyConsole.h"
 
-#ifdef DEBUG
-#define NSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
-#else
-#define NSLog(...) {}
-#endif
-
 @implementation YDPrettyConsole
-
-static int width;
 
 - (instancetype)init{
     self = [super init];
-    if (self) {
-        return self;
+    if (self){
         
+        _running = NO;
+        
+        struct winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        if(w.ws_row > 0) {
+            _width = w.ws_col;
+        } else {
+            _width = DEFAULT_WIDTH;
+        }
+        return self;
     }
     return NULL;
 }
 
 - (void) setRunning:(BOOL)r{
-    running = r;
-    if(running){
+    _running = r;
+    if(_running){
         dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
          
          dispatch_async(dispatchQueue, ^{
@@ -32,12 +33,11 @@ static int width;
     }
 }
 -(BOOL)running{
-    return running;
+    return _running;
 }
 
 - (void) UIProgressStop{
-    #pragma mark - complete search banner.
-    for (; _curserCounter < width; _curserCounter++){
+    for (; _curserCounter < _width; _curserCounter++){
         putchar(PROGRESS_CHAR);
     }
     putchar('\n');
@@ -45,29 +45,21 @@ static int width;
 }
 
 - (void) UIProgressStart{
-    while (running == YES) {
-        if(_curserCounter == width){
+    while (_running == YES) {
+        if(_curserCounter == _width){
             _curserCounter = 0;
             putchar('\n');
         }
         _curserCounter++;
         putchar(PROGRESS_CHAR);
+        fflush(stdout);
         usleep(750000); // 0.75 second
     }
 }
 
-+ (void)banner{
+- (void)banner{
 
-    if(width == 0) {
-        struct winsize w;
-        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-        if(w.ws_row > 0) {
-            width = w.ws_col;
-        } else {
-            width = DEFAULT_WIDTH;
-        }
-    }
-    for (int i = 0; i < width; i++)
+    for (int i = 0; i < _width; i++)
         putchar('*');
     putchar('\n');
 }
