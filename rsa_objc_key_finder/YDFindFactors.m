@@ -5,7 +5,6 @@
 - (BOOL)preChecks {
       
     /* stop if even number found */
-  
     int flag = 0;
     flag = mpz_odd_p(_n);
     if(flag == 0)
@@ -33,9 +32,6 @@
         if([self preChecks] == NO)
             return NULL;
         
-        [YDPrettyConsole multiple:@"Factorize N:%@", [self prettyGMPStr:_n]];
-        [YDPrettyConsole multiple:@"Bits length of N:%zu", _lenOfN];
-        [YDPrettyConsole banner];
         _progressBar = [[YDPrettyConsole alloc] init];
     }
   return self;
@@ -45,7 +41,8 @@
 - (BOOL) factorize
 {
     mpz_t exp, gcd, secretFactor, x, xTemp, xFixed;
-    int flag = 0, count;
+    int flag = 0;
+    unsigned long long count;
     _kToFactorize = 2;
     _loopsToFactorize = 1;
     
@@ -53,6 +50,11 @@
     mpz_init_set_ui(x, 2);
 
      do {
+         if (_kToFactorize >= ULONG_LONG_MAX) {
+               [YDPrettyConsole single:@"Outside supported number range"];
+              return FALSE;
+          }
+         
          count = _kToFactorize;
 
          do {
@@ -81,10 +83,26 @@
      return _loopsToFactorize <= MAX_LOOPS ? YES : NO;
 }
 
+#pragma mark - Beautify Factorize step
+- (void) preFactorize {
+
+    size_t lenPrime;
+    lenPrime = mpz_sizeinbase(_n, 2);
+    [YDPrettyConsole multiple:@"n:%@ (%zu bits)", [self prettyGMPStr:_n], lenPrime];
+    [YDPrettyConsole multiple:@"Exponent length of N:%@", [self prettyGMPStr:_exponent]];
+    [YDPrettyConsole multiple:@"Ciphertext:%@", [self prettyGMPStr:_ciphertext]];
+    [YDPrettyConsole banner];
+}
+
 #pragma mark - Summarize and Notify Factorize step
 - (void) postFactorize {
-    [YDPrettyConsole multiple:@"P:%@", [self prettyGMPStr:_p]];
-    [YDPrettyConsole multiple:@"Q:%@", [self prettyGMPStr:_q]];
+    
+    size_t lenPrime;
+    lenPrime = mpz_sizeinbase(_p, 2);
+    [YDPrettyConsole multiple:@"P:%@ (%zu bits)", [self prettyGMPStr:_p], lenPrime];
+    lenPrime = mpz_sizeinbase(_q, 2);
+    [YDPrettyConsole multiple:@"Q:%@ (%zu bits)", [self prettyGMPStr:_q], lenPrime];
+    
     [YDPrettyConsole multiple:@"Finished at loop: %d k values: %d", _loopsToFactorize, _kToFactorize ];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
 }
