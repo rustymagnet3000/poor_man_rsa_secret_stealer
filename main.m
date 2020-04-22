@@ -13,16 +13,25 @@ int main(void) {
         if(findfactors == NULL)
             return EXIT_FAILURE;
         
+        
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
               @autoreleasepool {
+                  NSError *error = NULL;
+                  BOOL success = NO;
+                  
                   [findfactors preFactorize];
                   [findfactors.progressBar setRunning:YES];
                   [findfactors factorize];
                   [findfactors.progressBar setRunning:NO];
                   [findfactors postFactorize];
                   [findfactors totient];                        // bool
-                  [findfactors deriveMultiplicativeInverse];    // bool
+                  
+                  success = [findfactors deriveMultiplicativeInverse:&error];
+                  if (!success) {
+                      [YDPrettyConsole single:[error localizedDescription]];
+                      [YDManager dirtyExit];
+                  }
                   [findfactors decryptMessage];                 // bool
                   [mngr timeTaken];
               }

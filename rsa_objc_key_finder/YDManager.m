@@ -72,7 +72,7 @@
 
 + (void)dirtyExit
 {
-    [YDPrettyConsole single:@"Error in setup"];
+    [YDPrettyConsole single:@"Exiting by design"];
     exit(EXIT_FAILURE);
 }
 @end
