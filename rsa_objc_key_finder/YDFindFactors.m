@@ -88,6 +88,7 @@
 
     size_t lenPrime;
     lenPrime = mpz_sizeinbase(_n, 2);
+    [self.progressBar banner];
     [YDPrettyConsole multiple:@"n:%@ (%zu bits)", [self prettyGMPStr:_n], lenPrime];
     [YDPrettyConsole multiple:@"Exponent:%@", [self prettyGMPStr:_exponent]];
     [YDPrettyConsole multiple:@"Ciphertext:%@", [self prettyGMPStr:_ciphertext]];
@@ -102,9 +103,9 @@
     [YDPrettyConsole multiple:@"P:%@ (%zu bits)", [self prettyGMPStr:_p], lenPrime];
     lenPrime = mpz_sizeinbase(_q, 2);
     [YDPrettyConsole multiple:@"Q:%@ (%zu bits)", [self prettyGMPStr:_q], lenPrime];
-    
-    [YDPrettyConsole multiple:@"Finished at loop: %d k values: %d", _loopsToFactorize, _kToFactorize ];
+    [YDPrettyConsole multiple:@"Finished at loop: %d k values: %llu", _loopsToFactorize, _kToFactorize ];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
+    [self.progressBar banner];
 }
 
 - (BOOL)parseRecievedPubKey{
@@ -158,7 +159,8 @@
 -(BOOL)deriveMultiplicativeInverse{
     int flag = 0;
     flag = mpz_invert(_derivedDecryptionKey, _exponent, _PHI);
-    assert (flag != 0);
+    if(flag != 0)
+        return NO;
     [YDPrettyConsole multiple:@"Decryption Key:%@", [self prettyGMPStr:_derivedDecryptionKey]];
     return YES;
 }

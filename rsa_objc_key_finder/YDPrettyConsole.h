@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 #include <sys/ioctl.h>
 #define DEFAULT_WIDTH 30
-#define PROGRESS_CHAR '-'
+#define PROGRESS_CHAR '~'
+#define BANNER_CHAR '-'
 
 #ifdef DEBUG
 #define NSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);

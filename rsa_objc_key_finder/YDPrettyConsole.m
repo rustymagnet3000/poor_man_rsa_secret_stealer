@@ -60,7 +60,7 @@
 - (void)banner{
 
     for (int i = 0; i < _width; i++)
-        putchar('*');
+        putchar(BANNER_CHAR);
     putchar('\n');
 }
 
