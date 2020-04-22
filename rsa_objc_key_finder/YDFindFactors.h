@@ -10,7 +10,7 @@
 -(BOOL)preChecks;
 -(BOOL)factorize;
 -(BOOL)totient;
--(BOOL)deriveMultiplicativeInverse;
+- (BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr;
 @end
 
 @interface YDFindFactors : NSObject <YDReverseRSAProtocol>{
@@ -34,7 +34,7 @@
 - (BOOL)factorize;
 - (void)postFactorize;
 - (BOOL)totient;
-- (BOOL)deriveMultiplicativeInverse;
+- (BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr;
 - (BOOL)decryptMessage;
 @end
 
