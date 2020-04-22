@@ -2,7 +2,8 @@
 #import "YDFindFactors.h"
 #import "YDPlistReader.h"
 #import "YDPrettyConsole.h"
-#define KILLTIMER 7200
+#define KILLTIMER 3600 * 8
+#define TWOMINUTES 120
 
 @protocol YDManagerRules <NSObject>
 @required
