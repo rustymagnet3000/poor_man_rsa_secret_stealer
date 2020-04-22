@@ -17,7 +17,8 @@
         }
         
         startTime = [NSDate date];
-        [YDPrettyConsole multiple:@"Started\t%@", [YDManager prettyDate:startTime]];
+        [YDPrettyConsole multiple:@"Started   \t%@", [YDManager prettyDate:startTime]];
+        [YDPrettyConsole multiple:@"Kill timer\t%@", [YDManager prettyPrintTimeFromSeconds:KILLTIMER]];
         [self setNotification];
     }
 
@@ -47,7 +48,7 @@
 - (void)timeTaken
 {
     NSTimeInterval difference = [endTime timeIntervalSinceDate:startTime];
-    [YDManager prettyPrintTimeFromSeconds:difference];
+    [YDPrettyConsole single:[YDManager prettyPrintTimeFromSeconds:difference]];
 }   
 
 + (NSString *)prettyDate: (NSDate *)date
@@ -57,13 +58,16 @@
     return [dateFormat stringFromDate:date];
 }
 
-+ (void)prettyPrintTimeFromSeconds: (NSTimeInterval)timeInSecs
++ (NSString *)prettyPrintTimeFromSeconds: (NSTimeInterval)timeInSecs
 {
-    NSDateComponentsFormatter *componentFormatter = [[NSDateComponentsFormatter alloc] init];
-    componentFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
-    componentFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorDropLeading;
-    NSString *prettyTimeTaken = [componentFormatter stringFromTimeInterval:timeInSecs];
-    [YDPrettyConsole single: prettyTimeTaken];
+    if(timeInSecs < TWOMINUTES)
+        return [NSString stringWithFormat:@"Finished in: %.3f seconds", timeInSecs];
+    else{
+        NSDateComponentsFormatter *componentFormatter = [[NSDateComponentsFormatter alloc] init];
+        componentFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
+        componentFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorDropLeading;
+        return [componentFormatter stringFromTimeInterval:timeInSecs];
+    }
 }
 
 + (void)dirtyExit
