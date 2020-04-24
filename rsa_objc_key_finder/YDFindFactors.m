@@ -158,15 +158,14 @@
 
 -(BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr{
     int flag = 0;
-    flag = mpz_invert(_derivedDecryptionKey, _exponent, _PHI);
-    if(flag != 0){
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Failed getting a Multiplicative Inverse.", nil) };
+    flag = mpz_invert(_derivedDecryptionKey, _exponent, _PHI); // If inverse exists, return value is non-zero
+    if(flag == 0){
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Failed getting a Multiplicative Inverse.", NULL) };
         
-        if (errorPtr) {
+        if (errorPtr)
             *errorPtr = [NSError errorWithDomain:@"com.youdog.rsaKeyFinder"
                                          code:-9
                                      userInfo:userInfo];
-        }
         return NO;
     }
     [YDPrettyConsole multiple:@"Decryption Key:%@", [self prettyGMPStr:_derivedDecryptionKey]];
