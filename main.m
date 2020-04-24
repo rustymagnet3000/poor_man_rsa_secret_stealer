@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import "YDManager.h"
 #import "YDPrettyConsole.h"
 
@@ -11,29 +10,31 @@ int main(void) {
         
         YDFindFactors *findfactors = [[YDFindFactors alloc]initWithPubKey:mngr.keyToAnalyze.foundDictItems];
         if(findfactors == NULL)
-            return EXIT_FAILURE;
+            [YDManager dirtyExit];
         
         
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
               @autoreleasepool {
                   NSError *error = NULL;
-                  BOOL success = NO;
+                  BOOL result = NO;
                   
                   [findfactors preFactorize];
                   [findfactors.progressBar setRunning:YES];
                   [findfactors factorize];
                   [findfactors.progressBar setRunning:NO];
                   [findfactors postFactorize];
-                  [findfactors totient];                        // bool
                   
-                  success = [findfactors deriveMultiplicativeInverse:&error];
-                  if (!success) {
-                      [YDPrettyConsole single:[error localizedDescription]];
-                      [YDManager dirtyExit];
-                  }
-                  [findfactors decryptMessage];                 // bool
-                  [mngr timeTaken];
+                  [findfactors totient:&error];
+                  if (!result)
+                      [mngr timeTaken:&error];
+
+                  result = [findfactors deriveMultiplicativeInverse:&error];
+                  if (!result)
+                      [mngr timeTaken:&error];
+                  
+                  [findfactors decryptMessage];
+                  [mngr timeTaken:NULL];
               }
               dispatch_semaphore_signal(semaphore);
           });

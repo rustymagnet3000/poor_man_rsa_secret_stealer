@@ -3,7 +3,6 @@
 @implementation YDFindFactors : NSObject
 
 - (BOOL)preChecks {
-      
     /* stop if even number found */
     int flag = 0;
     flag = mpz_odd_p(_n);
@@ -15,7 +14,7 @@
     if(flag == 0)
         return NO;
     
-    return TRUE;
+    return YES;
 }
 
 - (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict{
@@ -127,24 +126,46 @@
     return YES;
 }
 
--(BOOL)totient{
+-(BOOL)totient:(NSError **)errorPtr{
     
     mpz_t tempP, tempQ;
     mpz_inits ( tempP, tempQ, NULL);
-    
+
+    /* check for empty p and q */
+    int pflag = 0, qflag = 0;
+    pflag = mpz_sgn(_p);
+    qflag = mpz_sgn(_q);
+    if(pflag == 0 || qflag == 0){
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"P or Q equal zero", NULL) };
+        if (errorPtr)
+            *errorPtr = [NSError errorWithDomain:@"com.youdog.rsaKeyFinder"
+                                         code:-8
+                                     userInfo:userInfo];
+        return NO;
+    }
     mpz_sub_ui(tempP,_p,1);
     mpz_sub_ui(tempQ,_q,1);
-
+    
     mpz_mul(_PHI,tempP,tempQ);
+
+    /* check for a 0 value PHI. Indicative of error. */
+    pflag = mpz_sgn(_PHI);
+    if(pflag == 0){
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Error deriving PHI", NULL) };
+        if (errorPtr)
+            *errorPtr = [NSError errorWithDomain:@"com.youdog.rsaKeyFinder"
+                                         code:-8
+                                     userInfo:userInfo];
+        return NO;
+    }
     [YDPrettyConsole multiple:@"PHI:%@", [self prettyGMPStr:_PHI]];
     mpz_clears ( tempP, tempQ, NULL );
     return YES;
 }
 
--(BOOL)decryptMessage{
+-(void)decryptMessage{
     mpz_powm(_plaintext, _ciphertext, _derivedDecryptionKey, _n);
     [YDPrettyConsole multiple:@"Plaintext:%@", [self prettyGMPStr:_plaintext]];
-    return YES;
 }
 
 -(void)encryptMessage{
@@ -161,7 +182,6 @@
     flag = mpz_invert(_derivedDecryptionKey, _exponent, _PHI); // If inverse exists, return value is non-zero
     if(flag == 0){
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Failed getting a Multiplicative Inverse.", NULL) };
-        
         if (errorPtr)
             *errorPtr = [NSError errorWithDomain:@"com.youdog.rsaKeyFinder"
                                          code:-9
