@@ -7,7 +7,7 @@
 
 @protocol YDManagerRules <NSObject>
 @required
-- (void)setNotification;
+-(void)setNotification;
 @end
 
 @interface YDManager : NSObject  <YDManagerRules>{
@@ -16,10 +16,8 @@
 }
 
 @property YDPListReader *keyToAnalyze;
-
-- (instancetype)init:(NSString *)pubKeyfilename;
-- (void)setNotification;
-- (void)timeTaken;
-+ (void)dirtyExit;
-
+-(instancetype)init:(NSString *)pubKeyfilename NS_DESIGNATED_INITIALIZER;
+-(void)setNotification;
+-(void)timeTaken:(NSError **)errorPtr;
++(void)dirtyExit;
 @end

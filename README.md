@@ -87,7 +87,7 @@ The code in this repo was built to find a `Private Key` that would reveal a secr
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 ```
-## Challenge 3: 80 bit Primes
+## Challenge 3: 128 bit Primes
 ```
 🐝 Started   	07:50:38
 🐝 Kill timer	12 hours, 0 minutes, 0 seconds

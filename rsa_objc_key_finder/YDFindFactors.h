@@ -9,8 +9,8 @@
 -(BOOL)parseRecievedPubKey;
 -(BOOL)preChecks;
 -(BOOL)factorize;
--(BOOL)totient;
-- (BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr;
+-(BOOL)totient:(NSError **)errorPtr;
+-(BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr;
 @end
 
 @interface YDFindFactors : NSObject <YDReverseRSAProtocol>{
@@ -28,13 +28,12 @@
 }
 
 @property YDPrettyConsole *progressBar;
-
-- (instancetype)initWithPubKey:(NSDictionary *)pubKeyDict;
-- (void)preFactorize;
-- (BOOL)factorize;
-- (void)postFactorize;
-- (BOOL)totient;
-- (BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr;
-- (BOOL)decryptMessage;
+-(instancetype)initWithPubKey:(NSDictionary *)pubKeyDict;
+-(void)preFactorize;
+-(BOOL)factorize;
+-(void)postFactorize;
+-(BOOL)totient:(NSError **)errorPtr;
+-(BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr;
+-(void)decryptMessage;
 @end
 

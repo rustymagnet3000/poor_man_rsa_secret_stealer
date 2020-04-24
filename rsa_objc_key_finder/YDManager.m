@@ -30,10 +30,6 @@
      {
          [self receiveNotification:note];
      }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"ProgressBarFinished" object:NULL queue:NULL usingBlock:^(NSNotification *prettyConsole)
-     {
-         [self receiveNotification:prettyConsole];
-     }];
 }
 
 
@@ -45,11 +41,15 @@
     }
 }
 
-- (void)timeTaken
+- (void)timeTaken:(NSError **)errorPtr;
 {
     NSTimeInterval difference = [endTime timeIntervalSinceDate:startTime];
     [YDPrettyConsole single:[YDManager prettyPrintTimeFromSeconds:difference]];
-}   
+    if(*errorPtr){
+        [YDPrettyConsole multiple:@"⚠️ ",[*errorPtr localizedDescription]];
+        [YDManager dirtyExit];
+    }
+}
 
 + (NSString *)prettyDate: (NSDate *)date
 {
@@ -70,9 +70,8 @@
     }
 }
 
-+ (void)dirtyExit
++(void)dirtyExit
 {
-    [YDPrettyConsole single:@"Exiting by design"];
     exit(EXIT_FAILURE);
 }
 @end
