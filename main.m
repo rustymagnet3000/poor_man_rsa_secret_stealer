@@ -25,7 +25,7 @@ int main(void) {
                   [findfactors.progressBar setRunning:NO];
                   [findfactors postFactorize];
                   
-                  [findfactors totient:&error];
+                  result = [findfactors totient:&error];
                   if (!result)
                       [mngr timeTaken:&error];
 
@@ -36,6 +36,7 @@ int main(void) {
                   [findfactors decryptMessage];
                   [mngr timeTaken:NULL];
               }
+              [mngr timeTaken:NULL];
               dispatch_semaphore_signal(semaphore);
           });
 

@@ -9,28 +9,47 @@ xxd secret.plaintext
 ```
 You can also
 ```
-cat secret.plaintext 
+cat secret.plaintext
 ABCD%
 ```
 
 ## Encrypt Secret with Public Key
-Easy to hit these errors, with custom Keys.
-
-My `Modulus` caused this:
 ```
-data too small for key size:crypto/rsa/rsa_none.c:23:
-
-data too large for modulus:crypto/rsa/rsa_ossl.c:131:
-```
-
 echo -n -e '\x41\x42\x43\x44\x45\x46\x47' > secret.plaintext
-➜  create_keypair git:(foundfactors) ✗ openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
+
+openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
+```
+
+## Troubleshoot Encrypt step
+It was easy to hit errors, when generating custom Keys.
+
+- data too small for key size
+- data too large for key size
+- data too large for modulus
+
+```
+xxd secret.plaintext
+00000000: 0041 4243 4445 46                        .ABCDEF
+```
+
+Ok, we know the Key we generated was `RSA Public-Key: (36 bit)`.  That means we need to ensure the data is less than the modulus.
+
+How big is the data?  Well, `ABCDEF` is actually:
+```
+n: 414243444546 (39 bits)
+```
+Ok, let's just shrink the plaintext?
+```
+echo -n -e '\x41\x42\x43\x44\x45' > secret.plaintext
+
+cat secret.plaintext
+ABCDE%                         
+
+openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
+
 RSA operation error
-4347848128:error:04068084:rsa routines:rsa_ossl_public_encrypt:
-
-
-
-
+rsa_ossl_public_encrypt:data too large for modulus
+```
 
 ## Generate Short RSA Private Key
 We are trying to create a file that completes this Struct:
@@ -51,7 +70,7 @@ RSAPrivateKey ::= SEQUENCE {
 ```
 Then create the key:
 ```
-openssl asn1parse -genconf custom_key.txt -out key.der 
+openssl asn1parse -genconf custom_key.txt -out key.der
 
 
     0:d=0  hl=2 l=  52 cons: SEQUENCE          
@@ -76,7 +95,7 @@ $openssl rsa -inform der -in key.der -outform pem -pubout>pkey.pem
 ```
 Print the Public Key:
 ```
-openssl rsa -inform PEM -pubin -in pkey.pem -text -noout 
+openssl rsa -inform PEM -pubin -in pkey.pem -text -noout
 RSA Public-Key: (49 bit)
 Modulus: 305512047893009 (0x115dc9116da11)
 Exponent: 78221649299689 (0x4724659ec8e9)
@@ -86,7 +105,7 @@ Exponent: 78221649299689 (0x4724659ec8e9)
 ## Why not use the normal commands?
 The normal tools set a minimum version that you cannot override.
 ```
-ssh-keygen -t rsa -b 512 
+ssh-keygen -t rsa -b 512
 Invalid RSA key length: minimum is 1024 bits
 
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:100
@@ -100,7 +119,9 @@ genpkey: Error setting rsa_keygen_bits:100 parameter:
 
 ## References
 https://math.stackexchange.com/questions/20157/rsa-in-plain-english
-https://tools.ietf.org/html/rfc3447#appendix-C                   
-https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem
-https://superuser.com/questions/1326230/encryption-using-openssl-with-custom-rsa-keys
 
+https://tools.ietf.org/html/rfc3447#appendix-C                   
+
+https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem
+
+https://superuser.com/questions/1326230/encryption-using-openssl-with-custom-rsa-keys
