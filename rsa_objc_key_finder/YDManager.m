@@ -45,8 +45,8 @@
 {
     NSTimeInterval difference = [endTime timeIntervalSinceDate:startTime];
     [YDPrettyConsole single:[YDManager prettyPrintTimeFromSeconds:difference]];
-    if(*errorPtr){
-        [YDPrettyConsole multiple:@"⚠️ ",[*errorPtr localizedDescription]];
+    if(errorPtr){
+        [YDPrettyConsole multiple:@"⚠️ %@",[*errorPtr localizedDescription]];
         [YDManager dirtyExit];
     }
 }
