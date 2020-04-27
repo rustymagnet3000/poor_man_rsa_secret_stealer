@@ -64,14 +64,14 @@
 }
 
 + (void)single:(NSString *)message{
-    NSLog(@"✅ %@", message);
+    NSLog(@"%@", message);
 }
 
 + (void)multiple:(NSString *)message,...{
     va_list args;
     va_start(args,message);
     NSString *concatStr= [[NSString alloc] initWithFormat:message arguments:args];
-    NSLog(@"✅ %@", concatStr);
+    NSLog(@"%@", concatStr);
     va_end(args);
 }
 

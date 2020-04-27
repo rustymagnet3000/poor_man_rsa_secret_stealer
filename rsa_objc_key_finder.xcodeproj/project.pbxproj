@@ -16,6 +16,8 @@
 		0F49E199243B268500DF17F6 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
 		0F77D941244DCF7D0062D0E9 /* pubKeyAndCipherText.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F0A648A243F638800038823 /* pubKeyAndCipherText.plist */; };
 		0F8317442424F5B4001ABDBA /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
+		0FCDA81E2457083900A1927E /* YDFindFactors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDFindFactors.m */; };
+		0FCDA81F2457084200A1927E /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
 		0FD3E9982237B208002CFD67 /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
 		30FA0593221FCACA00230559 /* YDFindFactors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDFindFactors.m */; };
@@ -223,6 +225,8 @@
 			files = (
 				0F0A648B243F63B800038823 /* YDPlistReader.m in Sources */,
 				0F0EC735243610A000227816 /* YDPrettyConsole.m in Sources */,
+				0FCDA81E2457083900A1927E /* YDFindFactors.m in Sources */,
+				0FCDA81F2457084200A1927E /* YDManager.m in Sources */,
 				0F0EC73124360FD300227816 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

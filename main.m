@@ -12,7 +12,6 @@ int main(void) {
         if(findfactors == NULL)
             [YDManager dirtyExit];
         
-        
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
               @autoreleasepool {
@@ -34,7 +33,6 @@ int main(void) {
                       [mngr timeTaken:&error];
                   
                   [findfactors decryptMessage];
-                  [mngr timeTaken:NULL];
               }
               [mngr timeTaken:NULL];
               dispatch_semaphore_signal(semaphore);

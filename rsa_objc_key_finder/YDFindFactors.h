@@ -35,5 +35,6 @@
 -(BOOL)totient:(NSError **)errorPtr;
 -(BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr;
 -(void)decryptMessage;
+-(void)encryptMessage:(NSString *)pt;
 @end
 
