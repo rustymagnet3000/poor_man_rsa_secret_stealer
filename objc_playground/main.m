@@ -11,8 +11,10 @@ int main(void) {
         if(findfactors == NULL)
             [YDManager dirtyExit];
 
-        [findfactors preFactorize];
-        [findfactors encryptMessage:@"123"];
+        [findfactors pubKeySummary];
+        
+        NSString *plaintext = @"3333";
+        [findfactors encryptMessage:plaintext];
         
     }
     return 0;

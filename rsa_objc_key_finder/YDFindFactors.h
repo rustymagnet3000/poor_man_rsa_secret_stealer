@@ -29,7 +29,7 @@
 
 @property YDPrettyConsole *progressBar;
 -(instancetype)initWithPubKey:(NSDictionary *)pubKeyDict;
--(void)preFactorize;
+-(void)pubKeySummary;
 -(BOOL)factorize;
 -(void)postFactorize;
 -(BOOL)totient:(NSError **)errorPtr;
