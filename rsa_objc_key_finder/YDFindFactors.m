@@ -82,13 +82,12 @@
      return _loopsToFactorize <= MAX_LOOPS ? YES : NO;
 }
 
-#pragma mark - Beautify Factorize step
-- (void) preFactorize {
+- (void) pubKeySummary {
 
     size_t lenPrime;
     lenPrime = mpz_sizeinbase(_n, 2);
     [self.progressBar banner];
-    [YDPrettyConsole multiple:@"Public Key and Encrypted Message:\n\tn:%@ (%zu bits)\n\tExponent:%@\n\tCiphertext:%@", [self prettyGMPStr:_n], lenPrime, [self prettyGMPStr:_exponent], [self prettyGMPStr:_ciphertext] ];
+    [YDPrettyConsole multiple:@"Public Key and Encrypted Message:\n\tn:%@ (%zu bits)\n\tExponent:%@", [self prettyGMPStr:_n], lenPrime, [self prettyGMPStr:_exponent]];
     [self.progressBar banner];
 }
 
@@ -176,6 +175,7 @@
     assert (flag == 0);
     
     mpz_powm(_newCipherText, _plaintext, _exponent, _n);
+    gmp_printf("[*]\tPlaintext message:%Zd\n", _plaintext);
     gmp_printf("[*]\tEncrypted message:%Zd\n", _newCipherText);
     mpz_clears ( _newCipherText, NULL );
 }

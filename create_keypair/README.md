@@ -1,31 +1,46 @@
-## The Secret Message
-```
-echo -n -e '\x41\x42\x43\x44' > secret.plaintext
-```
-Verify no character returns..
-```
-xxd secret.plaintext
-00000000: 4142 4344                                ABCD
-```
-You can also
-```
-cat secret.plaintext
-ABCD%
-```
+## Encrypt message with Public Key
+The `public key's Modulus length` dictates the maximum length of the message you hope to keep confidential.  Bigger primes ( `p * q = n` ) equate to a bigger maximum length of the secret message.
 
-## Encrypt Secret with Public Key
+Let's try with this Public Key:
 ```
-echo -n -e '\x41\x42\x43\x44\x45\x46\x47' > secret.plaintext
-
-openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
+openssl rsa -inform PEM -pubin -in pkey.pem -text -noout
+RSA Public-Key: (36 bit)
+Modulus: 57564127333 (0xd6716e065)
+Exponent: 65537 (0x10001)
+```
+Now the encrypted message:
+```
+echo -n -e '\x0\x33\x33\x33\x33' > secret.plaintext
 
 xxd -b secret.plaintext
-00000000: 00000001 01000001 01000010 01000011 01000100           .ABCD
+00000000: 00000000 00110011 00110011 00110011 00110011           .3333
+
+openssl rsautl -encrypt -raw -pubin -inkey pkey.pem -in secret.plaintext -out secret.encrypted
 
 xxd -b secret.encrypted
-00000000: 00000111 01010001 01001000 10101101 11110001           .QH..
+00000000: 00001001 01100101 00000011 11111101 11100010           .e...
 
+xxd -ps secret.encrypted
+096503fde2
+
+// My app only took Decimal inputs ( not hex strings )
+>>> print int("096503fde2", 16)
+40349466082
 ```
+## Understand the options
+```
+openssl help rsautl
+
+-raw
+Use no padding
+```
+You could also verify what you did with a hex print:
+```
+openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -hexdump
+```
+### START AGAIN
+
+My code gets:  12232475972
 
 ## Troubleshoot Encrypt step
 It was easy to hit errors, when generating custom Keys.
@@ -64,8 +79,8 @@ We are trying to create a file that completes this Struct.  I added comments to 
 ```
 RSAPrivateKey ::= SEQUENCE {
     version           Version,
-    modulus           INTEGER,  -- n                    ( inside Public Key )
-    publicExponent    INTEGER,  -- e                    ( inside Public Key )
+    modulus           INTEGER,  -- n                    ( in Public Key )
+    publicExponent    INTEGER,  -- e                    ( in Public Key )
     privateExponent   INTEGER,  -- d                    ( Private. The decryption key )
     prime1            INTEGER,  -- p                    ( Private. p * q = n )
     prime2            INTEGER,  -- q                    ( Private. p * q = n )

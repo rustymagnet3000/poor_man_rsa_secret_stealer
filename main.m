@@ -18,7 +18,7 @@ int main(void) {
                   NSError *error = NULL;
                   BOOL result = NO;
                   
-                  [findfactors preFactorize];
+                  [findfactors pubKeySummary];
                   [findfactors.progressBar setRunning:YES];
                   [findfactors factorize];
                   [findfactors.progressBar setRunning:NO];
