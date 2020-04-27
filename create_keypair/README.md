@@ -18,6 +18,13 @@ ABCD%
 echo -n -e '\x41\x42\x43\x44\x45\x46\x47' > secret.plaintext
 
 openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
+
+xxd -b secret.plaintext
+00000000: 00000001 01000001 01000010 01000011 01000100           .ABCD
+
+xxd -b secret.encrypted
+00000000: 00000111 01010001 01001000 10101101 11110001           .QH..
+
 ```
 
 ## Troubleshoot Encrypt step
@@ -43,47 +50,51 @@ Ok, let's just shrink the plaintext?
 echo -n -e '\x41\x42\x43\x44\x45' > secret.plaintext
 
 cat secret.plaintext
-ABCDE%                         
+ABCD%                      
+
+stat -f "%z bytes" secret.plaintext
+5 bytes
 
 openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
-
-RSA operation error
-rsa_ossl_public_encrypt:data too large for modulus
 ```
 
 ## Generate Short RSA Private Key
-We are trying to create a file that completes this Struct:
+We are trying to create a file that completes this Struct.  I added comments to help the reader.
 
 ```
 RSAPrivateKey ::= SEQUENCE {
     version           Version,
-    modulus           INTEGER,  -- n
-    publicExponent    INTEGER,  -- e
-    privateExponent   INTEGER,  -- d
-    prime1            INTEGER,  -- p
-    prime2            INTEGER,  -- q
-    exponent1         INTEGER,  -- d mod (p-1)
-    exponent2         INTEGER,  -- d mod (q-1)
-    coefficient       INTEGER,  -- (inverse of q) mod p
+    modulus           INTEGER,  -- n                    ( inside Public Key )
+    publicExponent    INTEGER,  -- e                    ( inside Public Key )
+    privateExponent   INTEGER,  -- d                    ( Private. The decryption key )
+    prime1            INTEGER,  -- p                    ( Private. p * q = n )
+    prime2            INTEGER,  -- q                    ( Private. p * q = n )
+    exponent1         INTEGER,  -- d mod (p-1)          ( Private )
+    exponent2         INTEGER,  -- d mod (q-1)          ( Private )
+    coefficient       INTEGER,  -- (inverse of q) mod p (Private. PHI)
     otherPrimeInfos   OtherPrimeInfos OPTIONAL
 }
 ```
+Specify the custom key:
+```
+asn1=SEQUENCE:rsa_key
+
+[rsa_key]
+version=INTEGER:0
+modulus=INTEGER:57564127333
+pubExp=INTEGER:65537
+privExp=INTEGER:47169898753
+p=INTEGER:869273
+q=INTEGER:66221
+e1=INTEGER:869272
+e2=INTEGER:66220
+coeff=INTEGER:57563191840
+```
+
+
 Then create the key:
 ```
 openssl asn1parse -genconf custom_key.txt -out key.der
-
-
-    0:d=0  hl=2 l=  52 cons: SEQUENCE          
-    2:d=1  hl=2 l=   1 prim: INTEGER           :00
-    5:d=1  hl=2 l=   7 prim: INTEGER           :0115DC9116DA11
-   14:d=1  hl=2 l=   6 prim: INTEGER           :4724659EC8E9
-   22:d=1  hl=2 l=   3 prim: INTEGER           :02C695
-   27:d=1  hl=2 l=   4 prim: INTEGER           :010AAF2F
-   33:d=1  hl=2 l=   4 prim: INTEGER           :010ABABF
-   39:d=1  hl=2 l=   3 prim: INTEGER           :02C695
-   44:d=1  hl=2 l=   3 prim: INTEGER           :02C695
-   49:d=1  hl=2 l=   3 prim: INTEGER           :1898A2
-
 ```
 Convert to PEM format:
 ```

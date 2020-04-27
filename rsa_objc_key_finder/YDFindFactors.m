@@ -88,9 +88,7 @@
     size_t lenPrime;
     lenPrime = mpz_sizeinbase(_n, 2);
     [self.progressBar banner];
-    [YDPrettyConsole multiple:@"n:%@ (%zu bits)", [self prettyGMPStr:_n], lenPrime];
-    [YDPrettyConsole multiple:@"Exponent:%@", [self prettyGMPStr:_exponent]];
-    [YDPrettyConsole multiple:@"Ciphertext:%@", [self prettyGMPStr:_ciphertext]];
+    [YDPrettyConsole multiple:@"Public Key and Encrypted Message:\n\tn:%@ (%zu bits)\n\tExponent:%@\n\tCiphertext:%@", [self prettyGMPStr:_n], lenPrime, [self prettyGMPStr:_exponent], [self prettyGMPStr:_ciphertext] ];
     [self.progressBar banner];
 }
 
@@ -99,10 +97,10 @@
     
     size_t lenPrime;
     lenPrime = mpz_sizeinbase(_p, 2);
-    [YDPrettyConsole multiple:@"P:%@ (%zu bits)", [self prettyGMPStr:_p], lenPrime];
+    [YDPrettyConsole multiple:@"✅ P:%@ (%zu bits)", [self prettyGMPStr:_p], lenPrime];
     lenPrime = mpz_sizeinbase(_q, 2);
-    [YDPrettyConsole multiple:@"Q:%@ (%zu bits)", [self prettyGMPStr:_q], lenPrime];
-    [YDPrettyConsole multiple:@"Finished at loop: %d k values: %llu", _loopsToFactorize, _kToFactorize ];
+    [YDPrettyConsole multiple:@"✅ Q:%@ (%zu bits)", [self prettyGMPStr:_q], lenPrime];
+    [YDPrettyConsole multiple:@"✅ Finished at loop: %d k values: %llu", _loopsToFactorize, _kToFactorize ];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FactorizationCompleted" object:NULL userInfo:NULL];
     [self.progressBar banner];
 }
@@ -119,6 +117,7 @@
     if(flag != 0)
         return NO;
     
+    /* does not accept Hex Ciphertext */
     flag = mpz_set_str(_ciphertext,[_recPubKeyAndCiphertext [@"Ciphertext"] UTF8String], 10);
     if(flag != 0)
         return NO;
@@ -158,22 +157,26 @@
                                      userInfo:userInfo];
         return NO;
     }
-    [YDPrettyConsole multiple:@"PHI:%@", [self prettyGMPStr:_PHI]];
+    [YDPrettyConsole multiple:@"✅ PHI:%@", [self prettyGMPStr:_PHI]];
     mpz_clears ( tempP, tempQ, NULL );
     return YES;
 }
 
 -(void)decryptMessage{
     mpz_powm(_plaintext, _ciphertext, _derivedDecryptionKey, _n);
-    [YDPrettyConsole multiple:@"Plaintext:%@", [self prettyGMPStr:_plaintext]];
+    [YDPrettyConsole multiple:@"✅ Plaintext:%@", [self prettyGMPStr:_plaintext]];
 }
 
--(void)encryptMessage{
+-(void)encryptMessage:(NSString *)pt {
     mpz_t   _newCipherText;
-    mpz_inits ( _newCipherText, NULL);
+    mpz_init( _newCipherText);
+    
+    int flag = 0;
+    flag = mpz_set_str(_plaintext,[pt cStringUsingEncoding:NSASCIIStringEncoding], 10);
+    assert (flag == 0);
     
     mpz_powm(_newCipherText, _plaintext, _exponent, _n);
-    gmp_printf("[+]\tencrypted message:%Zd\n", _newCipherText);
+    gmp_printf("[*]\tEncrypted message:%Zd\n", _newCipherText);
     mpz_clears ( _newCipherText, NULL );
 }
 
@@ -188,7 +191,7 @@
                                      userInfo:userInfo];
         return NO;
     }
-    [YDPrettyConsole multiple:@"Decryption Key:%@", [self prettyGMPStr:_derivedDecryptionKey]];
+    [YDPrettyConsole multiple:@"✅ Private Exponent (Decryption Key):%@", [self prettyGMPStr:_derivedDecryptionKey]];
     return YES;
 }
 

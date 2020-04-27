@@ -61,7 +61,7 @@
 + (NSString *)prettyPrintTimeFromSeconds: (NSTimeInterval)timeInSecs
 {
     if(timeInSecs < TWOMINUTES)
-        return [NSString stringWithFormat:@"Finished in: %.3f seconds", timeInSecs];
+        return [NSString stringWithFormat:@"\n\nFinished in: %.3f seconds\n", timeInSecs];
     else{
         NSDateComponentsFormatter *componentFormatter = [[NSDateComponentsFormatter alloc] init];
         componentFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
