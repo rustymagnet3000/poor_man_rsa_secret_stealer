@@ -4,68 +4,53 @@ The `public key's Modulus length` dictates the maximum length of the message you
 Let's try with this Public Key:
 ```
 openssl rsa -inform PEM -pubin -in pkey.pem -text -noout
-RSA Public-Key: (36 bit)
-Modulus: 57564127333 (0xd6716e065)
+--------------------------------------------------------
+RSA Public-Key: (59 bit)
+Modulus: 464583729100140631 (0x6728870ad70b057)
 Exponent: 65537 (0x10001)
+
 ```
-Now the encrypted message:
+#### Create message to keep confidential
+A Modulus of `59 bits` leaves us with `7 Bytes`.  You actually have `8 Bytes` as `59 bit / 8 bits = 7 bytes a enough for a small byte`.  This is important.  The first byte is actually `0x06`.  Not `0x67`.
 ```
-echo -n -e '\x0\x33\x33\x33\x33' > secret.plaintext
+echo -n -e '\x05\x34\x33\x34\x34\x33\x34\x33' > secret.plaintext
+// WORKS as x05 < x06 (modulus' first byte)
 
-xxd -b secret.plaintext
-00000000: 00000000 00110011 00110011 00110011 00110011           .3333
-
-openssl rsautl -encrypt -raw -pubin -inkey pkey.pem -in secret.plaintext -out secret.encrypted
-
-xxd -b secret.encrypted
-00000000: 00001001 01100101 00000011 11111101 11100010           .e...
-
-xxd -ps secret.encrypted
-096503fde2
-
-// My app only took Decimal inputs ( not hex strings )
->>> print int("096503fde2", 16)
-40349466082
+echo -n -e '\x07\x34\x33\x34\x34\x33\x34\x33' > secret.plaintext
+// FAILS -> data too large for modulus
 ```
-## Understand the options
-```
-openssl help rsautl
+The failed message, was caused by the first byte (x07) being greater than the modulus' first byte (x06).
 
--raw
-Use no padding
-```
-You could also verify what you did with a hex print:
-```
-openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -hexdump
-```
-### START AGAIN
-
-My code gets:  12232475972
-
-## Troubleshoot Encrypt step
-It was easy to hit errors, when generating custom Keys.
+#### RSA with no Padding
+Why did that step matter? If you understood that step, you will be able to to avoid these errors:
 
 - data too small for key size
 - data too large for key size
 - data too large for modulus
 
-```
-xxd secret.plaintext
-00000000: 0041 4243 4445 46                        .ABCDEF
-```
+When you pass `-raw` flag to `OpenSSL's rsautl` tool you have selected `use no padding`.  **The user is responsible** for making sure the message and the modulus length match.
 
-Ok, we know the Key we generated was `RSA Public-Key: (36 bit)`.  That means we need to ensure the data is less than the modulus.
+`No padding` would never be used in a real application as the output would be `deterministic`.
 
-How big is the data?  Well, `ABCDEF` is actually:
+#### Verify your Bytes
 ```
-n: 414243444546 (39 bits)
-```
-Ok, let's just shrink the plaintext?
-```
-echo -n -e '\x41\x42\x43\x44\x45' > secret.plaintext
+hexdump secret.plaintext
+0000000 05 34 33 34 34 33 34 33   
 
-cat secret.plaintext
-ABCD%                      
+xxd -b secret.plaintext
+00000000: 00000101 00110100 00110011 00110100 00110100 00110011  .43443
+00000006: 00110100 00110011                                      43
+
+stat -f "%z bytes" secret.plaintext
+8 bytes
+```
+#### Encrypt data
+```
+openssl rsautl -encrypt -raw -pubin -inkey pkey.pem -in secret.plaintext -out secret.encrypted
+
+-encrypt = Public Key used to Encrypt
+-raw = No padding
+```
 
 stat -f "%z bytes" secret.plaintext
 5 bytes
@@ -137,13 +122,8 @@ Invalid RSA key length: minimum is 1024 bits
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:100
 genpkey: Error setting rsa_keygen_bits:100 parameter:
 ```
-
-
-
-
-
-
 ## References
+
 https://math.stackexchange.com/questions/20157/rsa-in-plain-english
 
 https://tools.ietf.org/html/rfc3447#appendix-C                   

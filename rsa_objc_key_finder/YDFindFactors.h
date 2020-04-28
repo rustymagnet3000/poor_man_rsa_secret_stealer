@@ -15,6 +15,7 @@
 
 @interface YDFindFactors : NSObject <YDReverseRSAProtocol>{
     NSDictionary *_recPubKeyAndCiphertext;
+    size_t _modulusLen;
     mpz_t   _exponent,
             _n,
             _p,

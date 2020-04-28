@@ -13,7 +13,7 @@ int main(void) {
 
         [findfactors pubKeySummary];
         
-        NSString *plaintext = @"3333";
+        NSString *plaintext = @"33333333333";
         [findfactors encryptMessage:plaintext];
         
     }
