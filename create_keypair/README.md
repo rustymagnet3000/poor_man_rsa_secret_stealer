@@ -1,3 +1,56 @@
+
+
+## Generate Short RSA Private Key
+We are trying to create a file that completes the following `Struct`.
+```
+RSAPrivateKey ::= SEQUENCE {
+    version           Version,
+    modulus           INTEGER,  -- n                    ( in Public Key )
+    publicExponent    INTEGER,  -- e                    ( in Public Key )
+    privateExponent   INTEGER,  -- d                    ( Private. The decryption key )
+    prime1            INTEGER,  -- p                    ( Private. p * q = n )
+    prime2            INTEGER,  -- q                    ( Private. p * q = n )
+    exponent1         INTEGER,  -- d mod (p-1)          ( Private )
+    exponent2         INTEGER,  -- d mod (q-1)          ( Private )
+    coefficient       INTEGER,  -- (inverse of q) mod p (Private. PHI)
+    otherPrimeInfos   OtherPrimeInfos OPTIONAL
+}
+```
+Adding the custom key:
+```
+asn1=SEQUENCE:rsa_key
+
+[rsa_key]
+version=INTEGER:0
+modulus=INTEGER:464583729100140631
+pubExp=INTEGER:65537
+privExp=INTEGER:445365782275853969
+p=INTEGER:982451653
+q=INTEGER:2841011
+e1=INTEGER:982451652
+e2=INTEGER:2841010
+coeff=INTEGER:464583727644806952
+```
+Then create the key:
+```
+openssl asn1parse -genconf custom_key.txt -out key.der
+```
+Convert to PEM format:
+```
+$openssl rsa -inform der -in key.der -outform pem > key.pem
+```
+Extract the Public Key:
+```
+$openssl rsa -inform der -in key.der -outform pem -pubout>pkey.pem
+```
+Print the Public Key:
+```
+openssl rsa -inform PEM -pubin -in pkey.pem -text -noout
+RSA Public-Key: (49 bit)
+Modulus: 305512047893009 (0x115dc9116da11)
+Exponent: 78221649299689 (0x4724659ec8e9)
+```
+
 ## Encrypt message with Public Key
 The `public key's Modulus length` dictates the maximum length of the message you hope to keep confidential.  Bigger primes ( `p * q = n` ) equate to a bigger maximum length of the secret message.
 
@@ -11,7 +64,7 @@ Exponent: 65537 (0x10001)
 
 ```
 #### Create message to keep confidential
-A Modulus of `59 bits` leaves us with `7 Bytes`.  You actually have `8 Bytes` as `59 bit / 8 bits = 7 bytes a enough for a small byte`.  This is important.  The first byte is actually `0x06`.  Not `0x67`.
+A Modulus of `59 bits` leaves us with `7 Bytes`.  You actually have `8 Bytes` as `59 bit / 8 bits = 7 bytes`.  But there is a remainder.  The remainder is enough for a small byte.  This is important.  The first byte can be anything between `0x00` - `0x06`.  Did you notice the Modulus' first byte was not `0x67`?
 ```
 echo -n -e '\x05\x34\x33\x34\x34\x33\x34\x33' > secret.plaintext
 // WORKS as x05 < x06 (modulus' first byte)
@@ -51,67 +104,6 @@ openssl rsautl -encrypt -raw -pubin -inkey pkey.pem -in secret.plaintext -out se
 -encrypt = Public Key used to Encrypt
 -raw = No padding
 ```
-
-stat -f "%z bytes" secret.plaintext
-5 bytes
-
-openssl rsautl -encrypt -pubin -inkey pkey.pem -raw -in secret.plaintext -out secret.encrypted
-```
-
-## Generate Short RSA Private Key
-We are trying to create a file that completes this Struct.  I added comments to help the reader.
-
-```
-RSAPrivateKey ::= SEQUENCE {
-    version           Version,
-    modulus           INTEGER,  -- n                    ( in Public Key )
-    publicExponent    INTEGER,  -- e                    ( in Public Key )
-    privateExponent   INTEGER,  -- d                    ( Private. The decryption key )
-    prime1            INTEGER,  -- p                    ( Private. p * q = n )
-    prime2            INTEGER,  -- q                    ( Private. p * q = n )
-    exponent1         INTEGER,  -- d mod (p-1)          ( Private )
-    exponent2         INTEGER,  -- d mod (q-1)          ( Private )
-    coefficient       INTEGER,  -- (inverse of q) mod p (Private. PHI)
-    otherPrimeInfos   OtherPrimeInfos OPTIONAL
-}
-```
-Specify the custom key:
-```
-asn1=SEQUENCE:rsa_key
-
-[rsa_key]
-version=INTEGER:0
-modulus=INTEGER:57564127333
-pubExp=INTEGER:65537
-privExp=INTEGER:47169898753
-p=INTEGER:869273
-q=INTEGER:66221
-e1=INTEGER:869272
-e2=INTEGER:66220
-coeff=INTEGER:57563191840
-```
-
-
-Then create the key:
-```
-openssl asn1parse -genconf custom_key.txt -out key.der
-```
-Convert to PEM format:
-```
-$openssl rsa -inform der -in key.der -outform pem > key.pem
-```
-Extract the Public Key:
-```
-$openssl rsa -inform der -in key.der -outform pem -pubout>pkey.pem
-```
-Print the Public Key:
-```
-openssl rsa -inform PEM -pubin -in pkey.pem -text -noout
-RSA Public-Key: (49 bit)
-Modulus: 305512047893009 (0x115dc9116da11)
-Exponent: 78221649299689 (0x4724659ec8e9)
-```
-
 
 ## Why not use the normal commands?
 The normal tools set a minimum version that you cannot override.
