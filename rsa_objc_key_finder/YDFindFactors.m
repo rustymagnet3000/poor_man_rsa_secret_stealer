@@ -166,21 +166,21 @@
     [YDPrettyConsole multiple:@"✅ Plaintext:%@", [self prettyGMPStr:_plaintext]];
 }
 
--(void)encryptMessage:(NSString *)pt {
-    mpz_t   _newCipherText;
-    mpz_init( _newCipherText);
+-(void)encryptMessage:(const char *)plaintext ptLength:(size_t)lenPT{
+    mpz_t   _newCipherText; mpz_init( _newCipherText);
+
+    mpz_t z; mpz_init(z);
+
+    mpz_import (_plaintext, lenPT, 1, sizeof(plaintext[0]), 0, 0, plaintext);
+
+    size_t pLen;
+    pLen = mpz_sizeinbase(_plaintext, 2);
     
-    int flag = 0;
-    flag = mpz_set_str(_plaintext,[pt cStringUsingEncoding:NSASCIIStringEncoding], 10);
-    assert (flag == 0);
+    assert (mpz_sgn(_plaintext) > 0);
+    assert ( pLen <= _modulusLen );
     
-    size_t lenPt;
-    lenPt = mpz_sizeinbase(_plaintext, 2);
-    
-    assert ( lenPt < _modulusLen );
-    
-    
-    [YDPrettyConsole multiple:@"Plaintext: %@ (%zu bits)", [self prettyGMPStr:_plaintext], lenPt];
+    gmp_printf("[+]\t_plaintext in Decimal: %Zd (%zu bits)\n", _plaintext, pLen);
+    gmp_printf("[+]\t_plaintext in Hex: %Zx \n", _plaintext);
     
     mpz_powm(_newCipherText, _plaintext, _exponent, _n);
     
