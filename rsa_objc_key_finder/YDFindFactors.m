@@ -83,11 +83,9 @@
 }
 
 - (void) pubKeySummary {
-
-    size_t lenPrime;
-    lenPrime = mpz_sizeinbase(_n, 2);
+    
     [self.progressBar banner];
-    [YDPrettyConsole multiple:@"Public Key and Encrypted Message:\n\tn:%@ (%zu bits)\n\tExponent:%@", [self prettyGMPStr:_n], lenPrime, [self prettyGMPStr:_exponent]];
+    [YDPrettyConsole multiple:@"Public Key and Encrypted Message:\n\tn:%@ (%zu bits)\n\tExponent:%@", [self prettyGMPStr:_n], _modulusLen, [self prettyGMPStr:_exponent]];
     [self.progressBar banner];
 }
 
@@ -115,6 +113,8 @@
     flag = mpz_set_str(_n,[_recPubKeyAndCiphertext [@"Modulus"] UTF8String], 10);
     if(flag != 0)
         return NO;
+    
+    _modulusLen = mpz_sizeinbase(_n, 2);
     
     /* does not accept Hex Ciphertext */
     flag = mpz_set_str(_ciphertext,[_recPubKeyAndCiphertext [@"Ciphertext"] UTF8String], 10);
@@ -174,8 +174,19 @@
     flag = mpz_set_str(_plaintext,[pt cStringUsingEncoding:NSASCIIStringEncoding], 10);
     assert (flag == 0);
     
+    size_t lenPt;
+    lenPt = mpz_sizeinbase(_plaintext, 2);
+    
+    assert ( lenPt < _modulusLen );
+    
+    
+    [YDPrettyConsole multiple:@"Plaintext: %@ (%zu bits)", [self prettyGMPStr:_plaintext], lenPt];
+    
     mpz_powm(_newCipherText, _plaintext, _exponent, _n);
-    gmp_printf("[*]\tPlaintext message:%Zd\n", _plaintext);
+    
+    /* the result should not be zero or negative */
+    assert(mpz_sgn(_newCipherText) > 0);
+
     gmp_printf("[*]\tEncrypted message:%Zd\n", _newCipherText);
     mpz_clears ( _newCipherText, NULL );
 }
