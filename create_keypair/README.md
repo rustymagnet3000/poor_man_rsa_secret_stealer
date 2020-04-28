@@ -37,18 +37,11 @@ openssl asn1parse -genconf custom_key.txt -out key.der
 ```
 Convert to PEM format:
 ```
-$openssl rsa -inform der -in key.der -outform pem > key.pem
+openssl rsa -inform der -in key.der -outform pem > key.pem
 ```
 Extract the Public Key:
 ```
-$openssl rsa -inform der -in key.der -outform pem -pubout>pkey.pem
-```
-Print the Public Key:
-```
-openssl rsa -inform PEM -pubin -in pkey.pem -text -noout
-RSA Public-Key: (49 bit)
-Modulus: 305512047893009 (0x115dc9116da11)
-Exponent: 78221649299689 (0x4724659ec8e9)
+openssl rsa -inform der -in key.der -outform pem -pubout>pkey.pem
 ```
 
 ## Encrypt message with Public Key
@@ -87,12 +80,16 @@ When you pass `-raw` flag to `OpenSSL's rsautl` tool you have selected `use no p
 
 #### Verify your Bytes
 ```
+01 31 32 33 34 35 36 37
+echo -n -e '\x01\x31\x32\x33\x34\x35\x36\x37' > secret.plaintext
+// changed leading byte to 01 instead of NULL. 1234567.
+
 hexdump secret.plaintext
-0000000 05 34 33 34 34 33 34 33   
+0000000 01 31 32 33 34 35 36 37
 
 xxd -b secret.plaintext
-00000000: 00000101 00110100 00110011 00110100 00110100 00110011  .43443
-00000006: 00110100 00110011                                      43
+00000000: 00000001 00110001 00110010 00110011 00110100 00110101  .12345
+00000006: 00110110 00110111                                      67
 
 stat -f "%z bytes" secret.plaintext
 8 bytes
@@ -103,9 +100,22 @@ openssl rsautl -encrypt -raw -pubin -inkey pkey.pem -in secret.plaintext -out se
 
 -encrypt = Public Key used to Encrypt
 -raw = No padding
+
+hexdump secret.encrypted
+0000000 05 a9 09 d5 f6 84 fa 3e
+
+xxd -ps secret.encrypted
+05a909d5f684fa3e
+
+// get the Decimal version
+>>> print int("05a909d5f684fa3e", 16)
+407868055822334526
+
+>>> hex(407868055822334526)
+'0x5a909d5f684fa3e'
 ```
 
-## Why not use the normal commands?
+### Appendix - Why not use standard Key Generation commands?
 The normal tools set a minimum version that you cannot override.
 ```
 ssh-keygen -t rsa -b 512
@@ -114,7 +124,9 @@ Invalid RSA key length: minimum is 1024 bits
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:100
 genpkey: Error setting rsa_keygen_bits:100 parameter:
 ```
-## References
+### References
+
+https://gist.github.com/aishraj/4010562  (advanced use of GMP)
 
 https://math.stackexchange.com/questions/20157/rsa-in-plain-english
 
