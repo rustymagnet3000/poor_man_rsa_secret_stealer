@@ -162,13 +162,23 @@
 }
 
 -(void)decryptMessage{
+    
+    
     mpz_powm(_plaintext, _ciphertext, _derivedDecryptionKey, _n);
-    [YDPrettyConsole multiple:@"✅ Plaintext:%@", [self prettyGMPStr:_plaintext]];
+    
+    
+
+    [YDPrettyConsole multiple:@"Plaintext:%@", [self prettyGMPStr:_plaintext]];
+    gmp_printf("[+]\tPlaintext in Hex: %Zx \n", _plaintext);
+    NSString *pretty = [self prettyGMPStr:_plaintext];
+    [YDPrettyConsole multiple:@"Plaintext:%@", pretty];
 }
 
--(void)encryptMessage:(const char *)plaintext ptLength:(size_t)lenPT{
-    mpz_t   _newCipherText; mpz_init( _newCipherText);
-
+-(BOOL)encryptMessage:  (const char *)plaintext
+                        ptLength:(size_t)lenPT
+                        error:(NSError **)errorPtr {
+    
+    mpz_t _newCipherText; mpz_init( _newCipherText);
     mpz_t z; mpz_init(z);
 
     mpz_import (_plaintext, lenPT, 1, sizeof(plaintext[0]), 0, 0, plaintext);
@@ -176,9 +186,15 @@
     size_t pLen;
     pLen = mpz_sizeinbase(_plaintext, 2);
     
-    assert (mpz_sgn(_plaintext) > 0);
-    assert ( pLen <= _modulusLen );
-    
+    if (!(mpz_sgn(_plaintext) > 0 && pLen <= _modulusLen )){
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Failed during encrypt step. Either plaintext didn't convert to Decimal or Modulus was shorter than Plaintext.", NULL) };
+        if (errorPtr)
+            *errorPtr = [NSError errorWithDomain:@"com.youdog.rsaKeyFinder"
+                                         code:-10
+                                     userInfo:userInfo];
+        return NO;
+    }
+
     gmp_printf("[+]\t_plaintext in Decimal: %Zd (%zu bits)\n", _plaintext, pLen);
     gmp_printf("[+]\t_plaintext in Hex: %Zx \n", _plaintext);
     
@@ -189,6 +205,8 @@
 
     gmp_printf("[*]\tEncrypted message:%Zd\n", _newCipherText);
     mpz_clears ( _newCipherText, NULL );
+    
+    return YES;
 }
 
 -(BOOL)deriveMultiplicativeInverse:(NSError **)errorPtr{
