@@ -80,15 +80,14 @@ When you pass `-raw` flag to `OpenSSL's rsautl` tool you have selected `use no p
 
 #### Verify your Bytes
 ```
-01 31 32 33 34 35 36 37
-echo -n -e '\x01\x31\x32\x33\x34\x35\x36\x37' > secret.plaintext
-// changed leading byte to 01 instead of NULL. 1234567.
+echo -n -e '\x05\x31\x32\x33\x34\x35\x36\x37' > secret.plaintext
+// changed leading byte to 05 instead of NULL. 1234567.
 
 hexdump secret.plaintext
-0000000 01 31 32 33 34 35 36 37
+0000000 05 31 32 33 34 35 36 37
 
 xxd -b secret.plaintext
-00000000: 00000001 00110001 00110010 00110011 00110100 00110101  .12345
+00000000: 00000101 00110001 00110010 00110011 00110100 00110101  .12345
 00000006: 00110110 00110111                                      67
 
 stat -f "%z bytes" secret.plaintext
@@ -108,11 +107,12 @@ xxd -ps secret.encrypted
 05a909d5f684fa3e
 
 // get the Decimal version
->>> print int("05a909d5f684fa3e", 16)
-407868055822334526
+>>> print int("0x5b34443cce8fe1a",16)
+410747049012166170
 
->>> hex(407868055822334526)
-'0x5a909d5f684fa3e'
+// be sure it reverses back to Hex
+>>> print int("0x531323334353637",16)
+374135439549085239
 ```
 
 ### Appendix - Why not use standard Key Generation commands?
