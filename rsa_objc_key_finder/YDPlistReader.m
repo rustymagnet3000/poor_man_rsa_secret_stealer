@@ -9,8 +9,8 @@
 }
 
 - (BOOL)fileChecks {
-    NSString *dir = [[NSProcessInfo processInfo] environment][@"PWD"];
-    NSBundle *bundle = [NSBundle bundleWithPath:dir];
+   // MARK: The NSBundle pointer is defined as below to ensure Unit Tests work
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     _file = [bundle pathForResource:_name ofType:@"plist"];
     
     if (bundle == NULL || _file == NULL) {
