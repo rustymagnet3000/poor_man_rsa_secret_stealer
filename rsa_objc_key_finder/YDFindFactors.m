@@ -85,7 +85,7 @@
 - (void) pubKeySummary {
     
     [self.progressBar banner];
-    [YDPrettyConsole multiple:@"Public Key and Encrypted Message:\n\tn:%@ (%zu bits)\n\tExponent:%@", [self prettyGMPStr:_n], _modulusLen, [self prettyGMPStr:_exponent]];
+    [YDPrettyConsole multiple:@"Public Key:\n\tModulus:\t\t%@ (%zu bits)\n\tExponent:\t\t%@", [self prettyGMPStr:_n], _modulusLen, [self prettyGMPStr:_exponent]];
     [self.progressBar banner];
 }
 
@@ -163,15 +163,20 @@
 
 -(void)decryptMessage{
     
-    
     mpz_powm(_plaintext, _ciphertext, _derivedDecryptionKey, _n);
-    
-    
+    size_t aLen;
+    aLen = mpz_sizeinbase(_plaintext, 16);
 
-    [YDPrettyConsole multiple:@"Plaintext:%@", [self prettyGMPStr:_plaintext]];
-    gmp_printf("[+]\tPlaintext in Hex: %Zx \n", _plaintext);
-    NSString *pretty = [self prettyGMPStr:_plaintext];
-    [YDPrettyConsole multiple:@"Plaintext:%@", pretty];
+    char *regurg = calloc(aLen, sizeof(char));
+    mpz_export ( regurg, NULL, 1, sizeof(char), 0, 0, _plaintext );
+    NSString *regurgiatedStr = [[NSString alloc] initWithUTF8String:regurg];
+    NSString *prettyPlaintext = [YDPrettyConsole guessFormatOfDecryptedType:regurgiatedStr];
+    
+    [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", prettyPlaintext, @"(NSString view)"];
+    [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", [self prettyGMPStr:_plaintext], @"(GMP view)"];
+
+    regurg = NULL;
+    free(regurg);
 }
 
 -(BOOL)encryptMessage:  (const char *)plaintext
