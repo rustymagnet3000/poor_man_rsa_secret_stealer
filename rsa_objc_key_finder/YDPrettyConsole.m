@@ -75,4 +75,29 @@
     va_end(args);
 }
 
++ (NSString *) guessFormatOfDecryptedType: (NSString *)input{
+
+    NSCharacterSet *alphanumericChars = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
+
+    if ([input rangeOfCharacterFromSet:alphanumericChars].location == NSNotFound){
+        return  input;
+    }
+    else{
+        const char *chars = [input UTF8String];
+        NSMutableString *escapedString = [NSMutableString string];
+        while (*chars)
+        {
+            if (*chars == '\\')
+                [escapedString appendString:@"\\\\"];
+            else if (*chars == '"')
+                [escapedString appendString:@"\\\""];
+            else if (*chars < 0x1F || *chars == 0x7F)   // check for special
+                [escapedString appendFormat:@"\\x%02X", (int)*chars];
+            else
+                [escapedString appendFormat:@"%c", *chars];
+            ++chars;
+        }
+        return escapedString;
+    }
+}
 @end

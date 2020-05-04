@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)single:(NSString *)message;
 + (void)multiple:(NSString *)message,...;
++ (NSString *)guessFormatOfDecryptedType:(NSString *)input;
 - (void)banner;
 
 @end
