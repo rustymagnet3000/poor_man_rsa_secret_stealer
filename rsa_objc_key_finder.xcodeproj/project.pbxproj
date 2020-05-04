@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F09918224603AFF00D39F05 /* encryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F09918124603AFF00D39F05 /* encryptor.m */; };
+		0F09918724603E1800D39F05 /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
+		0F09918824603E1B00D39F05 /* YDFindFactors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDFindFactors.m */; };
+		0F09918924603E1E00D39F05 /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
+		0F09918A24603E2100D39F05 /* YDPlistReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0A6487243F633100038823 /* YDPlistReader.m */; };
+		0F09918B24603E3600D39F05 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
+		0F09918D24603EA800D39F05 /* pubKeyAndCipherText.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F0A648A243F638800038823 /* pubKeyAndCipherText.plist */; };
 		0F0A6488243F633100038823 /* YDPlistReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0A6487243F633100038823 /* YDPlistReader.m */; };
 		0F0A648B243F63B800038823 /* YDPlistReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0A6487243F633100038823 /* YDPlistReader.m */; };
 		0F0A648E243F64C800038823 /* pubKeyAndCipherText.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F0A648A243F638800038823 /* pubKeyAndCipherText.plist */; };
@@ -24,6 +31,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0F09918C24603E9C00D39F05 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				0F09918D24603EA800D39F05 /* pubKeyAndCipherText.plist in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0F0EC72C24360FD300227816 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -47,6 +64,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0F09917F24603AFF00D39F05 /* encryptor.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = encryptor.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F09918124603AFF00D39F05 /* encryptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = encryptor.m; sourceTree = "<group>"; };
+		0F09918324603AFF00D39F05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F0A6487243F633100038823 /* YDPlistReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDPlistReader.m; sourceTree = "<group>"; };
 		0F0A6489243F635200038823 /* YDPlistReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDPlistReader.h; sourceTree = "<group>"; };
 		0F0A648A243F638800038823 /* pubKeyAndCipherText.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pubKeyAndCipherText.plist; sourceTree = "<group>"; };
@@ -65,6 +85,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0F09917C24603AFF00D39F05 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F09918B24603E3600D39F05 /* libgmp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0F0EC72B24360FD300227816 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -84,6 +112,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F09918024603AFF00D39F05 /* encryptor */ = {
+			isa = PBXGroup;
+			children = (
+				0F09918124603AFF00D39F05 /* encryptor.m */,
+				0F09918324603AFF00D39F05 /* Info.plist */,
+			);
+			path = encryptor;
+			sourceTree = "<group>";
+		};
 		0F0EC72F24360FD300227816 /* objc_playground */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +154,7 @@
 				0F220E9422381E60001C82A3 /* libraries */,
 				0F220E9022381C4D001C82A3 /* includes */,
 				0F0EC72F24360FD300227816 /* objc_playground */,
+				0F09918024603AFF00D39F05 /* encryptor */,
 				30FA0589221FC9DA00230559 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -126,6 +164,7 @@
 			children = (
 				30FA0588221FC9DA00230559 /* rsa_objc_key_finder */,
 				0F0EC72E24360FD300227816 /* objc_playground */,
+				0F09917F24603AFF00D39F05 /* encryptor.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -148,6 +187,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0F09917E24603AFF00D39F05 /* encryptor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0F09918624603AFF00D39F05 /* Build configuration list for PBXNativeTarget "encryptor" */;
+			buildPhases = (
+				0F09917B24603AFF00D39F05 /* Sources */,
+				0F09917C24603AFF00D39F05 /* Frameworks */,
+				0F09917D24603AFF00D39F05 /* Resources */,
+				0F09918C24603E9C00D39F05 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = encryptor;
+			productName = encryptor;
+			productReference = 0F09917F24603AFF00D39F05 /* encryptor.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		0F0EC72D24360FD300227816 /* objc_playground */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0F0EC73224360FD300227816 /* Build configuration list for PBXNativeTarget "objc_playground" */;
@@ -191,6 +248,9 @@
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = rusty_magneto;
 				TargetAttributes = {
+					0F09917E24603AFF00D39F05 = {
+						CreatedOnToolsVersion = 11.4;
+					};
 					0F0EC72D24360FD300227816 = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
@@ -214,11 +274,34 @@
 			targets = (
 				30FA0587221FC9DA00230559 /* rsa_objc_key_finder */,
 				0F0EC72D24360FD300227816 /* objc_playground */,
+				0F09917E24603AFF00D39F05 /* encryptor */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		0F09917D24603AFF00D39F05 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		0F09917B24603AFF00D39F05 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F09918924603E1E00D39F05 /* YDPrettyConsole.m in Sources */,
+				0F09918724603E1800D39F05 /* YDManager.m in Sources */,
+				0F09918A24603E2100D39F05 /* YDPlistReader.m in Sources */,
+				0F09918824603E1B00D39F05 /* YDFindFactors.m in Sources */,
+				0F09918224603AFF00D39F05 /* encryptor.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0F0EC72A24360FD300227816 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -246,6 +329,50 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0F09918424603AFF00D39F05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = U8MSEX235L;
+				INFOPLIST_FILE = encryptor/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libraries",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = youdog.com.rusty.encryptor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0F09918524603AFF00D39F05 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = U8MSEX235L;
+				INFOPLIST_FILE = encryptor/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libraries",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = youdog.com.rusty.encryptor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		0F0EC73324360FD300227816 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -426,6 +553,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0F09918624603AFF00D39F05 /* Build configuration list for PBXNativeTarget "encryptor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F09918424603AFF00D39F05 /* Debug */,
+				0F09918524603AFF00D39F05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0F0EC73224360FD300227816 /* Build configuration list for PBXNativeTarget "objc_playground" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
