@@ -194,7 +194,7 @@
     pLen = mpz_sizeinbase(_plaintext, 2);
     
     if (!(mpz_sgn(_plaintext) > 0 && pLen <= _modulusLen )){
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Failed during encrypt step. Either plaintext didn't convert to Decimal or Modulus was shorter than Plaintext.", NULL) };
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"Failed before encrypt. Either plaintext didn't convert to Decimal or Modulus was shorter than Plaintext.", NULL) };
         if (errorPtr)
             *errorPtr = [NSError errorWithDomain:@"com.youdog.rsaKeyFinder"
                                          code:-10
@@ -211,7 +211,7 @@
     assert(mpz_sgn(_newCipherText) > 0);
 
     gmp_printf("[*]\tEncrypted message:%Zd\n", _newCipherText);
-    mpz_clears ( _newCipherText, NULL );
+    mpz_clear ( _newCipherText );
     
     return YES;
 }
