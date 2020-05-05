@@ -172,9 +172,11 @@
     NSString *regurgiatedStr = [[NSString alloc] initWithUTF8String:regurg];
     NSString *prettyPlaintext = [YDPrettyConsole guessFormatOfDecryptedType:regurgiatedStr];
     
-    [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", prettyPlaintext, @"(NSString view)"];
-    [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", [self prettyGMPStr:_plaintext], @"(GMP view)"];
-
+    [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", prettyPlaintext, @"(NSString view with escaped chars)"];
+    NSMutableString *hex = [NSMutableString string];
+    while ( *regurg ) [hex appendFormat:@"%02X" , *regurg++ & 0x00FF];
+    [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", hex, @"(Hex view)"];
+    
     regurg = NULL;
     free(regurg);
 }
