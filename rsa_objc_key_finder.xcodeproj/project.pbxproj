@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F09918224603AFF00D39F05 /* encryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F09918124603AFF00D39F05 /* encryptor.m */; };
+		0F09918224603AFF00D39F05 /* generateCiphertexts.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F09918124603AFF00D39F05 /* generateCiphertexts.m */; };
 		0F09918724603E1800D39F05 /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
 		0F09918824603E1B00D39F05 /* YDFindFactors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDFindFactors.m */; };
 		0F09918924603E1E00D39F05 /* YDPrettyConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8317432424F5B4001ABDBA /* YDPrettyConsole.m */; };
 		0F09918A24603E2100D39F05 /* YDPlistReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0A6487243F633100038823 /* YDPlistReader.m */; };
 		0F09918B24603E3600D39F05 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F220E9522381E60001C82A3 /* libgmp.a */; };
-		0F09918D24603EA800D39F05 /* pubKeyAndCipherText.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F0A648A243F638800038823 /* pubKeyAndCipherText.plist */; };
 		0F0A6488243F633100038823 /* YDPlistReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0A6487243F633100038823 /* YDPlistReader.m */; };
 		0F0A648B243F63B800038823 /* YDPlistReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0A6487243F633100038823 /* YDPlistReader.m */; };
 		0F0A648E243F64C800038823 /* pubKeyAndCipherText.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F0A648A243F638800038823 /* pubKeyAndCipherText.plist */; };
@@ -26,6 +25,7 @@
 		0FCDA81E2457083900A1927E /* YDFindFactors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDFindFactors.m */; };
 		0FCDA81F2457084200A1927E /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
 		0FD3E9982237B208002CFD67 /* YDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD3E9972237B208002CFD67 /* YDManager.m */; };
+		0FE56BAF2460973400D80CBC /* pubKeyAndCipherText.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0F0A648A243F638800038823 /* pubKeyAndCipherText.plist */; };
 		30FA058C221FC9DA00230559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA058B221FC9DA00230559 /* main.m */; };
 		30FA0593221FCACA00230559 /* YDFindFactors.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FA0592221FCACA00230559 /* YDFindFactors.m */; };
 /* End PBXBuildFile section */
@@ -33,11 +33,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		0F09918C24603E9C00D39F05 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
-			dstSubfolderSpec = 16;
+			dstSubfolderSpec = 7;
 			files = (
-				0F09918D24603EA800D39F05 /* pubKeyAndCipherText.plist in CopyFiles */,
+				0FE56BAF2460973400D80CBC /* pubKeyAndCipherText.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +65,7 @@
 
 /* Begin PBXFileReference section */
 		0F09917F24603AFF00D39F05 /* encryptor.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = encryptor.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F09918124603AFF00D39F05 /* encryptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = encryptor.m; sourceTree = "<group>"; };
+		0F09918124603AFF00D39F05 /* generateCiphertexts.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = generateCiphertexts.m; sourceTree = "<group>"; };
 		0F09918324603AFF00D39F05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F0A6487243F633100038823 /* YDPlistReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YDPlistReader.m; sourceTree = "<group>"; };
 		0F0A6489243F635200038823 /* YDPlistReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YDPlistReader.h; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		0F09918024603AFF00D39F05 /* encryptor */ = {
 			isa = PBXGroup;
 			children = (
-				0F09918124603AFF00D39F05 /* encryptor.m */,
+				0F09918124603AFF00D39F05 /* generateCiphertexts.m */,
 				0F09918324603AFF00D39F05 /* Info.plist */,
 			);
 			path = encryptor;
@@ -193,7 +193,6 @@
 			buildPhases = (
 				0F09917B24603AFF00D39F05 /* Sources */,
 				0F09917C24603AFF00D39F05 /* Frameworks */,
-				0F09917D24603AFF00D39F05 /* Resources */,
 				0F09918C24603E9C00D39F05 /* CopyFiles */,
 			);
 			buildRules = (
@@ -279,16 +278,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		0F09917D24603AFF00D39F05 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		0F09917B24603AFF00D39F05 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -298,7 +287,7 @@
 				0F09918724603E1800D39F05 /* YDManager.m in Sources */,
 				0F09918A24603E2100D39F05 /* YDPlistReader.m in Sources */,
 				0F09918824603E1B00D39F05 /* YDFindFactors.m in Sources */,
-				0F09918224603AFF00D39F05 /* encryptor.m in Sources */,
+				0F09918224603AFF00D39F05 /* generateCiphertexts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
