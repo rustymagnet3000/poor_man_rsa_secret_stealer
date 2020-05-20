@@ -1,101 +1,57 @@
 # Find a Private Key
-## Challenge
+### Summary
+> Can you derive a Private Key from it's Public Key, with RSA?
+>
+
+The answer is __"yes"__.  This program takes a short `Public Key` ( `< 120 bits` ) and a Secret Message.  The Secret Message is `plaintext` that was turned into `Ciphertext` by the `Public Key`.  
+
+First, the program derives `Prime Numbers` that were factors of the `Modulus`.  This is a computationally signficant operation, if the `Modulus` is large.  The cost of `Factorizing` limits the program.  This is the backbone of `RSA`.
+
+If the program can derive these `Primes` it will then derive the `Private Key`.  The `Private Key` can decrypt the Secret Message.
+
+### Background
+The program was written to answer the questions from **Prof Bill Buchanan OBE**.
+
 `https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7`
+
+The program was for academic interest and would not work against a real RSA implementation.
+
+But even `2048 bit` Public Keys will be end-of-life within [ten years](https://en.wikipedia.org/wiki/Key_size):
+
+> RSA claimed that 1024-bit keys were likely to become crackable some time between 2006 and 2010 and that 2048-bit keys are sufficient until 2030.[15] NIST recommends 2048-bit keys for RSA.
+
+### Context
+
+The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 - 120 bit Primes`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bit number (Modulus) and 1,024 bit prime numbers`.  How hard is `factoring` for a computer?  A great video on this [topic](https://www.youtube.com/watch?v=tq8dTl74bL0).
+
+## Challenge
 
 Below was a challenge from the article:
 ```
 Encryption Parameters of a RSA Public key
-e: (Exponent)                      65537
-𝑁: (Modulus)                      1034776851837418228051242693253376923
+e: (Exponent)                     65537
+𝑁: (Modulus)                     1034776851837418228051242693253376923
 𝑝:                                 < unknown Prime Number >
 𝑞:                                 < unknown Prime Number >
 Length of Modulus:                60 bits
 Encrypted secret:                 582984697800119976959378162843817868
 ```
-The code in this repo was built to find a `Private Key` that would reveal a secret message.
+Populate the `plist` file with the values required.  Run the program. This will reveal the Secret Message.
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ciphertext</key>
+	<string>582984697800119976959378162843817868</string>
+	<key>Exponent</key>
+	<string>65537</string>
+	<key>Modulus</key>
+	<string>1034776851837418228051242693253376923</string>
+</dict>
+</plist>
+```
 
-## Challenge 1A: 60 bit Primes
-```
-🐝 Started	15:53:25
-🐝 n:1034776851837418228051242693253376923 (120 bits)
-🐝 Exponent:65537
-🐝 Ciphertext:582984697800119976959378162843817868
------------------------------------------------------------------------------
-🐝 P:952809000096560291 (60 bits)
-🐝 Q:1086027579223696553 (60 bits)
-🐝 Finished at loop: 28 k values: 268435456
-🐝 PHI:1034776851837418226012406113933120080
-🐝 Decryption Key:568411228254986589811047501435713
------------------------------------------------------------------------------
-🐝 Plaintext:345
-🐝 6 minutes, 16 seconds
------------------------------------------------------------------------------
------------------------------------------------------------------------------
-```
-## Challenge 1B: 60 bit Primes
-```
-🐝 Started	06:48:55
-🐝 n:       498702132445864856509611776937010471 (119 bits)
-🐝 Exponent: 65537
-🐝 Ciphertext: 96708304500902540927682601709667939
------------------------------------------------------------------------------
-🐝 P:640224252335299439 (60 bits)
-🐝 Q:778949142627423689 (60 bits)
-🐝 Finished at loop: 31 k values: -2147483648       // notice the bug here?
-🐝 PHI:498702132445864855090438381974287344
-🐝 Decryption Key:385107896622560911412972764596132081
------------------------------------------------------------------------------
-🐝 Plaintext:638
-🐝 Finished in: 3627.512 seconds
------------------------------------------------------------------------------
------------------------------------------------------------------------------
-```
-## Challenge 1C: 60 bit Primes
-```
-🐝 Started   	20:44:11
-🐝 Kill timer	12 hours, 0 minutes, 0 seconds
----------------------------------------------------------------------------
-🐝 n:911844725340031776516886332975892441 (120 bits)
-🐝 Exponent:65537
-🐝 Ciphertext:801127314512167104045686292190207406
----------------------------------------------------------------------------
-🐝 P:878638229491672919 (60 bits)
-🐝 Q:1037793137987599439 (60 bits)
-🐝 Finished at loop: 34 k values: 17179869184
----------------------------------------------------------------------------
-🐝 PHI:911844725340031774600454965496620084
-🐝 Decryption Key:778860122981058618953550948525799101
-🐝 Plaintext:1497
-🐝 10 hours, 47 minutes, 37 seconds
-```
-## Challenge 2: 80 bit Primes
-```
-🐝 Started	    18:18:11
-🐝 Kill timer   8 hours, 0 minutes, 0 seconds
-🐝 n:1157170973102575683016736411062049761643292045397 (160 bits)
-🐝 Exponent:65537
-🐝 Ciphertext:398616441584847118291875619819339172891325623639
------------------------------------------------------------------------------
-🐝 P:1133129089862698274158927 (80 bits)
-🐝 Q:1021217250051175170083611 (80 bits)
-🐝 Finished at loop: 32 k values: 0
-🐝 PHI:1157170973102575683016734256715709847769847802860
-🐝 Decryption Key:383045716015186488050491065584183124609290602793
------------------------------------------------------------------------------
-🐝 Plaintext:427
-🐝 4 hours, 40 minutes, 12 seconds
------------------------------------------------------------------------------
------------------------------------------------------------------------------
-```
-## Challenge 3: 128 bit Primes
-```
-🐝 Started   	07:50:38
-🐝 Kill timer	12 hours, 0 minutes, 0 seconds
------------------------------------------------------------------------------
-🐝 n:49141939931137261116843775362783398673931258031923895283286320973486872970729 (255 bits)
-🐝 Exponent:65537
-🐝 Ciphertext:14199123787046830048066972290052136769415356824981695836360604590953658335413
-```
 
 ## Steps
 The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  The found numbers were referred to as `𝑝` and `𝑞` and were to be kept secret.  `𝑁` was not a secret and it was part of the `Public Key`.
@@ -109,85 +65,10 @@ Step to find Private Key | Expressed as
 `Extended Euclidean algorithm (GCD)` | 𝑒 was 𝑒𝑑(mod𝜑(𝑛))=1  or ed =1(mod𝜑(𝑛))
 | 𝑥𝑒𝑑(mod𝑛)=𝑥
 
-## Re-Design
-I searched for more efficient ways to `Factorize` a large number.  The following article changed my approach:
-
-https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
-
-You could use the `Birthday Paradox` to give you an efficient, *probabilistic* method to achieve the same.  **probabilistic**, huh?  The code could fail.  But it could work the next time you ran the code.
-
-Step forward the `C library` called `GMP` .  I also considered `openSSL` but - after some later trial and error - I realized `gmp` could achieve everything I wanted.
-
-#### Results 6: Pollard Rho
-Even with no optimization and memory bugs, Pollard Rho's algorithm unlocked massive improvements:
-
-Status| Number (N) | Primes found | Time taken
---|---|--|--
-✅| 8069212743871 | 2840261 * 2841011 |  8069212743871. Instant. Took 5 hours with the `Naive` factoring.
-❌| 464583729100140631 | 982451653 * 472882027  | Not found. sucked 300MB before completing 20k cycles!
-❌| 1034776....253376923 | < unknown > | Not found. Sucked up a 3MB every second of RAM. Got to 2.7GB used!
-
-#### Results 7: Pollard Rho
-Re-using a tidier algorithm, I was able to factorize the challenge `n`.
-
-Status| Number (N) | Primes found | Time taken
---|---|--|--
-✅| 4657259 | 443 * 10513 | 0.008 seconds
-✅| 505371799 | 16127 * 31337 | 0.008 seconds
-✅| 57564127333 | 869273 * 66221 | 0.009 seconds
-✅| 8069212743871 | 2840261 * 2841011 |  8069212743871. Took 5 hours with the `Naive` factoring.  
-✅| 4728829254758513 | 10000019 * 472882027 | 0.010 seconds
-✅| 464583729100140631 | 982451653 * 472882027  | 0.243 seconds
-✅| 1034776851837418228051242693253376923 | 1086027579223696553 *	952809000096560291 | 6 minutes 21 seconds
-✅| 1642061677267048469007620094567254201801 | 36413321723440003717 * 45095080578985454453   | 42 seconds
-
-### Euler's totient function
-Number (N) | Primes
---|--
-7919261327 |  7919 * 1000033
-
-As we know the above numbers were prime, this step is simple.
-```
-ϕ(𝑛)=(𝑝−1)(𝑞−1)
-ϕ(𝑛)=(7919−1)(1000033−1)
-ϕ(𝑛)=(7918)(1000032)
-ϕ(𝑛)=7918253376
-```
-### Greatest Common Denominator (GCD) / Modular multiplicative inverse
-So you need `e [ Exponent ]` for this step.  Remember `e` is a Public value readable inside the Public Key.
-
-Use the `Extended Euclidean Algorithm` to compute a `modular multiplicative inverse`.
-
-```
-Inverse of  65537  mod  7918253376
-```
-
-
-This is where my knowledge is thin. Apparently you can't just calculate `φ(n)`. You need to do `𝜑(𝑛)=(𝑝−1)(𝑞−1)`.
-```
-gcd(e, φ(n)) = 1
-e = Exponent. Pre-selected, and public information.
-gcd(65537, 7918253376) = 1
-```
-
-
-
-
- these steps, the app had derived the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
-
-### Context
-
-The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 bit Primes`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bit number (Modulus) and 1,024 bit prime numbers`.  How hard is `factoring` for a computer?  A great video on this [topic](https://www.youtube.com/watch?v=tq8dTl74bL0).
-
-This project was purely for academic interest and would not work against a real RSA implementation.  
-
-
 ## Goal 1: Read and factorize N
 My first goal was to take a long, user entered number (`N`).  Eventually my code would handle the challenge `N` value of ` 1034776851837418228051242693253376923`.
 
 Sounds easy?   Defintely not; this is a [`Time Complex`](https://en.wikipedia.org/wiki/Time_complexity) problem.
-
-
 
 ## Design steps
 #### Assumptions about the number N
@@ -344,6 +225,73 @@ My computer could do 4 trillion in 5 hours
 ```
 **2,500 years**  to exhaust a single `60 bit` prime?
 
+## Re-Design
+I searched for more efficient ways to `Factorize` a large number.  The following article changed my approach:
+
+https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html
+
+You could use the `Birthday Paradox` to give you an efficient, *probabilistic* method to achieve the same.  **probabilistic**, huh?  The code could fail.  But it could work the next time you ran the code.
+
+Step forward the `C library` called `GMP` .  I also considered `openSSL` but - after some later trial and error - I realized `gmp` could achieve everything I wanted.
+
+#### Results 6: Pollard Rho
+Even with no optimization and memory bugs, Pollard Rho's algorithm unlocked massive improvements:
+
+Status| Number (N) | Primes found | Time taken
+--|---|--|--
+✅| 8069212743871 | 2840261 * 2841011 |  8069212743871. Instant. Took 5 hours with the `Naive` factoring.
+❌| 464583729100140631 | 982451653 * 472882027  | Not found. sucked 300MB before completing 20k cycles!
+❌| 1034776....253376923 | < unknown > | Not found. Sucked up a 3MB every second of RAM. Got to 2.7GB used!
+
+#### Results 7: Pollard Rho
+Re-using a tidier algorithm, I was able to factorize the challenge `n`.
+
+Status| Number (N) | Primes found | Time taken
+--|---|--|--
+✅| 4657259 | 443 * 10513 | 0.008 seconds
+✅| 505371799 | 16127 * 31337 | 0.008 seconds
+✅| 57564127333 | 869273 * 66221 | 0.009 seconds
+✅| 8069212743871 | 2840261 * 2841011 |  8069212743871. Took 5 hours with the `Naive` factoring.  
+✅| 4728829254758513 | 10000019 * 472882027 | 0.010 seconds
+✅| 464583729100140631 | 982451653 * 472882027  | 0.243 seconds
+✅| 1034776851837418228051242693253376923 | 1086027579223696553 *	952809000096560291 | 6 minutes 21 seconds
+✅| 1642061677267048469007620094567254201801 | 36413321723440003717 * 45095080578985454453   | 42 seconds
+
+### Euler's totient function
+Number (N) | Primes
+--|--
+7919261327 |  7919 * 1000033
+
+As we know the above numbers were prime, this step is simple.
+```
+ϕ(𝑛)=(𝑝−1)(𝑞−1)
+ϕ(𝑛)=(7919−1)(1000033−1)
+ϕ(𝑛)=(7918)(1000032)
+ϕ(𝑛)=7918253376
+```
+### Greatest Common Denominator (GCD) / Modular multiplicative inverse
+So you need `e [ Exponent ]` for this step.  Remember `e` is a Public value readable inside the Public Key.
+
+Use the `Extended Euclidean Algorithm` to compute a `modular multiplicative inverse`.
+
+```
+Inverse of  65537  mod  7918253376
+```
+
+
+This is where my knowledge is thin. Apparently you can't just calculate `φ(n)`. You need to do `𝜑(𝑛)=(𝑝−1)(𝑞−1)`.
+```
+gcd(e, φ(n)) = 1
+e = Exponent. Pre-selected, and public information.
+gcd(65537, 7918253376) = 1
+```
+
+
+
+
+ these steps, the app had derived the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
+
+
 
 
 
@@ -356,6 +304,95 @@ This already had the `primality test` code.  This was a `probabilistic primality
 /* reps = 0          if n is definitly composite. There should be it.*/
 ```
 I also read that `Reasonable values of reps are between 15 and 50.` on `https://machinecognitis.github.io/Math.Gmp.Native/html/52ce0428-7c09-f2b9-f517-d3d02521f365.htm`.
+
+## Answers
+#### Challenge 1A: 60 bit Primes
+```
+🐝 Started	15:53:25
+🐝 n:1034776851837418228051242693253376923 (120 bits)
+🐝 Exponent:65537
+🐝 Ciphertext:582984697800119976959378162843817868
+-----------------------------------------------------------------------------
+🐝 P:952809000096560291 (60 bits)
+🐝 Q:1086027579223696553 (60 bits)
+🐝 Finished at loop: 28 k values: 268435456
+🐝 PHI:1034776851837418226012406113933120080
+🐝 Decryption Key:568411228254986589811047501435713
+-----------------------------------------------------------------------------
+🐝 Plaintext:345
+🐝 6 minutes, 16 seconds
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+```
+#### Challenge 1B: 60 bit Primes
+```
+🐝 Started	06:48:55
+🐝 n:       498702132445864856509611776937010471 (119 bits)
+🐝 Exponent: 65537
+🐝 Ciphertext: 96708304500902540927682601709667939
+-----------------------------------------------------------------------------
+🐝 P:640224252335299439 (60 bits)
+🐝 Q:778949142627423689 (60 bits)
+🐝 Finished at loop: 31 k values: -2147483648       // notice the bug here?
+🐝 PHI:498702132445864855090438381974287344
+🐝 Decryption Key:385107896622560911412972764596132081
+-----------------------------------------------------------------------------
+🐝 Plaintext:638
+🐝 1 hour, 0 minutes, 27 seconds
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+```
+#### Challenge 1C: 60 bit Primes
+```
+🐝 Started   	20:44:11
+🐝 Kill timer	12 hours, 0 minutes, 0 seconds
+---------------------------------------------------------------------------
+🐝 n:911844725340031776516886332975892441 (120 bits)
+🐝 Exponent:65537
+🐝 Ciphertext:801127314512167104045686292190207406
+---------------------------------------------------------------------------
+🐝 P:878638229491672919 (60 bits)
+🐝 Q:1037793137987599439 (60 bits)
+🐝 Finished at loop: 34 k values: 17179869184
+---------------------------------------------------------------------------
+🐝 PHI:911844725340031774600454965496620084
+🐝 Decryption Key:778860122981058618953550948525799101
+🐝 Plaintext:1497
+🐝 10 hours, 47 minutes, 37 seconds
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+```
+#### Challenge 2: 80 bit Primes
+```
+🐝 Started	    18:18:11
+🐝 Kill timer   8 hours, 0 minutes, 0 seconds
+🐝 n:1157170973102575683016736411062049761643292045397 (160 bits)
+🐝 Exponent:65537
+🐝 Ciphertext:398616441584847118291875619819339172891325623639
+-----------------------------------------------------------------------------
+🐝 P:1133129089862698274158927 (80 bits)
+🐝 Q:1021217250051175170083611 (80 bits)
+🐝 Finished at loop: 32 k values: 0
+🐝 PHI:1157170973102575683016734256715709847769847802860
+🐝 Decryption Key:383045716015186488050491065584183124609290602793
+-----------------------------------------------------------------------------
+🐝 Plaintext:427
+🐝 4 hours, 40 minutes, 12 seconds
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+```
+#### Challenge 3: 128 bit Primes
+```
+🐝 Started   	07:50:38
+🐝 Kill timer	24 hours, 0 minutes, 0 seconds
+-----------------------------------------------------------------------------
+🐝 n:49141939931137261116843775362783398673931258031923895283286320973486872970729 (255 bits)
+🐝 Exponent:65537
+🐝 Ciphertext:14199123787046830048066972290052136769415356824981695836360604590953658335413
+🐝 < NOT SOLVED, WITHIN TWO DAYS >
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+```
 
 #### GMP References
 

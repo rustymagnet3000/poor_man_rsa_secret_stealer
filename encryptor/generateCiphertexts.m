@@ -62,7 +62,7 @@ YDFindFactors *findfactors;
 
 /*
  ✅ test setUp
- Started       13:50:37
+ Started       14:06:08
  Kill timer    2 days, 0 hours, 0 minutes, 0 seconds
  ------------------------------
  Public Key:
@@ -71,26 +71,29 @@ YDFindFactors *findfactors;
  ------------------------------
  ✅ test started
 
- [+]    ABC123 (strlen 6)         (address 0x1031ed940)
+ [+]    ABC123 (strlen 6)         (address 0x1032ed940)
  [+]    _plaintext in Decimal: 71752850944563 (47 bits)
  [+]    _plaintext in Hex: 414243313233
  [*]    Encrypted message:182885092137362914
 
- [+]    Hello (strlen 5)         (address 0x1031ed947)
+ [+]    Hello (strlen 5)         (address 0x1032ed947)
  [+]    _plaintext in Decimal: 310939249775 (39 bits)
  [+]    _plaintext in Hex: 48656c6c6f
  [*]    Encrypted message:312515172274248771
 
- [+]    111222 (strlen 6)         (address 0x1031ed94d)
+ [+]    111222 (strlen 6)         (address 0x1032ed94d)
  [+]    _plaintext in Decimal: 54087348531762 (46 bits)
  [+]    _plaintext in Hex: 313131323232
  [*]    Encrypted message:181829619463323891
 
- [+]    DEADFACCE (strlen 9)         (address 0x1031ed954)
+ [+]    BEEF (strlen 4)         (address 0x1032ed954)
+ [+]    _plaintext in Decimal: 1111835974 (31 bits)
+ [+]    _plaintext in Hex: 42454546
+ [*]    Encrypted message:96021283150288229
 
- [+]    Hello!! (strlen 7)         (address 0x1031ed95e)
+ [+]    Hello!! (strlen 7)         (address 0x1032ed959)
  [+]    _plaintext in Decimal: 20377714673262881 (55 bits)
  [+]    _plaintext in Hex: 48656c6c6f2121
  [*]    Encrypted message:464519888449598487
- [+] Bytes used: 33
+ [+] Bytes used: 28
  */

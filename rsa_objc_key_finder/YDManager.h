@@ -19,5 +19,6 @@
 -(instancetype)init:(NSString *)pubKeyfilename NS_DESIGNATED_INITIALIZER;
 -(void)setNotification;
 -(void)timeTaken:(NSError **)errorPtr;
++(NSString *)prettyPrintTimeFromSeconds:(NSTimeInterval)timeInSecs;
 +(void)dirtyExit;
 @end
