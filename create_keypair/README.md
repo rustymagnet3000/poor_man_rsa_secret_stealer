@@ -1,5 +1,3 @@
-
-
 ## Generate Short RSA Private Key
 We are trying to create a file that completes the following `Struct`.
 ```

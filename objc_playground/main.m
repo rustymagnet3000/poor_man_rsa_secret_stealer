@@ -2,7 +2,6 @@
 #include "gmp.h"
 
 
-
 int main(void) {
     @autoreleasepool {
         
