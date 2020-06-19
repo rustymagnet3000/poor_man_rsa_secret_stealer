@@ -47,17 +47,18 @@
     
     mpz_inits(exp, gcd, xTemp, xFixed, secretFactor, NULL);
     mpz_init_set_ui(x, 2);
-
-     do {
-         if (_kToFactorize >= ULONG_LONG_MAX) {
-               [YDPrettyConsole single:@"Outside supported number range"];
-              return FALSE;
-          }
+    
+    do {
+        if (_kToFactorize >= ULONG_LONG_MAX) {
+             [YDPrettyConsole single:@"Outside supported number range"];
+             return FALSE;
+        }
          
          count = _kToFactorize;
 
          do {
              mpz_add_ui(exp,x,1);
+             
              mpz_powm(x, x, exp, _n);
 
              mpz_sub(xTemp,x, xFixed);
@@ -66,7 +67,7 @@
              flag = mpz_cmp_ui (gcd, 1);
              if(flag > 0){
                  mpz_cdiv_q (secretFactor, _n, gcd);
-                                  mpz_set(xFixed,x);
+                 mpz_set(xFixed,x);
                  mpz_set(_p, secretFactor);
                  mpz_set(_q, gcd);
                  break;
