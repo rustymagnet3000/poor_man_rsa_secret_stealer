@@ -1,54 +1,61 @@
-#import "YDManager.h"
 #include "gmp.h"
+#include <stdio.h>
+#include <assert.h>
+#define N "1642061677267048469007620094567254201801"
+#define MAX_LOOPS 30
 
-#define N "10403" // (101 * 103)
-
-/*
- 
- #define N "10403" // (101 * 103)
- x = (x * x + 1) % number;
- 
- This MUST output:
- 
- x = 2
- x = 5
- x = 26
- x = 677
- x = 598
- x = 3903
- x = 3418
- x = 156
- x = 3531
- x = 5168
- x = 3724
- x = 978
- x = 9812
- x = 5983
- x = 9970
- 
- */
+/* RAM remains flat, unlike past examples */
+/* Algorithm: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm */
+/* https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/pollardsRho.html */
 
 int main(void)
 {
-    mpz_t exp, n, x, x_increment_1;
-    int flag, i = 0;
-    
-    mpz_inits(n, x_increment_1, NULL);
-    mpz_init_set_ui(x, 2);
-
-    flag = mpz_set_str(n, N, 10);
-    assert (flag == 0);
-    
-    do {
-        gmp_printf("X = %Zd\n", x);
-        mpz_add_ui(x_increment_1,x,1);
-        mpz_mul(x,x,x_increment_1);
-        mpz_mod( x, x, n );
+    mpz_t n, gcd, secretFactor, x, xTemp, xFixed;
         
-        i++;
-    } while (i < 15 );
+    int flag, k = 2, loop = 1, count;
     
-    mpz_clears ( exp, n, x, NULL );
+    mpz_inits( n, gcd, xTemp, secretFactor, NULL );
+    mpz_init_set_ui( x, 2 );
+    mpz_init_set_ui( xFixed, 2 );
+    
+    flag = mpz_set_str( n, N, 10 );
+    assert(flag == 0);
+    
+    int step = 0;
+    do {
+        count = k;
+        gmp_printf("----   loop %4i (k = %d, xFixed = %Zd)  ----\n", loop, k, xFixed);
+        do {
+            step++;
+         //   gmp_printf("%d:\t\tx = %Zd n\t\t", step, x);
+            mpz_mul ( x,x,x );
+            mpz_add_ui ( x,x,1U );
+            mpz_mod ( x, x, n );
+         //   gmp_printf("\t\t(x*x + 1) mod n= %Zd\n", x);
+            
+            mpz_sub ( xTemp, x, xFixed );
+            mpz_abs ( xTemp, xTemp );
+            mpz_gcd ( gcd, xTemp, n );
+
+            flag = mpz_cmp_ui (gcd, 1);
+            if(flag > 0){
+                mpz_cdiv_q ( secretFactor, n, gcd );
+                gmp_printf("\n\n[*] p:%Zd\t\tq:%Zd\n", gcd, secretFactor);
+                break;
+            }
+        } while (--count && flag == 0);
+
+        k *= 2;
+        mpz_set(xFixed,x);
+        loop++;
+        if(loop >= MAX_LOOPS)
+            break;
+    } while (flag < 1);
+
+    
+    printf("\n[*] Finished k values: %d, loop: %d\n", k, loop);
+    
+    mpz_clears ( n, gcd, secretFactor, x, xTemp, xFixed, NULL );
 
     return 0;
 
