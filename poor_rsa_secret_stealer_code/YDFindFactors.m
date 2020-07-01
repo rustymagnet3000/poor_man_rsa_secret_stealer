@@ -39,14 +39,15 @@
 #pragma mark - Pollard Rho
 - (BOOL) factorize
 {
-    mpz_t exp, gcd, secretFactor, x, xTemp, xFixed;
+    mpz_t gcd, secretFactor, x, xTemp, xFixed;
     int flag = 0;
     unsigned long long count;
     _kToFactorize = 2;
     _loopsToFactorize = 1;
     
-    mpz_inits(exp, gcd, xTemp, xFixed, secretFactor, NULL);
+    mpz_inits(gcd, xTemp, secretFactor, NULL);
     mpz_init_set_ui(x, 2);
+    mpz_init_set_ui( xFixed, 2 );
     
     do {
         if (_kToFactorize >= ULONG_LONG_MAX) {
@@ -57,13 +58,15 @@
          count = _kToFactorize;
 
          do {
-             mpz_add_ui(exp,x,1);
+             mpz_mul( x,x,x );
+             mpz_add_ui( x,x,1U );
+             mpz_mod( x, x, _n );
              
-             mpz_powm(x, x, exp, _n);
-
-             mpz_sub(xTemp,x, xFixed);
-             mpz_gcd(gcd, xTemp, _n);
-
+             mpz_sub( xTemp, x, xFixed );
+             mpz_abs ( xTemp, xTemp );
+             
+             mpz_gcd(  gcd, xTemp, _n );
+             
              flag = mpz_cmp_ui (gcd, 1);
              if(flag > 0){
                  mpz_cdiv_q (secretFactor, _n, gcd);
@@ -79,7 +82,7 @@
          _loopsToFactorize++;
      } while (flag < 1 || _loopsToFactorize >= MAX_LOOPS);
 
-     mpz_clears ( exp, gcd, secretFactor, x, xTemp, xFixed, NULL );
+     mpz_clears ( gcd, secretFactor, x, xTemp, xFixed, NULL );
      return _loopsToFactorize <= MAX_LOOPS ? YES : NO;
 }
 
@@ -171,9 +174,11 @@
     char *regurg = calloc(aLen, sizeof(char));
     mpz_export ( regurg, NULL, 1, sizeof(char), 0, 0, _plaintext );
     NSString *regurgiatedStr = [[NSString alloc] initWithUTF8String:regurg];
-    NSString *prettyPlaintext = [YDPrettyConsole guessFormatOfDecryptedType:regurgiatedStr];
-    
-    [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", prettyPlaintext, @"(NSString view with escaped chars)"];
+    if ( regurgiatedStr != nil ){
+        NSString *prettyPlaintext = [YDPrettyConsole guessFormatOfDecryptedType:regurgiatedStr];
+        [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", prettyPlaintext, @"(NSString view with escaped chars)"];
+    }
+
     NSMutableString *hex = [NSMutableString string];
     while ( *regurg ) [hex appendFormat:@"%02X" , *regurg++ & 0x00FF];
     [YDPrettyConsole multiple:@"✅ Plaintext %@ %@", hex, @"(Hex view)"];

@@ -76,7 +76,7 @@
 }
 
 + (NSString *) guessFormatOfDecryptedType: (NSString *)input{
-
+       
     NSCharacterSet *alphanumericChars = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
 
     if ([input rangeOfCharacterFromSet:alphanumericChars].location == NSNotFound){
