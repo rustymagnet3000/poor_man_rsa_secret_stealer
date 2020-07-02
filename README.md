@@ -1,7 +1,9 @@
 # A poor man's secret stealer for RSA
 
 #### Results 8: Speed, speed, bug.
-I created a branch to speed up my `factorization` code.  I found that my `GMP` code appeared to worked but it was not following the code sample that was available here: [Pollard Rho wikipedia](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm).
+I created a branch to check if I could speed up my `factorization` code.  I was hoping to factorize `128 bit Primes`.  At the moment, I could run my computer for 4 days without an answer to a `128 bit Prime`.
+
+My `GMP` code appeared to work.  Double checking the code - which I should have done with a `Unit Test` - it was not following the code sample that was available here: [Pollard Rho wikipedia](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm).
 
 My original code raised x to an exponent.  This was based on the instructions [here][c83cb04d].  
 ```
@@ -31,7 +33,10 @@ That change sped up small factorization attempts.  But it also killed my code, w
 Status| Number (N) | Time taken
 --|---|--
 ❌| 1642061677267048469007620094567254201801  | Did not complete. 42 seconds with old code, to find the primes.
+  |   |  
+#### Results 9: The Tortoise and The Hare
 
+https://asecuritysite.com/encryption/pollard
 
 <!-- TOC -->
 
@@ -78,7 +83,7 @@ Status| Number (N) | Time taken
 
   > Can you derive a Private Key from it's corresponding [ short ] Public Key, with RSA?
 
-The answer is __"yes"__.
+"__Yes, with caveats"__."  The major caveat being RSA is based on the assumption that factoring "large" integers is ___computationally intractable___.  This assumption may die in future with Quantum computers.  See reference to [Shor's algorithm](https://en.wikipedia.org/wiki/Shor%27s_algorithm).
 
 ### Setup
 `git clone` the repo.  Open XCode and the `Project File`.  Run the program. This will reveal the Secret Message.  
@@ -136,7 +141,7 @@ Length of Modulus:                60 bits
 Encrypted secret:                 582984697800119976959378162843817868
 ```
 
-Like Professor Buchanan's article, this repo was for academic interest.  It would never work against a real RSA implementation [ unless the person who implemented the keys used crazily short keys ].
+This repo would never work against a real RSA implementation [ unless the person who implemented the keys used crazily short keys ].  But there are cash prizes available for people who can factorize larger numbers: https://en.wikipedia.org/wiki/RSA_Factoring_Challenge.
 
 The challenge used tiny numbers compared to real-world `RSA` implementations.  This challenge used `60 - 120 bit Primes`.  Where standards organizations (`NIST` et al ) disallowed anything less than `2048 bit number (Modulus) and 1,024 bit prime numbers`.  
 
@@ -360,7 +365,6 @@ Number (N) | Primes
 --|--
 7919261327 |  7919 * 1000033
 
-As we know the above numbers were prime, this step is simple.
 ```
 ϕ(𝑛)=(𝑝−1)(𝑞−1)
 ϕ(𝑛)=(7919−1)(1000033−1)
@@ -368,7 +372,7 @@ As we know the above numbers were prime, this step is simple.
 ϕ(𝑛)=7918253376
 ```
 ### Greatest Common Denominator (GCD) / Modular multiplicative inverse
-So you need `e [ Exponent ]` for this step.  Remember `e` is a Public value readable inside the Public Key.
+So you need ` Exponent ` for this step.  
 
 Use the `Extended Euclidean Algorithm` to compute a `modular multiplicative inverse`.
 
@@ -389,19 +393,6 @@ gcd(65537, 7918253376) = 1
 
  these steps, the app had derived the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
 
-
-
-
-
-#### Miller–Rabin primality test
-This already had the `primality test` code.  This was a `probabilistic primality test`.  Hence, the code had a watchdog to catch when the code could not determine an answer.
-```
-/*     printing of result ( reps ) in the form of                    */
-/* reps = 2          if n is definitely prime                        */
-/* reps = 1          if n is probably prime (without being certain)  */
-/* reps = 0          if n is definitly composite. There should be it.*/
-```
-I also read that `Reasonable values of reps are between 15 and 50.` on `https://machinecognitis.github.io/Math.Gmp.Native/html/52ce0428-7c09-f2b9-f517-d3d02521f365.htm`.
 
 ## Answers
 #### Challenge 1A: 60 bit Primes

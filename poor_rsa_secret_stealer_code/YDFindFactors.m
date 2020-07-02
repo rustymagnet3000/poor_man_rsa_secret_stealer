@@ -36,19 +36,28 @@
   return self;
 }
 
-#pragma mark - Pollard Rho
+#pragma mark - Pollard's Rho Algorithm
+
+- (void) square_self_add_one_return_mod: (mpz_t) x modulus:(mpz_t) n {
+    /* The GMP code equates to: (x*x+1) %n */
+    mpz_mul ( x,x,x );
+    mpz_add_ui ( x,x,1U );
+    mpz_mod ( x, x, n );
+}
+
 - (BOOL) factorize
 {
-    mpz_t gcd, secretFactor, x, xTemp, xFixed;
+    mpz_t gcd, secret_factor, x, y, x_minus_y;
+    
+    mpz_inits( gcd, x_minus_y, secret_factor, NULL );
+    mpz_init_set_ui( x, 2 );
+    mpz_init_set_ui( y, 2 );
+    
     int flag = 0;
     unsigned long long count;
     _kToFactorize = 2;
     _loopsToFactorize = 1;
-    
-    mpz_inits(gcd, xTemp, secretFactor, NULL);
-    mpz_init_set_ui(x, 2);
-    mpz_init_set_ui( xFixed, 2 );
-    
+        
     do {
         if (_kToFactorize >= ULONG_LONG_MAX) {
              [YDPrettyConsole single:@"Outside supported number range"];
@@ -58,32 +67,34 @@
          count = _kToFactorize;
 
          do {
-             mpz_mul( x,x,x );
-             mpz_add_ui( x,x,1U );
-             mpz_mod( x, x, _n );
-             
-             mpz_sub( xTemp, x, xFixed );
-             mpz_abs ( xTemp, xTemp );
-             
-             mpz_gcd(  gcd, xTemp, _n );
+             /* Tortoise */
+             [self square_self_add_one_return_mod:x modulus:_n];
+
+             /* Hare */
+             [self square_self_add_one_return_mod:y modulus:_n];
+             [self square_self_add_one_return_mod:y modulus:_n];
+
+             mpz_sub ( x_minus_y, x, y );
+             mpz_abs ( x_minus_y, x_minus_y );
+             mpz_gcd ( gcd, x_minus_y, _n );
              
              flag = mpz_cmp_ui (gcd, 1);
+
              if(flag > 0){
-                 mpz_cdiv_q (secretFactor, _n, gcd);
-                 mpz_set(xFixed,x);
-                 mpz_set(_p, secretFactor);
+                 mpz_cdiv_q (secret_factor, _n, gcd);
+                 mpz_set(_p, secret_factor);
                  mpz_set(_q, gcd);
                  break;
              }
          } while (--count && flag == 0);
 
          _kToFactorize *= 2;
-         mpz_set(xFixed,x);
          _loopsToFactorize++;
      } while (flag < 1 || _loopsToFactorize >= MAX_LOOPS);
 
-     mpz_clears ( gcd, secretFactor, x, xTemp, xFixed, NULL );
-     return _loopsToFactorize <= MAX_LOOPS ? YES : NO;
+    mpz_clears ( gcd, secret_factor, x, y, x_minus_y, NULL );
+
+    return _loopsToFactorize <= MAX_LOOPS ? YES : NO;
 }
 
 - (void) pubKeySummary {
