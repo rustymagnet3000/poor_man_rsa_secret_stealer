@@ -1,6 +1,6 @@
 # A poor man's secret stealer for RSA
 
-#### Results 8: Speed, speed, bug.
+#### Results 8: Speed, speed, bug
 I created a branch to check if I could speed up my `factorization` code.  I was hoping to factorize `128 bit Primes`.  At the moment, I could run my computer for 4 days without an answer to a `128 bit Prime`.
 
 My `GMP` code appeared to work.  Double checking the code - which I should have done with a `Unit Test` - it was not following the code sample that was available here: [Pollard Rho wikipedia](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm).
@@ -33,10 +33,21 @@ That change sped up small factorization attempts.  But it also killed my code, w
 Status| Number (N) | Time taken
 --|---|--
 ❌| 1642061677267048469007620094567254201801  | Did not complete. 42 seconds with old code, to find the primes.
-  |   |  
-#### Results 9: The Tortoise and The Hare
 
-https://asecuritysite.com/encryption/pollard
+
+#### Results 9: The Tortoise and The Hare
+I could see other [sample code](https://asecuritysite.com/encryption/pollard) for Pollard's Rho Algorithm had two numbers - the Tortoise and the Hare - who started at the same point and should eventually met.  
+
+But this was even worse:
+
+Status| Number (N) | Time taken
+--|---|--
+❌| 1034776851837418228051242693253376923 | 9 minutes, 37 seconds compared to 6 minutes with previous code.
+❌| 1157170973102575683016736411062049761643292045397 | Did not finished.
+
+#### Results 10: Learn from other people
+Other [code](https://github.com/grouville/factrace) looked like my own. But then I found [code](https://github.com/dbrazel/integer-factorization) that looked markedly different as it introduced a redundancy check.
+
 
 <!-- TOC -->
 
