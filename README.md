@@ -46,7 +46,12 @@ Status| Number (N) | Time taken
 ❌| 1157170973102575683016736411062049761643292045397 | Did not finished.
 
 #### Results 10: Learn from other people
-Other [code](https://github.com/grouville/factrace) looked like my own. But then I found [code](https://github.com/dbrazel/integer-factorization) that looked markedly different as it introduced a redundancy check.
+Other [C code](https://github.com/grouville/factrace) and [Javascript code](https://github.com/henrikfredriksson/pollard-rho) looked like my own.
+
+Then I found [code](https://github.com/dbrazel/integer-factorization) that looked markedly different as it introduced a redundancy check Richard Brent's [method](https://maths-people.anu.edu.au/~brent/pd/rpb051i.pdf).  This one looked interesting.  It was still slower than my original code but I wanted to try it.
+
+
+```
 
 
 <!-- TOC -->
@@ -344,8 +349,8 @@ You could use the `Birthday Paradox` to give you an efficient, *probabilistic* m
 
 Step forward the `C library` called `GMP` .  I also considered `openSSL` but - after some later trial and error - I realized `gmp` could achieve everything I wanted.
 
-#### Results 6: Pollard Rho
-Even with no optimization and memory bugs, Pollard Rho's algorithm unlocked massive improvements:
+#### Results 6: Pollard's Rho Algorithm
+Even with no optimization and memory bugs, Pollard's Rho Algorithm unlocked massive improvements:
 
 Status| Number (N) | Primes found | Time taken
 --|---|--|--
