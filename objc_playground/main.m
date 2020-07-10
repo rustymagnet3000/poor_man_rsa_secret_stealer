@@ -46,18 +46,24 @@ int main(void)
         step++;
 
         while ( mpz_cmp ( i , r ) < 0 || mpz_cmp ( i , r ) == 0 ){
-            puts("Hello!");
             mpz_add_ui ( i,i,1U );
             square_self_mod_add_c_mod(y, n, c);
         }
         
         mpz_set_ui( k, 0 );
         while ( mpz_cmp ( k , r ) < 0 && mpz_cmp_ui (gcd, 1) == 0 ){
-           puts("wolrd!");
            mpz_set( ys, y );
+            
+            mpz_gcd ( gcd, x_minus_y, n );
+            flag = mpz_cmp_ui (gcd, 1);
+            if(flag > 0){
+                mpz_cdiv_q (secret_factor, n, gcd);
+                gmp_printf("COMPLTE:p = %Zd\tq = %Zd\n", secret_factor,gcd);
+                break;
+            }
         }
-        gmp_printf("%d:\t\t\tx = %Zd\ty = %Zd\n", step, x, y);
-            break;
+
+    }
 //            /* Tortoise */
 //            square_self_add_one_return_mod(x, n);
 //
@@ -69,15 +75,7 @@ int main(void)
 //
 //            mpz_sub ( x_minus_y, x, y );
 //            mpz_abs ( x_minus_y, x_minus_y );
-//            mpz_gcd ( gcd, x_minus_y, n );
-//
-//            flag = mpz_cmp_ui (gcd, 1);
-//            if(flag > 0){
-//                mpz_cdiv_q ( secret_factor, n, gcd );
-//                gmp_printf("\n\n[*] p:%Zd\t\tq:%Zd\n", gcd, secret_factor);
-//                break;
-//            }
-    }
+
 
     
 

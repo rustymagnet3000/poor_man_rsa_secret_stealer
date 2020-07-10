@@ -19,6 +19,7 @@ But if you look at the example code, it was supposed to do this [ and not raise 
 x = (x * x + 1) % number;
 factor = gcd(abs(x - x_fixed), number);
 ```
+Double checking what should happen, the original method I used was wrong.  I went back to check the original papers. The summary to confirm the truth was [richard_brent_article][b67750ba].
 Re-writing this code in `GMP`:
 ```
 mpz_mul ( x,x,x );
@@ -29,6 +30,8 @@ mpz_abs ( xTemp, xTemp );
 mpz_gcd ( gcd, xTemp, n );
 ```
 That change sped up small factorization attempts.  But it also killed my code, when it previously worked.
+
+  [b67750ba]: https://maths-people.anu.edu.au/~brent/pd/rpb051i.pdf "example_video"
 
 Status| Number (N) | Time taken
 --|---|--
