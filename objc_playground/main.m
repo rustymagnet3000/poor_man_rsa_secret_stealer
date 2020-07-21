@@ -45,6 +45,7 @@ int main(void)
         mpz_set( x, y );
         step++;
 
+        /* while i <= 0 */
         while ( mpz_cmp ( i , r ) < 0 || mpz_cmp ( i , r ) == 0 ){
             mpz_add_ui ( i,i,1U );
             square_self_mod_add_c_mod(y, n, c);
@@ -58,7 +59,7 @@ int main(void)
             flag = mpz_cmp_ui (gcd, 1);
             if(flag > 0){
                 mpz_cdiv_q (secret_factor, n, gcd);
-                gmp_printf("COMPLTE:p = %Zd\tq = %Zd\n", secret_factor,gcd);
+                gmp_printf("COMPLETE:p = %Zd\tq = %Zd\n", secret_factor,gcd);
                 break;
             }
         }
