@@ -10,35 +10,35 @@
 	- [Structure of code](#structure-of-code)
 	- [Goal 1: Read and factorize N](#goal-1-read-and-factorize-n)
 	- [Design steps](#design-steps)
-			- [Assumptions about the number N](#assumptions-about-the-number-n)
-			- [Brainstorm](#brainstorm)
-			- [Results 1](#results-1)
-			- [Original code setup](#original-code-setup)
-			- [Results 2: Bugs everywhere 🐜 🐜 🐜](#results-2-bugs-everywhere---)
-			- [Results 3: harder bugs 🐜](#results-3-harder-bugs-)
-			- [Results 4: Hitting the limits](#results-4-hitting-the-limits)
-			- [Results 5: Choosing P and Q](#results-5-choosing-p-and-q)
+		- [Assumptions about the number N](#assumptions-about-the-number-n)
+		- [Brainstorm](#brainstorm)
+		- [Results 1](#results-1)
+		- [Original code setup](#original-code-setup)
+		- [Results 2: Bugs everywhere 🐜 🐜 🐜](#results-2-bugs-everywhere---)
+		- [Results 3: harder bugs 🐜](#results-3-harder-bugs-)
+		- [Results 4: Hitting the limits](#results-4-hitting-the-limits)
+		- [Results 5: Choosing P and Q](#results-5-choosing-p-and-q)
 	- [Summary](#summary)
-			- [Failings of the Naive Trial Division Algorithm](#failings-of-the-naive-trial-division-algorithm)
-			- [Computing Power](#computing-power)
+		- [Failings of the Naive Trial Division Algorithm](#failings-of-the-naive-trial-division-algorithm)
+		- [Computing Power](#computing-power)
 	- [Re-Design](#re-design)
-			- [Results 6: Pollard's Rho Algorithm](#results-6-pollards-rho-algorithm)
-			- [Results 7: Pollard Rho](#results-7-pollard-rho)
-			- [Results 8: Speed, speed, bug](#results-8-speed-speed-bug)
-			- [Results 9: The Tortoise and The Hare](#results-9-the-tortoise-and-the-hare)
-			- [Results 10: Learn from other people](#results-10-learn-from-other-people)
+		- [Results 6: Pollard's Rho Algorithm](#results-6-pollards-rho-algorithm)
+		- [Results 7: Pollard Rho](#results-7-pollard-rho)
+		- [Results 8: Speed, speed, bug](#results-8-speed-speed-bug)
+		- [Results 9: The Tortoise and The Hare](#results-9-the-tortoise-and-the-hare)
+		- [Results 10: Learn from other people](#results-10-learn-from-other-people)
 		- [Euler's totient function](#eulers-totient-function)
 		- [Greatest Common Denominator (GCD) / Modular multiplicative inverse](#greatest-common-denominator-gcd--modular-multiplicative-inverse)
 	- [Answers](#answers)
-			- [Challenge 1A: 60 bit Primes](#challenge-1a-60-bit-primes)
-			- [Challenge 1B: 60 bit Primes](#challenge-1b-60-bit-primes)
-			- [Challenge 1C: 60 bit Primes](#challenge-1c-60-bit-primes)
-			- [Challenge 2: 80 bit Primes](#challenge-2-80-bit-primes)
-			- [Challenge 3: 128 bit Primes](#challenge-3-128-bit-primes)
-			- [GMP References](#gmp-references)
-			- [C References](#c-references)
-			- [Key Length References](#key-length-references)
-			- [References](#references)
+		- [Challenge 1A: 60 bit Primes](#challenge-1a-60-bit-primes)
+		- [Challenge 1B: 60 bit Primes](#challenge-1b-60-bit-primes)
+		- [Challenge 1C: 60 bit Primes](#challenge-1c-60-bit-primes)
+		- [Challenge 2: 80 bit Primes](#challenge-2-80-bit-primes)
+		- [Challenge 3: 128 bit Primes](#challenge-3-128-bit-primes)
+		- [GMP References](#gmp-references)
+		- [C References](#c-references)
+		- [Key Length References](#key-length-references)
+		- [References](#references)
 
 <!-- /TOC -->
 
@@ -134,14 +134,14 @@ Sounds easy?   Definitely not; this is a [`Time Complex`](https://en.wikipedia.o
 
 ## Design steps
 
-#### Assumptions about the number N
+### Assumptions about the number N
 
  - [x] Not a negative
  - [x] Not even [ as this implies a non-prime input `(100 = 5 * 20)` ]
  - [x] Not a prime number
  - [x] A "good" `N` was made of two `Primes`.
 
-#### Brainstorm
+### Brainstorm
 My original idea was to write super simple code that enforced:
 
 - N was not even
@@ -153,7 +153,7 @@ My original idea was to write super simple code that enforced:
 
 My code was the same as thousands of other `StackOverflow` readers.  This was cynically (and probably fairly) labelled the **the Naive Trial Division Algorithm** by people who understood the _Math Theory_ behind the problem.
 
-#### Results 1
+### Results 1
 ```
 ✅ [3, 11] = 33       // find both prime factors but not 1 or 2
 ✅ [3, 13] = 39       // same as previous
@@ -161,7 +161,7 @@ My code was the same as thousands of other `StackOverflow` readers.  This was cy
 🔸 [5, 20] = 100      // wrong. My code should have rejected n = 100
 ```
 
-#### Original code setup
+### Original code setup
 I wrote a mix of C and Objective-C code.  I preferred `Objective-C` as existing Apple `Classes` helped my basic requirements:
 
 - Know when my code completed [ `NSNotificationCenter` ]
@@ -172,7 +172,7 @@ I set a `kill timer` to 20 minutes.  This was my `fail-safe` for `N` values that
 
 On my first attempts to code this solution, I did not use third party libraries.  That was a mistake.
 
-#### Results 2: Bugs everywhere 🐜 🐜 🐜
+### Results 2: Bugs everywhere 🐜 🐜 🐜
 Status| Number (N) | Primes
 --|---|--
 ✅| 3000009  |  3 * 1000003
@@ -198,7 +198,7 @@ BUG 3: printf ("[+]%d is a factor \n", i);
 // this was one of those compiler warnings you just skipped over...
 ```
 
-#### Results 3: harder bugs 🐜
+### Results 3: harder bugs 🐜
 I purged my code of `int` types.  I sped up my search loop by removing stupid code.
 
 Status| Number (N) | Primes found | Time taken
@@ -221,14 +221,14 @@ In 20 minutes, my computer was able to check `N` values of up to ~220 billion.  
 362 = 6 hours
 ```
 
-#### Results 4: Hitting the limits
+### Results 4: Hitting the limits
 I set my kill timer to 10 hours, while I slept.  My crude calculation was accurate enough.
 
 Status| Number (N) | Primes | Time taken
 --|---|--|--
 🐝| 8069212743871 |  2840261 * 2841011 | 5 hours.
 
-#### Results 5: Choosing P and Q
+### Results 5: Choosing P and Q
 I assumed when 𝑝 and 𝑞 were prime, 𝑁 would have only two factors.  I wanted to verify this and test something I missed on the `Key Generation for RSA`.
 
 > p and q should be chosen at random, and should be similar in magnitude but differ in length by a few digits to make factoring harder.
@@ -263,7 +263,7 @@ Status| Number (N) | Bits | Primes found | Time taken
 
 ## Summary
 
-#### Failings of the Naive Trial Division Algorithm
+### Failings of the Naive Trial Division Algorithm
 In summary, on small values my initial code worked well.  Most code from `StackOverflow` was the same.  When you grew the size of `n` the `Factorization` sent your machine into warp speed and a problem that could not be solved in reasonable time.
 
 That said, the `Naive Trial Division Algorithm` does work if the `Public Key's Modulus (n)` is "short".  By short, my proof is `35-39 bit` numbers were solved in minutes by my code:
@@ -280,7 +280,7 @@ That said, the `Naive Trial Division Algorithm` does work if the `Public Key's M
 ```
 It took 5 hours to search all odd numbers when the loop's upper limit was set to 4 trillions (43 bits).  But a number that was over `100 trillion (47 bits)` I estimated **3 days** to finish.
 
-#### Computing Power
+### Computing Power
 This code could never work against a real world RSA implementation.  The `Naive Trial Division Algorithm` had no chance of dealing with a `60 bit primes`.    Crudely illustrated as follows:
 ```
 My computer could do 4 trillion in 5 hours
@@ -298,7 +298,7 @@ You could use the `Birthday Paradox` to give you an efficient, *probabilistic* m
 
 Step forward the `C library` called `GMP` .  I also considered `openSSL` but - after some later trial and error - I realized `gmp` could achieve everything I wanted.
 
-#### Results 6: Pollard's Rho Algorithm
+### Results 6: Pollard's Rho Algorithm
 Even with no optimization and memory bugs, Pollard's Rho Algorithm unlocked massive improvements:
 
 Status| Number (N) | Primes found | Time taken
@@ -307,7 +307,7 @@ Status| Number (N) | Primes found | Time taken
 ❌| 464583729100140631 | 982451653 * 472882027  | Not found. sucked 300MB before completing 20k cycles!
 ❌| 1034776....253376923 | < unknown > | Not found. Sucked up 3MB every second of RAM. Got to 2.7GB used!
 
-#### Results 7: Pollard Rho
+### Results 7: Pollard Rho
 Re-using a tidier algorithm, I was able to factorize the challenge `n`.
 
 Status| Number (N) | Primes found | Time taken
@@ -321,7 +321,7 @@ Status| Number (N) | Primes found | Time taken
 ✅| 1034776851837418228051242693253376923 | 1086027579223696553 *	952809000096560291 | 6 minutes 21 seconds
 ✅| 1642061677267048469007620094567254201801 | 36413321723440003717 * 45095080578985454453   | 42 seconds
 
-#### Results 8: Speed, speed, bug
+### Results 8: Speed, speed, bug
 I created a branch to check if I could speed up my `factorization` code.  I was hoping to factorize `128 bit Primes`.  At the moment, I could run my computer for 4 days without an answer to a `128 bit Prime`.
 
 My `GMP` code appeared to work.  Double checking the code - which I should have done with a `Unit Test` - it was not following the code sample that was available here: [Pollard Rho wikipedia](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm).
@@ -358,7 +358,7 @@ Status| Number (N) | Time taken
 --|---|--
 ❌| 1642061677267048469007620094567254201801  | Did not complete. 42 seconds with old code, to find the primes.
 
-#### Results 9: The Tortoise and The Hare
+### Results 9: The Tortoise and The Hare
 I could see other [sample code](https://asecuritysite.com/encryption/pollard) for Pollard's Rho Algorithm had two numbers - the Tortoise and the Hare - who started at the same point and should eventually met.
 
 But this was even worse:
@@ -368,7 +368,7 @@ Status| Number (N) | Time taken
 ❌| 1034776851837418228051242693253376923 | 9 minutes, 37 seconds compared to 6 minutes with previous code.
 ❌| 1157170973102575683016736411062049761643292045397 | Did not finished.
 
-#### Results 10: Learn from other people
+### Results 10: Learn from other people
 Other [C code](https://github.com/grouville/factrace) and [Javascript code](https://github.com/henrikfredriksson/pollard-rho) looked like my own.
 
 Then I found [code](https://github.com/dbrazel/integer-factorization) that looked markedly different as it introduced a redundancy check Richard Brent's [method](https://maths-people.anu.edu.au/~brent/pd/rpb051i.pdf).  This one looked interesting.  It was still slower than my original code but I wanted to try it.
@@ -405,7 +405,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 
 ## Answers
 
-#### Challenge 1A: 60 bit Primes
+### Challenge 1A: 60 bit Primes
 ```
 🐝 Started	15:53:25
 🐝 n:1034776851837418228051242693253376923 (120 bits)
@@ -424,7 +424,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 ```
 
-#### Challenge 1B: 60 bit Primes
+### Challenge 1B: 60 bit Primes
 ```
 🐝 Started	06:48:55
 🐝 n:       498702132445864856509611776937010471 (119 bits)
@@ -443,7 +443,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 ```
 
-#### Challenge 1C: 60 bit Primes
+### Challenge 1C: 60 bit Primes
 ```
 🐝 Started   	20:44:11
 🐝 Kill timer	12 hours, 0 minutes, 0 seconds
@@ -464,7 +464,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 ```
 
-#### Challenge 2: 80 bit Primes
+### Challenge 2: 80 bit Primes
 ```
 🐝 Started	    18:18:11
 🐝 Kill timer   8 hours, 0 minutes, 0 seconds
@@ -484,7 +484,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 ```
 
-#### Challenge 3: 128 bit Primes
+### Challenge 3: 128 bit Primes
 ```
 🐝 Started   	07:50:38
 🐝 Kill timer	24 hours, 0 minutes, 0 seconds
@@ -497,54 +497,41 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 ```
 
-#### GMP References
-
+### GMP References
+```
 https://stackoverflow.com/questions/4424374/determining-if-a-number-is-prime
-
 https://www.cs.colorado.edu/~srirams/courses/csci2824-spr14/gmpTutorial.html
-
 https://gnu.huihoo.org/gmp-3.1.1/html_chapter/gmp_4.html
-
 https://gmplib.org/manual/Binary-GCD.html#Binary-GCD
-
 http://sep.stanford.edu/sep/claudio/Research/Prst_ExpRefl/ShtPSPI/intel/mkl/10.0.3.020/examples/gmp/source/mpz_probab_prime_p_example.c
-
 https://machinecognitis.github.io/Math.Gmp.Native/html/52ce0428-7c09-f2b9-f517-d3d02521f365.htm
-
 https://frenchfries.net/paul/factoring/source.html
-
 http://www.martani.net/2011/12/factoring-integers-part-1-pollards-rho.html
+```
 
-#### C References
+### C References
+```
 https://en.cppreference.com/w/c/types/limits
-
 https://www.systutorials.com/docs/linux/man/3-strtol/
+```
 
-#### Key Length References
-
+### Key Length References
+```
 https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf
+```
 
-#### References
+### References
+```
 https://www.cryptool.org/en/cto-highlights/rsa-step-by-step
-
 https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm
-
 https://hbfs.wordpress.com/2013/12/10/the-speed-of-gcd/
-
 https://rosettacode.org/wiki/Miller%E2%80%93Rabin_primality_test
-
 https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7
-
 https://en.wikipedia.org/wiki/Pollard%27s_p_%E2%88%92_1_algorithm
-
 https://www.objc.io/issues/2-concurrency/concurrency-apis-and-pitfalls/
-
 http://abulewis.com/blog/concurrency-in-objective-c-using-grand-central-dispatch-gcd/
-
 https://medium.com/ios-os-x-development/broadcasting-with-nsnotification-center-8bc0ccd2f5c3
-
 https://www.cs.swarthmore.edu/~newhall/unixhelp/C_arrays.html
-
 https://primes.utm.edu/lists/small/small.html
-
 https://github.com/raywenderlich/objective-c-style-guide
+```
