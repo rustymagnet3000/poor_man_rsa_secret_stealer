@@ -1,126 +1,48 @@
 # A poor man's secret stealer for RSA
 
-#### Results 8: Speed, speed, bug
-I created a branch to check if I could speed up my `factorization` code.  I was hoping to factorize `128 bit Primes`.  At the moment, I could run my computer for 4 days without an answer to a `128 bit Prime`.
-
-My `GMP` code appeared to work.  Double checking the code - which I should have done with a `Unit Test` - it was not following the code sample that was available here: [Pollard Rho wikipedia](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm).
-
-My original code raised x to an exponent.  This was based on the instructions [here][c83cb04d].  
-```
-mpz_add_ui(exp,x,1);
-mpz_powm(x, x, exp, n);
-mpz_sub(xTemp, x, xFixed);
-mpz_gcd(gcd, xTemp, n);
-```
-
-  [c83cb04d]: https://www.youtube.com/watch?v=fFJMoIj71nQ&list=PLf3LTJuIxYkTdahPywj7RcTU0OAyRph8H&index=5&t=0s "example_video"
-But if you look at the example code, it was supposed to do this [ and not raise to a power ].
-```
-x = (x * x + 1) % number;
-factor = gcd(abs(x - x_fixed), number);
-```
-Double checking what should happen, the original method I used was wrong.  I went back to check the original papers. The summary to confirm the truth was [richard_brent_article][b67750ba].
-Re-writing this code in `GMP`:
-```
-mpz_mul ( x,x,x );
-mpz_add_ui ( x,x,1U );
-mpz_mod ( x, x, n );
-mpz_sub ( xTemp, x, xFixed );
-mpz_abs ( xTemp, xTemp );
-mpz_gcd ( gcd, xTemp, n );
-```
-That change sped up small factorization attempts.  But it also killed my code, when it previously worked.
-
-  [b67750ba]: https://maths-people.anu.edu.au/~brent/pd/rpb051i.pdf "example_video"
-
-Status| Number (N) | Time taken
---|---|--
-❌| 1642061677267048469007620094567254201801  | Did not complete. 42 seconds with old code, to find the primes.
-
-#### Results 9: The Tortoise and The Hare
-I could see other [sample code](https://asecuritysite.com/encryption/pollard) for Pollard's Rho Algorithm had two numbers - the Tortoise and the Hare - who started at the same point and should eventually met.
-
-But this was even worse:
-
-Status| Number (N) | Time taken
---|---|--
-❌| 1034776851837418228051242693253376923 | 9 minutes, 37 seconds compared to 6 minutes with previous code.
-❌| 1157170973102575683016736411062049761643292045397 | Did not finished.
-
-#### Results 10: Learn from other people
-Other [C code](https://github.com/grouville/factrace) and [Javascript code](https://github.com/henrikfredriksson/pollard-rho) looked like my own.
-
-Then I found [code](https://github.com/dbrazel/integer-factorization) that looked markedly different as it introduced a redundancy check Richard Brent's [method](https://maths-people.anu.edu.au/~brent/pd/rpb051i.pdf).  This one looked interesting.  It was still slower than my original code but I wanted to try it.
-
-```
-
 <!-- TOC -->
 
 - [A poor man's secret stealer for RSA](#a-poor-mans-secret-stealer-for-rsa)
-	- [Challenge](#challenge)
-	- [Setup](#setup)
 	- [Background](#background)
 	- [History of repo](#history-of-repo)
-	- [Challenge](#challenge-1)
+	- [Challenge](#challenge)
+	- [Setup](#setup)
 	- [Structure of code](#structure-of-code)
 	- [Goal 1: Read and factorize N](#goal-1-read-and-factorize-n)
 	- [Design steps](#design-steps)
-		- [Assumptions about the number N](#assumptions-about-the-number-n)
-		- [Brainstorm](#brainstorm)
-		- [Result 1](#result-1)
-		- [Original code setup](#original-code-setup)
-		- [Results 2: Bugs everywhere 🐜 🐜 🐜](#results-2-bugs-everywhere---)
-		- [Results 3: harder bugs 🐜](#results-3-harder-bugs-)
-		- [Result 4: Hitting the limits](#result-4-hitting-the-limits)
-		- [Results 6: Choosing P and Q](#results-6-choosing-p-and-q)
+			- [Assumptions about the number N](#assumptions-about-the-number-n)
+			- [Brainstorm](#brainstorm)
+			- [Results 1](#results-1)
+			- [Original code setup](#original-code-setup)
+			- [Results 2: Bugs everywhere 🐜 🐜 🐜](#results-2-bugs-everywhere---)
+			- [Results 3: harder bugs 🐜](#results-3-harder-bugs-)
+			- [Results 4: Hitting the limits](#results-4-hitting-the-limits)
+			- [Results 5: Choosing P and Q](#results-5-choosing-p-and-q)
 	- [Summary](#summary)
-		- [Failings of the Naive Trial Division Algorithm](#failings-of-the-naive-trial-division-algorithm)
-		- [Computing Power](#computing-power)
+			- [Failings of the Naive Trial Division Algorithm](#failings-of-the-naive-trial-division-algorithm)
+			- [Computing Power](#computing-power)
 	- [Re-Design](#re-design)
-		- [Results 6: Pollard Rho](#results-6-pollard-rho)
-		- [Results 7: Pollard Rho](#results-7-pollard-rho)
+			- [Results 6: Pollard's Rho Algorithm](#results-6-pollards-rho-algorithm)
+			- [Results 7: Pollard Rho](#results-7-pollard-rho)
+			- [Results 8: Speed, speed, bug](#results-8-speed-speed-bug)
+			- [Results 9: The Tortoise and The Hare](#results-9-the-tortoise-and-the-hare)
+			- [Results 10: Learn from other people](#results-10-learn-from-other-people)
 		- [Euler's totient function](#eulers-totient-function)
 		- [Greatest Common Denominator (GCD) / Modular multiplicative inverse](#greatest-common-denominator-gcd--modular-multiplicative-inverse)
-			- [Miller–Rabin primality test](#millerrabin-primality-test)
 	- [Answers](#answers)
-		- [Challenge 1A: 60 bit Primes](#challenge-1a-60-bit-primes)
-		- [Challenge 1B: 60 bit Primes](#challenge-1b-60-bit-primes)
-		- [Challenge 1C: 60 bit Primes](#challenge-1c-60-bit-primes)
-		- [Challenge 2: 80 bit Primes](#challenge-2-80-bit-primes)
-		- [Challenge 3: 128 bit Primes](#challenge-3-128-bit-primes)
-		- [GMP References](#gmp-references)
-		- [C References](#c-references)
-		- [Key Length References](#key-length-references)
-		- [References](#references)
+			- [Challenge 1A: 60 bit Primes](#challenge-1a-60-bit-primes)
+			- [Challenge 1B: 60 bit Primes](#challenge-1b-60-bit-primes)
+			- [Challenge 1C: 60 bit Primes](#challenge-1c-60-bit-primes)
+			- [Challenge 2: 80 bit Primes](#challenge-2-80-bit-primes)
+			- [Challenge 3: 128 bit Primes](#challenge-3-128-bit-primes)
+			- [GMP References](#gmp-references)
+			- [C References](#c-references)
+			- [Key Length References](#key-length-references)
+			- [References](#references)
 
 <!-- /TOC -->
 
-### Challenge
-
-  > Can you derive a Private Key from its corresponding [ short ] Public Key, with RSA?
-
-"__Yes, with caveats"__."  The major caveat being RSA is based on the assumption that factoring "large" integers is ___computationally intractable___.  This assumption may die in future with Quantum computers.  See reference to [Shor's algorithm](https://en.wikipedia.org/wiki/Shor%27s_algorithm).
-
-### Setup
-`git clone` the repo.  Open XCode and the `Project File`.  Run the program. This will reveal the Secret Message.
-
-A pre-filled example is already in the project. See below. This is a `60-bit Public Key` and encrypted message.  In just over `6 minutes` - on an old `macOS` machine - you derive the `Private Key` and decrypt the Secret Message.
-
-```
-<plist version="1.0">
-<dict>
-	<key>Ciphertext</key>
-	<string>582984697800119976959378162843817868</string>
-	<key>Exponent</key>
-	<string>65537</string>
-	<key>Modulus</key>
-	<string>1034776851837418228051242693253376923</string>
-</dict>
-</plist>
-```
-When you are ready to try it with your own values, populate the project's `plist` file and re-run the app.
-
-### Background
+## Background
 The code in this repository builds into a `macOS` command line application.
 
 The application takes a short `Public Key` ( `< 200 bits` ) and a Secret Message.  The Secret Message was generated by encrypting a short piece of `plaintext` with an `RSA Public Key`.  Then, the program attempts to derive the two `Prime Numbers` that were factors of the `Modulus`.
@@ -141,7 +63,7 @@ What length of numbers can I use?  The following example will reveal the `Privat
 
 If the program can successfully derive these `Primes` ( referred to as `P` and `Q` ) it will continue.  It eventually derives the `Private Key`.  The `Private Key` is the piece of the puzzle required to decrypt the Secret Message.
 
-### History of repo
+## History of repo
 The program was written to answer the questions from **Prof Bill Buchanan OBE**.
 
 `https://medium.com/asecuritysite-when-bob-met-alice/cracking-rsa-a-challenge-generator-2b64c4edb3e7`
@@ -169,6 +91,31 @@ That isn't to say somebody hasn't attempted the same thing on a large scale with
 
 > RSA claimed that 1024-bit keys were likely to become crackable some time between 2006 and 2010 and that 2048-bit keys are sufficient until 2030.[15] NIST recommends 2048-bit keys for RSA.
 
+## Challenge
+
+  > Can you derive a Private Key from its corresponding [ short ] Public Key, with RSA?
+
+"__Yes, with caveats"__."  The major caveat being RSA is based on the assumption that factoring "large" integers is ___computationally intractable___.  This assumption may die in future with Quantum computers.  See reference to [Shor's algorithm](https://en.wikipedia.org/wiki/Shor%27s_algorithm).
+
+## Setup
+`git clone` the repo.  Open XCode and the `Project File`.  Run the program. This will reveal the Secret Message.
+
+A pre-filled example is already in the project. See below. This is a `60-bit Public Key` and encrypted message.  In just over `6 minutes` - on an old `macOS` machine - you derive the `Private Key` and decrypt the Secret Message.
+
+```
+<plist version="1.0">
+<dict>
+	<key>Ciphertext</key>
+	<string>582984697800119976959378162843817868</string>
+	<key>Exponent</key>
+	<string>65537</string>
+	<key>Modulus</key>
+	<string>1034776851837418228051242693253376923</string>
+</dict>
+</plist>
+```
+When you are ready to try it with your own values, populate the project's `plist` file and re-run the app.
+
 ## Structure of code
 The first piece of code calculates `factors` of N.  The `factors` must only be `Prime Numbers`.  The found numbers were referred to as `𝑝` and `𝑞` and were to be kept secret.  `𝑁` was not a secret and it was part of the `Public Key`.
 
@@ -186,6 +133,7 @@ My first goal was to take a long, user entered number (`N`).  Eventually my code
 Sounds easy?   Definitely not; this is a [`Time Complex`](https://en.wikipedia.org/wiki/Time_complexity) problem.
 
 ## Design steps
+
 #### Assumptions about the number N
 
  - [x] Not a negative
@@ -204,6 +152,7 @@ My original idea was to write super simple code that enforced:
 - discount 1 and 2
 
 My code was the same as thousands of other `StackOverflow` readers.  This was cynically (and probably fairly) labelled the **the Naive Trial Division Algorithm** by people who understood the _Math Theory_ behind the problem.
+
 #### Results 1
 ```
 ✅ [3, 11] = 33       // find both prime factors but not 1 or 2
@@ -248,6 +197,7 @@ BUG 3: printf ("[+]%d is a factor \n", i);
 // I told `printf` the input was an `int` when I sent it huge `unsigned long long` values
 // this was one of those compiler warnings you just skipped over...
 ```
+
 #### Results 3: harder bugs 🐜
 I purged my code of `int` types.  I sped up my search loop by removing stupid code.
 
@@ -270,6 +220,7 @@ In 20 minutes, my computer was able to check `N` values of up to ~220 billion.  
 20 minutes * 18.1 = 362 minutes
 362 = 6 hours
 ```
+
 #### Results 4: Hitting the limits
 I set my kill timer to 10 hours, while I slept.  My crude calculation was accurate enough.
 
@@ -311,6 +262,7 @@ Status| Number (N) | Bits | Primes found | Time taken
 ✅| 112740085193 | 37 |  86771 * 1299283 | 264 seconds.
 
 ## Summary
+
 #### Failings of the Naive Trial Division Algorithm
 In summary, on small values my initial code worked well.  Most code from `StackOverflow` was the same.  When you grew the size of `n` the `Factorization` sent your machine into warp speed and a problem that could not be solved in reasonable time.
 
@@ -369,6 +321,58 @@ Status| Number (N) | Primes found | Time taken
 ✅| 1034776851837418228051242693253376923 | 1086027579223696553 *	952809000096560291 | 6 minutes 21 seconds
 ✅| 1642061677267048469007620094567254201801 | 36413321723440003717 * 45095080578985454453   | 42 seconds
 
+#### Results 8: Speed, speed, bug
+I created a branch to check if I could speed up my `factorization` code.  I was hoping to factorize `128 bit Primes`.  At the moment, I could run my computer for 4 days without an answer to a `128 bit Prime`.
+
+My `GMP` code appeared to work.  Double checking the code - which I should have done with a `Unit Test` - it was not following the code sample that was available here: [Pollard Rho wikipedia](https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm).
+
+My original code raised x to an exponent.  This was based on the instructions [here][c83cb04d].  
+```
+mpz_add_ui(exp,x,1);
+mpz_powm(x, x, exp, n);
+mpz_sub(xTemp, x, xFixed);
+mpz_gcd(gcd, xTemp, n);
+```
+
+  [c83cb04d]: https://www.youtube.com/watch?v=fFJMoIj71nQ&list=PLf3LTJuIxYkTdahPywj7RcTU0OAyRph8H&index=5&t=0s "example_video"
+But if you look at the example code, it was supposed to do this [ and not raise to a power ].
+```
+x = (x * x + 1) % number;
+factor = gcd(abs(x - x_fixed), number);
+```
+Double checking what should happen, the original method I used was wrong.  I went back to check the original papers. The summary to confirm the truth was [richard_brent_article][b67750ba].
+Re-writing this code in `GMP`:
+```
+mpz_mul ( x,x,x );
+mpz_add_ui ( x,x,1U );
+mpz_mod ( x, x, n );
+mpz_sub ( xTemp, x, xFixed );
+mpz_abs ( xTemp, xTemp );
+mpz_gcd ( gcd, xTemp, n );
+```
+That change sped up small factorization attempts.  But it also killed my code, when it previously worked.
+
+  [b67750ba]: https://maths-people.anu.edu.au/~brent/pd/rpb051i.pdf "example_video"
+
+Status| Number (N) | Time taken
+--|---|--
+❌| 1642061677267048469007620094567254201801  | Did not complete. 42 seconds with old code, to find the primes.
+
+#### Results 9: The Tortoise and The Hare
+I could see other [sample code](https://asecuritysite.com/encryption/pollard) for Pollard's Rho Algorithm had two numbers - the Tortoise and the Hare - who started at the same point and should eventually met.
+
+But this was even worse:
+
+Status| Number (N) | Time taken
+--|---|--
+❌| 1034776851837418228051242693253376923 | 9 minutes, 37 seconds compared to 6 minutes with previous code.
+❌| 1157170973102575683016736411062049761643292045397 | Did not finished.
+
+#### Results 10: Learn from other people
+Other [C code](https://github.com/grouville/factrace) and [Javascript code](https://github.com/henrikfredriksson/pollard-rho) looked like my own.
+
+Then I found [code](https://github.com/dbrazel/integer-factorization) that looked markedly different as it introduced a redundancy check Richard Brent's [method](https://maths-people.anu.edu.au/~brent/pd/rpb051i.pdf).  This one looked interesting.  It was still slower than my original code but I wanted to try it.
+
 ### Euler's totient function
 Number (N) | Primes
 --|--
@@ -380,6 +384,7 @@ Number (N) | Primes
 ϕ(𝑛)=(7918)(1000032)
 ϕ(𝑛)=7918253376
 ```
+
 ### Greatest Common Denominator (GCD) / Modular multiplicative inverse
 So you need ` Exponent ` for this step.
 
@@ -399,6 +404,7 @@ gcd(65537, 7918253376) = 1
 After these steps, the app had derived the Private Key.  The Private Key could decrypt the `ciphertext` (above) into `plaintext`.
 
 ## Answers
+
 #### Challenge 1A: 60 bit Primes
 ```
 🐝 Started	15:53:25
@@ -417,6 +423,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 ```
+
 #### Challenge 1B: 60 bit Primes
 ```
 🐝 Started	06:48:55
@@ -435,6 +442,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 ```
+
 #### Challenge 1C: 60 bit Primes
 ```
 🐝 Started   	20:44:11
@@ -455,6 +463,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 ```
+
 #### Challenge 2: 80 bit Primes
 ```
 🐝 Started	    18:18:11
@@ -474,6 +483,7 @@ After these steps, the app had derived the Private Key.  The Private Key could d
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 ```
+
 #### Challenge 3: 128 bit Primes
 ```
 🐝 Started   	07:50:38
